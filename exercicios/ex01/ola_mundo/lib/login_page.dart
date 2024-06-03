@@ -19,12 +19,12 @@ class _LoginPageState extends State<LoginPage> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             //centraliza todos os elementos de Column
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 height: 300,
                 width: 300,
                 child: Image.asset('assets/images/logo.png'),
@@ -43,16 +43,16 @@ class _LoginPageState extends State<LoginPage> {
                           email = text;
                         },
                         keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(), labelText: 'Email'),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextField(
                         onChanged: (value) {
                           password = value;
                         },
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Password'),
                       ),
@@ -73,14 +73,14 @@ class _LoginPageState extends State<LoginPage> {
                                 print('Dados Incorretos!');
                               }
                             },
-                            child: Text('Entrar')),
+                            child: const Text('Entrar')),
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 15),
-              CustomSwitch()
+              const SizedBox(height: 15),
+              const CustomSwitch()
             ],
           ),
         ),

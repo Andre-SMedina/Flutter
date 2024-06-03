@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(AppWidget(
+  runApp(const AppWidget(
     title: 'Olá Mundo',
   ));
 }
@@ -17,7 +17,7 @@ class AppWidget extends StatelessWidget {
       child: Text(
         title,
         textDirection: TextDirection.ltr,
-        style: TextStyle(color: Colors.white, fontSize: 30.0),
+        style: const TextStyle(color: Colors.white, fontSize: 30.0),
       ),
     );
   }

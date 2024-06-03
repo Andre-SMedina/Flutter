@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(AppWidget(
+  runApp(const AppWidget(
     title: 'Olá Mundo2',
   ));
 }

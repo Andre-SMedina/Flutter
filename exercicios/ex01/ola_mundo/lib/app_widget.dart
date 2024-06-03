@@ -6,6 +6,8 @@ import 'package:ola_mundo/login_page.dart';
 // import 'home_page.dart';
 
 class AppWidget extends StatelessWidget {
+  const AppWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -19,8 +21,8 @@ class AppWidget extends StatelessWidget {
                   : Brightness.light),
           initialRoute: '/',
           routes: {
-            '/': (context) => LoginPage(),
-            '/home': (context) => HomePage(),
+            '/': (context) => const LoginPage(),
+            '/home': (context) => const HomePage(),
           },
           // home: LoginPage(),
         );

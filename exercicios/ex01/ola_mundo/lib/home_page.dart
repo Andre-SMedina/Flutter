@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ola_mundo/app_controller.dart';
-import 'package:ola_mundo/login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,20 +24,20 @@ class HomePageState extends State<HomePage> {
                 currentAccountPicture: ClipRRect(
                     borderRadius: BorderRadius.circular(40),
                     child: Image.asset('assets/images/user.png')),
-                accountName: Text('André Luis'),
-                accountEmail: Text('andre@gmail.com')),
+                accountName: const Text('André Luis'),
+                accountEmail: const Text('andre@gmail.com')),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Inicio'),
-              subtitle: Text('Tela de início'),
+              leading: const Icon(Icons.home),
+              title: const Text('Inicio'),
+              subtitle: const Text('Tela de início'),
               onTap: () {
                 print('Menu Lateral');
               },
             ),
             ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Logout'),
-              subtitle: Text('Finalizar Sessão'),
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Logout'),
+              subtitle: const Text('Finalizar Sessão'),
               onTap: () {
                 Navigator.of(context).pushReplacementNamed('/');
               },
@@ -48,9 +47,9 @@ class HomePageState extends State<HomePage> {
       ),
       appBar: AppBar(
           title: const Text('Home Page'),
-          actions: [CustomSwitch()],
+          actions: const [CustomSwitch()],
           backgroundColor: Colors.blue),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Column(
@@ -61,13 +60,13 @@ class HomePageState extends State<HomePage> {
           children: [
             Text(
               'Contador $counter',
-              style: TextStyle(fontSize: 30),
+              style: const TextStyle(fontSize: 30),
             ),
-            CustomSwitch(),
+            const CustomSwitch(),
             Container(
               height: 30,
             ),
-            MyRows(),
+            const MyRows(),
           ],
         ),
       ),
