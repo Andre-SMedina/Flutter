@@ -17,17 +17,22 @@ class _LoginScreenState extends State<LoginScreen> {
         title: const Text(style: TextStyle(color: MyColors.branco), 'My App'),
       ),
       body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         decoration: const BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [MyColors.azul, MyColors.branco])),
-        child: const Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image(image: AssetImage('assets/images/halter.png')),
-            Text(
+            const Image(
+              image: AssetImage('assets/images/halter.png'),
+              height: 125,
+            ),
+            const Padding(padding: EdgeInsets.only(bottom: 15)),
+            const Text(
               'Entrar',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -35,7 +40,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
-            )
+            ),
+            Form(
+                child: Column(
+              children: [TextFormField.new()],
+            ))
           ],
         ),
       ),
