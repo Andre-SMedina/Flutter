@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Gym App',
       home: HomeScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

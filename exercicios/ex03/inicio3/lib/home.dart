@@ -8,6 +8,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int cont = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,12 +18,18 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Gym App'),
         backgroundColor: Colors.blue,
       ),
-      body: Container(
-        color: Colors.green,
-        child: Text(style: TextStyle(color: Colors.white), 'Andre Luiss'),
+      body: Center(
+        child: Container(
+          child: Text(style: TextStyle(fontSize: 50), '$cont'),
+        ),
       ),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () {}, child: Icon(Icons.add)),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              cont++;
+            });
+          },
+          child: Icon(Icons.add)),
     );
   }
 }
