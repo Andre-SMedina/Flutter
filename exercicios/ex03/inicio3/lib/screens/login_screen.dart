@@ -16,7 +16,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text(style: TextStyle(color: MyColors.branco), 'My App'),
+        title: const Center(
+          child: Text(style: TextStyle(color: MyColors.branco), 'Gym'),
+        ),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -29,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //serve para dar scroll na tela
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Image(
@@ -78,16 +80,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: MyColors.branco,
                         )),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      print('Funcionou!');
-                    },
-                    child: const Text(
-                        style: TextStyle(color: MyColors.branco),
-                        'Esqueceu a senha?'),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: GestureDetector(
+                      onTap: () {
+                        print('Funcionou!');
+                      },
+                      child: const Text(
+                          textAlign: TextAlign.right,
+                          style: TextStyle(color: MyColors.branco),
+                          'Esqueceu a senha?'),
+                    ),
                   ),
                   Row(
                     children: [
@@ -112,7 +115,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text(
                     style: TextStyle(color: MyColors.branco, fontSize: 18),
                     'Login'),
-              )
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Divider(
+                  color: Colors.black,
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child: Text(
+                    textAlign: TextAlign.center, 'Ainda não tem uma conta?'),
+              ),
+              ElevatedButton(
+                  onPressed: () {},
+                  child: const Text(
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                    'Cadastre-se',
+                  ))
             ],
           ),
         ),
