@@ -10,6 +10,8 @@ class CadastroScreen extends StatefulWidget {
 }
 
 class _CadastroScreenState extends State<CadastroScreen> {
+  bool? showPassword = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,15 +27,89 @@ class _CadastroScreenState extends State<CadastroScreen> {
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [MyColors.branco, MyColors.azul])),
-          child: const Padding(
-            padding: EdgeInsets.all(20.0),
+                  colors: [Color.fromARGB(255, 86, 187, 255), MyColors.azul])),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40),
             child: Column(
               children: [
-                Text(style: TextStyle(fontSize: 20), 'Cadastre-se'),
+                const Text(style: TextStyle(fontSize: 30), 'Cadastre-se'),
                 Form(
-                    child: Column(
-                  children: [TextFormField()],
+                    child: Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                          style: const TextStyle(color: MyColors.branco),
+                          decoration: const InputDecoration(
+                              labelText: 'Nome completo',
+                              labelStyle: TextStyle(color: MyColors.branco),
+                              prefixIcon:
+                                  Icon(Icons.person, color: MyColors.branco),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: MyColors.branco)),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: MyColors.branco)))),
+                      TextFormField(
+                        style: const TextStyle(color: MyColors.branco),
+                        decoration: const InputDecoration(
+                            labelText: 'E-mail',
+                            labelStyle: TextStyle(color: MyColors.branco),
+                            prefixIcon: Icon(Icons.mail_outline,
+                                color: MyColors.branco),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: MyColors.branco)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: MyColors.branco))),
+                      ),
+                      TextFormField(
+                          style: const TextStyle(color: MyColors.branco),
+                          decoration: const InputDecoration(
+                              labelText: 'Senha',
+                              labelStyle: TextStyle(color: MyColors.branco),
+                              prefixIcon: Icon(
+                                Icons.key_outlined,
+                                color: MyColors.branco,
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: MyColors.branco)),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: MyColors.branco)))),
+                      TextFormField(
+                          style: const TextStyle(color: MyColors.branco),
+                          decoration: const InputDecoration(
+                              labelText: 'Confirme a Senha',
+                              labelStyle: TextStyle(color: MyColors.branco),
+                              prefixIcon: Icon(
+                                Icons.key_outlined,
+                                color: MyColors.branco,
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: MyColors.branco)),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: MyColors.branco)))),
+                      Row(
+                        children: [
+                          Checkbox(
+                              value: showPassword,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  showPassword = newValue;
+                                });
+                              }),
+                          const Text(
+                              style: TextStyle(color: MyColors.branco),
+                              'Mostrar senha.')
+                        ],
+                      )
+                    ],
+                  ),
                 ))
               ],
             ),
