@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:inicio3/_comum/cores.dart';
 import 'package:inicio3/models/user_model.dart';
 import 'package:inicio3/screens/cadastro_screen.dart';
+import 'package:inicio3/screens/home.dart';
 import 'package:inicio3/values/preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -164,7 +165,9 @@ class _LoginScreenState extends State<LoginScreen> {
     User savedUser = await getSavedUser();
 
     if (mailForm == savedUser.mail && passForm == savedUser.password)
-      print("Login efetuado com successo");
+      // print("Login efetuado com successo");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     else
       print("Falha de login");
   }
