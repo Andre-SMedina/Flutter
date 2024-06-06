@@ -5,18 +5,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:inicio3/_comum/cores.dart';
-import 'package:inicio3/shared/models/user_model.dart';
+import 'package:inicio3/shared/models/login_model.dart';
 import 'package:inicio3/shared/constants/preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CadastroScreen extends StatefulWidget {
-  const CadastroScreen({super.key});
+class CadastroPage extends StatefulWidget {
+  const CadastroPage({super.key});
 
   @override
-  State<CadastroScreen> createState() => _CadastroScreenState();
+  State<CadastroPage> createState() => _CadastroPageState();
 }
 
-class _CadastroScreenState extends State<CadastroScreen> {
+class _CadastroPageState extends State<CadastroPage> {
   bool? showPassword = false;
 
   TextEditingController nameInputController = TextEditingController();
@@ -163,7 +163,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
   }
 
   void _cadastrar() {
-    User newUser = User(
+    LoginModel newUser = LoginModel(
         name: nameInputController.text,
         mail: mailInputController.text,
         password: passwordInputController.text,
@@ -172,7 +172,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
     saveUser(newUser);
   }
 
-  void saveUser(User user) async {
+  void saveUser(LoginModel user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(PreferencesKeys.activeUser, jsonEncode(user.toJson()));
   }

@@ -2,20 +2,20 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:inicio3/_comum/cores.dart';
-import 'package:inicio3/shared/models/user_model.dart';
-import 'package:inicio3/pages/cadastro/cadastro_screen.dart';
+import 'package:inicio3/shared/models/login_model.dart';
+import 'package:inicio3/pages/cadastro/cadastro_page.dart';
 import 'package:inicio3/pages/home/home.dart';
 import 'package:inicio3/shared/constants/preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
   bool? continueConnected = false;
 
   TextEditingController mailInputController = TextEditingController();
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const CadastroScreen()));
+                            builder: (context) => const CadastroPage()));
                   },
                   child: const Text(
                     style: TextStyle(fontSize: 18, color: Colors.black),
@@ -165,23 +165,23 @@ class _LoginScreenState extends State<LoginScreen> {
     String mailForm = mailInputController.text;
     String passForm = passwordInputController.text;
 
-    User savedUser = await getSavedUser();
+    LoginModel savedUser = await getSavedUser();
 
     if (mailForm == savedUser.mail && passForm == savedUser.password) {
       // print("Login efetuado com successo");
       Navigator.push(
           // ignore: use_build_context_synchronously
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()));
+          MaterialPageRoute(builder: (context) => const HomePage()));
     }
   }
 
-  Future<User> getSavedUser() async {
+  Future<LoginModel> getSavedUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jsonUser = prefs.getString(PreferencesKeys.activeUser)!;
 
     Map<String, dynamic> mapUser = jsonDecode(jsonUser);
-    User user = User.fromJson(mapUser);
+    LoginModel user = LoginModel.fromJson(mapUser);
 
     return user;
   }
