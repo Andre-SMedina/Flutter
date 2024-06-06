@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:inicio3/_comum/cores.dart';
-import 'package:inicio3/models/user_model.dart';
-import 'package:inicio3/values/preferences_keys.dart';
+import 'package:inicio3/shared/models/user_model.dart';
+import 'package:inicio3/shared/constants/preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CadastroScreen extends StatefulWidget {

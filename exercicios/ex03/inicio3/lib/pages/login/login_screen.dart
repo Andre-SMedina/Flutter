@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:inicio3/_comum/cores.dart';
-import 'package:inicio3/models/user_model.dart';
-import 'package:inicio3/pages/cadastro_screen.dart';
-import 'package:inicio3/pages/home.dart';
-import 'package:inicio3/values/preferences_keys.dart';
+import 'package:inicio3/shared/models/user_model.dart';
+import 'package:inicio3/pages/cadastro/cadastro_screen.dart';
+import 'package:inicio3/pages/home/home.dart';
+import 'package:inicio3/shared/constants/preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -170,7 +170,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (mailForm == savedUser.mail && passForm == savedUser.password) {
       // print("Login efetuado com successo");
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+          // ignore: use_build_context_synchronously
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()));
     }
   }
 

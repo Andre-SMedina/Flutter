@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:inicio3/screens/cadastro_screen.dart';
-import 'package:inicio3/pages/login_screen.dart';
+import 'package:inicio3/pages/login/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
