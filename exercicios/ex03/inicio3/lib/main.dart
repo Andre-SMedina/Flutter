@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inicio3/screens/cadastro_screen.dart';
+// import 'package:inicio3/screens/cadastro_screen.dart';
 import 'package:inicio3/screens/login_screen.dart';
 
 void main() {
@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Gym App',
-      // home: LoginScreen(),
-      home: CadastroScreen(),
+      home: LoginScreen(),
+      // home: CadastroScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

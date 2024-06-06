@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inicio3/_comum/cores.dart';
+import 'package:inicio3/screens/cadastro_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -128,7 +129,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.center, 'Ainda não tem uma conta?'),
               ),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CadastroScreen()));
+                  },
                   child: const Text(
                     style: TextStyle(fontSize: 18, color: Colors.black),
                     'Cadastre-se',
