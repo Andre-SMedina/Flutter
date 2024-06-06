@@ -31,7 +31,7 @@ class HomePageState extends State<HomePage> {
               title: const Text('Inicio'),
               subtitle: const Text('Tela de início'),
               onTap: () {
-                print('Menu Lateral');
+                // print('Menu Lateral');
               },
             ),
             ListTile(

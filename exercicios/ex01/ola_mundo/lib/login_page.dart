@@ -69,8 +69,6 @@ class _LoginPageState extends State<LoginPage> {
                                 //Rota Manual
                                 // Navigator.of(context).push(MaterialPageRoute(
                                 //     builder: (context) => HomePage()));
-                              } else {
-                                print('Dados Incorretos!');
                               }
                             },
                             child: const Text('Entrar')),

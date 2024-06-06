@@ -14,7 +14,7 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['mail'] = mail;
     data['password'] = password;
@@ -22,7 +22,7 @@ class User {
     return data;
   }
 
-  String toString() {
-    return "Name: $name \nE-mail: $mail \nPssword: $password";
-  }
+  // String toString() {
+  //   return "Name: $name \nE-mail: $mail \nPssword: $password";
+  // }
 }
