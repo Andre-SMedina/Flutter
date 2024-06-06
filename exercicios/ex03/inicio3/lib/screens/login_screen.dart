@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:inicio3/_comum/cores.dart';
+import 'package:inicio3/models/user_model.dart';
 import 'package:inicio3/screens/cadastro_screen.dart';
+import 'package:inicio3/values/preferences_keys.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +16,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool? continueConnected = false;
+
+  TextEditingController mailInputController = TextEditingController();
+  TextEditingController passwordInputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                 children: [
                   TextFormField(
+                    controller: mailInputController,
                     style: const TextStyle(color: MyColors.branco),
                     autofocus: true,
                     decoration: const InputDecoration(
@@ -68,6 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         )),
                   ),
                   TextFormField(
+                    controller: passwordInputController,
+                    obscureText: true,
                     style: const TextStyle(color: MyColors.branco),
                     decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(
@@ -84,9 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: GestureDetector(
-                      onTap: () {
-                        print('Funcionou!');
-                      },
+                      onTap: () {},
                       child: const Text(
                           textAlign: TextAlign.right,
                           style: TextStyle(color: MyColors.branco),
@@ -112,7 +121,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 style:
                     ElevatedButton.styleFrom(backgroundColor: MyColors.botao),
-                onPressed: () {},
+                onPressed: () {
+                  doLogin();
+                },
                 child: const Text(
                     style: TextStyle(color: MyColors.branco, fontSize: 18),
                     'Login'),
@@ -133,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CadastroScreen()));
+                            builder: (context) => const CadastroScreen()));
                   },
                   child: const Text(
                     style: TextStyle(fontSize: 18, color: Colors.black),
@@ -144,5 +155,27 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void doLogin() async {
+    String mailForm = mailInputController.text;
+    String passForm = passwordInputController.text;
+
+    User savedUser = await getSavedUser();
+
+    if (mailForm == savedUser.mail && passForm == savedUser.password)
+      print("Login efetuado com successo");
+    else
+      print("Falha de login");
+  }
+
+  Future<User> getSavedUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonUser = prefs.getString(PreferencesKeys.activeUser)!;
+
+    Map<String, dynamic> mapUser = jsonDecode(jsonUser);
+    User user = User.fromJson(mapUser);
+
+    return user;
   }
 }

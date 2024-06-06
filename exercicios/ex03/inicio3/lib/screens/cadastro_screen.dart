@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:inicio3/_comum/cores.dart';
 import 'package:inicio3/models/user_model.dart';
+import 'package:inicio3/values/preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CadastroScreen extends StatefulWidget {
@@ -173,6 +174,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
   void saveUser(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("LOGIN_USER_INFOS", jsonEncode(user.toJson()));
+    prefs.setString(PreferencesKeys.activeUser, jsonEncode(user.toJson()));
   }
 }
