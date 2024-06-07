@@ -1,0 +1,13 @@
+com.example.Gym.app-core-1.6.0-0 /home/andre/.gradle/caches/transforms-3/284a410c767ad6c7a2b0ffc8d8d85981/transformed/core-1.6.0/res
+com.example.Gym.app-jetified-window-java-1.0.0-beta04-1 /home/andre/.gradle/caches/transforms-3/2a215381204751055df81b6269e717b7/transformed/jetified-window-java-1.0.0-beta04/res
+com.example.Gym.app-jetified-annotation-experimental-1.1.0-2 /home/andre/.gradle/caches/transforms-3/3d2f03fc996c2e0aa3dee5cfa3002cd1/transformed/jetified-annotation-experimental-1.1.0/res
+com.example.Gym.app-jetified-window-1.0.0-beta04-3 /home/andre/.gradle/caches/transforms-3/f302e75fb7efd781bcf1a29281c188da/transformed/jetified-window-1.0.0-beta04/res
+com.example.Gym.app-debug-4 /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/android/app/src/debug/res
+com.example.Gym.app-main-5 /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/android/app/src/main/res
+com.example.Gym.app-pngs-6 /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/build/app/generated/res/pngs/debug
+com.example.Gym.app-resValues-7 /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/build/app/generated/res/resValues/debug
+com.example.Gym.app-rs-8 /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/build/app/generated/res/rs/debug
+com.example.Gym.app-mergeDebugResources-9 /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/build/app/intermediates/incremental/debug/mergeDebugResources/merged.dir
+com.example.Gym.app-mergeDebugResources-10 /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/build/app/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+com.example.Gym.app-merged_res-11 /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/build/app/intermediates/merged_res/debug
+com.example.Gym.app-packaged_res-12 /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/build/shared_preferences_android/intermediates/packaged_res/debug

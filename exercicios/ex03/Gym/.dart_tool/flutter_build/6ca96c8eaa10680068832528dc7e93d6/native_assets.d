@@ -1,0 +1,1 @@
+ /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/Gym/.dart_tool/flutter_build/6ca96c8eaa10680068832528dc7e93d6/native_assets.yaml: 

@@ -1,0 +1,4 @@
+#Wed Jun 05 23:50:51 BRT 2024
+base.0=/mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/inicio3/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

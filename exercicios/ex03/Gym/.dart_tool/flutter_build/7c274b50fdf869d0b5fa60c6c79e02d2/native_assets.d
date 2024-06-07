@@ -1,0 +1,1 @@
+ /mnt/FA2AA0962AA05205/Arquivos/Documentos/GitHub/Flutter/exercicios/ex03/inicio3/.dart_tool/flutter_build/7c274b50fdf869d0b5fa60c6c79e02d2/native_assets.yaml: 
