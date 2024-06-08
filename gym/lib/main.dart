@@ -1,5 +1,4 @@
-import 'package:Gym/widgets/myElevatedBtn.dart';
-import 'package:Gym/widgets/myText.dart';
+import 'package:gym/pages/exercice_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,24 +10,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Gym App',
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MyElevatedBtn(
-                onPressed: () {
-                  print("Testando");
-                },
-                title: 'Meu botao',
-              ),
-              const Mytext(texto: 'Meu texto2'),
-            ],
-          ),
-        ),
-      ),
+      home: ExecercicePage(),
       debugShowCheckedModeBanner: false,
     );
   }
