@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym/_comum/minhas_cores.dart';
+import 'package:gym/services/auth_service.dart';
 import 'package:gym/widgets/my_elevated_btn.dart';
 import 'package:gym/widgets/my_input_decoration.dart';
 
@@ -15,6 +16,12 @@ class _AuthPageState extends State<AuthPage> {
   //chave para validar formulário
   final _formKey = GlobalKey<FormState>();
   String? _pass = "";
+
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
+
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +68,7 @@ class _AuthPageState extends State<AuthPage> {
                       height: 32,
                     ),
                     TextFormField(
+                      controller: _nomeController,
                       validator: (String? value) {
                         if (value == '') {
                           return "O nome não pode ser vazio!";
@@ -78,6 +86,7 @@ class _AuthPageState extends State<AuthPage> {
                     Visibility(
                         visible: !queroEntrar,
                         child: TextFormField(
+                          controller: _emailController,
                           validator: (String? value) {
                             if (value == '') {
                               return "O e-mail não pode ser vazio!";
@@ -96,6 +105,7 @@ class _AuthPageState extends State<AuthPage> {
                       height: 8,
                     ),
                     TextFormField(
+                      controller: _senhaController,
                       obscureText: true,
                       validator: (String? value) {
                         if (value == '') {
@@ -160,7 +170,17 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   cadastrarButton() {
+    String nome = _nomeController.text;
+    String email = _emailController.text;
+    String senha = _senhaController.text;
     //condicional para verificar o estado da chave de vaidação do formulário
-    if (_formKey.currentState!.validate()) {}
+    if (_formKey.currentState!.validate()) {
+      if (queroEntrar) {
+        //
+      } else {
+        print('$nome, $email, $senha');
+        _authService.cadUser(nome: nome, email: email, senha: senha);
+      }
+    }
   }
 }
