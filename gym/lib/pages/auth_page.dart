@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym/_comum/minhas_cores.dart';
 import 'package:gym/widgets/my_elevated_btn.dart';
+import 'package:gym/widgets/my_input_decoration.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -11,6 +12,9 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   bool queroEntrar = true;
+  //chave para validar formulário
+  final _formKey = GlobalKey<FormState>();
+  String? _pass = "";
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +34,17 @@ class _AuthPageState extends State<AuthPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
+            //key recebe chave de validção do estado do formulário
+            key: _formKey,
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
                     Image.asset(
                       "assets/images/halter.png",
                       height: 128,
@@ -52,44 +61,84 @@ class _AuthPageState extends State<AuthPage> {
                       height: 32,
                     ),
                     TextFormField(
-                      decoration:
-                          const InputDecoration(label: Text('Nome Completo')),
+                      validator: (String? value) {
+                        if (value == '') {
+                          return "O nome não pode ser vazio!";
+                        }
+                        if (value!.length < 4) {
+                          return "O nome é muito curto!";
+                        }
+                        return null;
+                      },
+                      decoration: myInputDecoration('Nome Completo'),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 8,
                     ),
                     Visibility(
                         visible: !queroEntrar,
                         child: TextFormField(
-                          decoration:
-                              const InputDecoration(label: Text('E-mail')),
+                          validator: (String? value) {
+                            if (value == '') {
+                              return "O e-mail não pode ser vazio!";
+                            }
+                            if (value!.length < 5) {
+                              return "E-mail inválido!";
+                            }
+                            if (!value.contains('@')) {
+                              return "E-mail inválido!";
+                            }
+                            return null;
+                          },
+                          decoration: myInputDecoration('E-mail'),
                         )),
                     const SizedBox(
-                      height: 20,
+                      height: 8,
                     ),
                     TextFormField(
                       obscureText: true,
-                      decoration: const InputDecoration(label: Text('Senha')),
+                      validator: (String? value) {
+                        if (value == '') {
+                          return "A senha não pode ser vazia!";
+                        }
+                        _pass = value;
+                        return null;
+                      },
+                      decoration: myInputDecoration('Senha'),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 8,
                     ),
                     Visibility(
                         visible: !queroEntrar,
                         child: Column(
                           children: [
                             TextFormField(
-                              decoration: const InputDecoration(
-                                  label: Text('Confirmar senha')),
-                            ),
-                            const SizedBox(
-                              height: 20,
+                              validator: (String? value) {
+                                if (value! == '') {
+                                  return 'A confirmação de senha não pode ser vazia';
+                                }
+                                if (value != _pass) {
+                                  return 'As senhas não são iguais';
+                                }
+                                return null;
+                              },
+                              obscureText: true,
+                              decoration: myInputDecoration('Confirmar senha'),
                             ),
                           ],
                         )),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     MyElevatedBtn(
                         title: (queroEntrar) ? 'Entrar' : 'Cadastrar',
-                        onPressed: () {}),
+                        onPressed: () {
+                          cadastrarButton();
+                        }),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     const Divider(),
                     TextButton(
                         onPressed: () {
@@ -108,5 +157,10 @@ class _AuthPageState extends State<AuthPage> {
         ),
       ]),
     );
+  }
+
+  cadastrarButton() {
+    //condicional para verificar o estado da chave de vaidação do formulário
+    if (_formKey.currentState!.validate()) {}
   }
 }
