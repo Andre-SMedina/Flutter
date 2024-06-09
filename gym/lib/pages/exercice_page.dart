@@ -1,40 +1,112 @@
-import 'package:gym/widgets/my_elevated_btn.dart';
+import 'package:gym/models/exercice_model.dart';
+import 'package:gym/models/sentimento_model.dart';
 import 'package:flutter/material.dart';
+import 'package:gym/widgets/my_elevated_btn.dart';
 
 class ExecercicePage extends StatelessWidget {
-  const ExecercicePage({super.key});
+  ExecercicePage({super.key});
+
+  final ExerciceModel exerciceModel = ExerciceModel(
+      id: "EX001",
+      nome: "Remada Baixa Supinada",
+      treino: "Treino A",
+      comoFazer: "Segura a barra e puxa");
+
+  final List<SentimentoModel> listaSentimentos = [
+    SentimentoModel(
+        id: "SE001", sentindo: "Pouca ativação hoje", data: "2024/05/08"),
+    SentimentoModel(
+        id: "SE002", sentindo: "Já senti ativação hoje", data: "2024/05/10")
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue,
       appBar: AppBar(
-        titleTextStyle: const TextStyle(color: Colors.white, fontSize: 22),
-        backgroundColor: Colors.blue,
-        title: const Center(child: Text('Puxada Alta Pronada - Treino A')),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(32))),
+        toolbarHeight: 72,
+        centerTitle: true,
+        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF0A6D92),
+        title: Column(
+          children: [
+            Text(
+              exerciceModel.nome,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              exerciceModel.treino,
+              style: const TextStyle(fontSize: 16),
+            )
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => print('Clicou!'),
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.blue,
+        onPressed: () {},
+        child: const Icon(color: Colors.white, Icons.add),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MyElevatedBtn(
-              onPressed: () {},
-              title: 'Enviar foto',
-            ),
-            const Text(
-              'Como fazer?',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            const Text('Segura com as duas mãos, mantem a coluna reta e puxa'),
-            const Divider(),
-            const Text('Como estou me sentindo?',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            const Text('Senti bastante ativação hoje!')
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          //TODO: Altura da tela
+          height: MediaQuery.of(context).size.height - 110,
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16), color: Colors.white),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 250,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    MyElevatedBtn(title: 'Enviar Foto', onPressed: () {}),
+                    MyElevatedBtn(title: 'Tirar Foto', onPressed: () {})
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Como fazer?',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              Text(exerciceModel.comoFazer),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Divider(
+                  color: Colors.black,
+                ),
+              ),
+              const Text('Como estou me sentindo?',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              //TODO: Como percorrer uma lista
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: List.generate(listaSentimentos.length, (index) {
+                  SentimentoModel sentimentoAgora = listaSentimentos[index];
+                  //ListTile cria uma formatção de lista
+                  return ListTile(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(sentimentoAgora.sentindo),
+                    subtitle: Text(sentimentoAgora.data),
+                    leading: const Icon(Icons.double_arrow),
+                    trailing: IconButton(
+                      color: Colors.red,
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {},
+                    ),
+                  );
+                }),
+              )
+            ],
+          ),
         ),
       ),
     );

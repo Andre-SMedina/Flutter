@@ -1,4 +1,4 @@
-import 'package:gym/pages/exercice_page.dart';
+import 'package:gym/pages/auth_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Gym App',
-      home: ExecercicePage(),
+      home: AuthPage(),
       debugShowCheckedModeBanner: false,
     );
   }
