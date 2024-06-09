@@ -1,3 +1,4 @@
+import 'package:gym/_comum/minhas_cores.dart';
 import 'package:gym/models/exercice_model.dart';
 import 'package:gym/models/sentimento_model.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class ExecercicePage extends StatelessWidget {
         toolbarHeight: 72,
         centerTitle: true,
         foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF0A6D92),
+        backgroundColor: MinhasCores.azulEscuro,
         title: Column(
           children: [
             Text(
