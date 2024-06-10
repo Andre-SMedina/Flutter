@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym/models/exercice_model.dart';
+import 'package:gym/models/sentimento_model.dart';
 import 'package:gym/services/exercice_service.dart';
 import 'package:gym/widgets/my_input_decoration.dart';
 import 'package:uuid/uuid.dart';
@@ -10,7 +11,7 @@ mostrarModalInicio(BuildContext context) {
       builder: (context) {
         return const ExerciceModal();
       },
-      backgroundColor: Color.fromARGB(255, 74, 164, 238),
+      backgroundColor: const Color.fromARGB(255, 74, 164, 238),
       //"isDismissible" define se vai ou não fechar ao clicar fora
       isDismissible: true,
       isScrollControlled: true,
@@ -33,7 +34,7 @@ class _ExerciceModalState extends State<ExerciceModal> {
 
   bool isCarregando = false;
 
-  ExerciceService exerciceService = ExerciceService();
+  final ExerciceService _exerciceService = ExerciceService();
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +75,18 @@ class _ExerciceModalState extends State<ExerciceModal> {
                   children: [
                     myTextForm('Qual o exercício?', _nomeCtrl),
                     myTextForm('Qual treino pertence?', _treinoCtrl),
+                    const Text(
+                      'Use o mesmo nome para exercícios que pertencem ao mesmo treino',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
                     myTextForm('Anotações', _anotacoesCtrl),
-                    myTextForm('O que está se sentindo?', _sentindoCtrl)
+                    myTextForm('O que está sentindo?', _sentindoCtrl),
+                    const Text(
+                      'Preenchimento do sentimento é opcional',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    )
                   ],
                 ),
               ],
@@ -101,7 +112,7 @@ class _ExerciceModalState extends State<ExerciceModal> {
 
   Widget myTextForm(String texto, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 16.0),
       child: TextFormField(
         controller: controller,
         decoration: myInputDecoration(texto),
@@ -118,11 +129,28 @@ class _ExerciceModalState extends State<ExerciceModal> {
     String treino = _treinoCtrl.text;
     String anotacoes = _anotacoesCtrl.text;
     String sentindo = _sentindoCtrl.text;
+    String data =
+        '${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}';
 
     ExerciceModel exercicio = ExerciceModel(
         id: const Uuid().v1(),
         nome: nome,
         treino: treino,
         comoFazer: anotacoes);
+
+    _exerciceService.addExercice(exercicio).then((value) {
+      if (sentindo != '') {
+        SentimentoModel sentimento = SentimentoModel(
+            id: const Uuid().v1(), sentindo: sentindo, data: data);
+        _exerciceService.addEmotion(exercicio.id, sentimento).then((onValue) {
+          setState(() {
+            isCarregando = false;
+          });
+          Navigator.pop(context);
+        });
+      } else {
+        Navigator.pop(context);
+      }
+    });
   }
 }

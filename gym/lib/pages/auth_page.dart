@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:gym/_comum/minhas_cores.dart';
 import 'package:gym/services/auth_service.dart';

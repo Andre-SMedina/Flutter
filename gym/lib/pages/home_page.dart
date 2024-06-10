@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         comoFazer: 'Puxa'),
     ExerciceModel(
         id: 'EX01',
-        nome: 'Remada Supinada',
+        nome: 'Remada Supinada2',
         treino: 'Treino A',
         comoFazer: 'Puxa'),
     ExerciceModel(
