@@ -4,14 +4,9 @@ import 'package:gym/models/sentimento_model.dart';
 import 'package:flutter/material.dart';
 import 'package:gym/widgets/my_elevated_btn.dart';
 
-class ExecercicePage extends StatelessWidget {
-  ExecercicePage({super.key});
-
-  final ExerciceModel exerciceModel = ExerciceModel(
-      id: "EX001",
-      nome: "Remada Baixa Supinada",
-      treino: "Treino A",
-      comoFazer: "Segura a barra e puxa");
+class ExercicePage extends StatelessWidget {
+  final ExerciceModel exerciceModel;
+  ExercicePage({super.key, required this.exerciceModel});
 
   final List<SentimentoModel> listaSentimentos = [
     SentimentoModel(

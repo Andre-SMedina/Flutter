@@ -7,6 +7,8 @@ InputDecoration myInputDecoration(String label) {
     filled: true,
     fillColor: Colors.white,
     contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    floatingLabelStyle:
+        const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(64)),
     focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(64),

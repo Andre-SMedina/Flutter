@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gym/_comum/minhas_cores.dart';
 import 'package:gym/services/auth_service.dart';
 import 'package:gym/widgets/my_elevated_btn.dart';
 import 'package:gym/widgets/my_input_decoration.dart';
+import 'package:gym/widgets/my_snackbar.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -20,7 +23,6 @@ class _AuthPageState extends State<AuthPage> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
-
   final AuthService _authService = AuthService();
 
   @override
@@ -67,40 +69,41 @@ class _AuthPageState extends State<AuthPage> {
                     const SizedBox(
                       height: 32,
                     ),
-                    TextFormField(
-                      controller: _nomeController,
-                      validator: (String? value) {
-                        if (value == '') {
-                          return "O nome não pode ser vazio!";
-                        }
-                        if (value!.length < 4) {
-                          return "O nome é muito curto!";
-                        }
-                        return null;
-                      },
-                      decoration: myInputDecoration('Nome Completo'),
+                    Visibility(
+                      visible: !queroEntrar,
+                      child: TextFormField(
+                        controller: _nomeController,
+                        validator: (String? value) {
+                          if (value == '') {
+                            return "O nome não pode ser vazio!";
+                          }
+                          if (value!.length < 4) {
+                            return "O nome é muito curto!";
+                          }
+                          return null;
+                        },
+                        decoration: myInputDecoration('Nome Completo'),
+                      ),
                     ),
                     const SizedBox(
                       height: 8,
                     ),
-                    Visibility(
-                        visible: !queroEntrar,
-                        child: TextFormField(
-                          controller: _emailController,
-                          validator: (String? value) {
-                            if (value == '') {
-                              return "O e-mail não pode ser vazio!";
-                            }
-                            if (value!.length < 5) {
-                              return "E-mail inválido!";
-                            }
-                            if (!value.contains('@')) {
-                              return "E-mail inválido!";
-                            }
-                            return null;
-                          },
-                          decoration: myInputDecoration('E-mail'),
-                        )),
+                    TextFormField(
+                      controller: _emailController,
+                      validator: (String? value) {
+                        if (value == '') {
+                          return "O e-mail não pode ser vazio!";
+                        }
+                        if (value!.length < 5) {
+                          return "E-mail inválido!";
+                        }
+                        if (!value.contains('@')) {
+                          return "E-mail inválido!";
+                        }
+                        return null;
+                      },
+                      decoration: myInputDecoration('E-mail'),
+                    ),
                     const SizedBox(
                       height: 8,
                     ),
@@ -144,7 +147,7 @@ class _AuthPageState extends State<AuthPage> {
                     MyElevatedBtn(
                         title: (queroEntrar) ? 'Entrar' : 'Cadastrar',
                         onPressed: () {
-                          cadastrarButton();
+                          mainButton();
                         }),
                     const SizedBox(
                       height: 15,
@@ -169,17 +172,35 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  cadastrarButton() {
+  mainButton() {
     String nome = _nomeController.text;
     String email = _emailController.text;
-    String senha = _senhaController.text;
-    //condicional para verificar o estado da chave de vaidação do formulário
+    String password = _senhaController.text;
+    //condicional para verificar o estado da chave de vaidação dos textForm do formulário
     if (_formKey.currentState!.validate()) {
       if (queroEntrar) {
-        //
+        _authService
+            .loginUser(email: email, password: password)
+            .then((String? error) {
+          if (error != null) {
+            //voltou com erro
+            mySnacbar(context: context, texto: error);
+          } else {
+            //
+          }
+        });
       } else {
-        print('$nome, $email, $senha');
-        _authService.cadUser(nome: nome, email: email, senha: senha);
+        // print('$nome, $email, $senha');
+        _authService
+            .cadUser(nome: nome, email: email, senha: password)
+            .then((String? error) {
+          if (error != null) {
+            //voltou com erro
+            mySnacbar(context: context, texto: error);
+          } else {
+            //
+          }
+        });
       }
     }
   }
