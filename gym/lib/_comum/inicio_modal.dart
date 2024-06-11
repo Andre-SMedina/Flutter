@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gym/_comum/minhas_cores.dart';
 import 'package:gym/models/exercice_model.dart';
 import 'package:gym/models/sentimento_model.dart';
 import 'package:gym/services/exercice_service.dart';
-import 'package:gym/widgets/my_input_decoration.dart';
+import 'package:gym/widgets/my_text_exercices_modal.dart';
 import 'package:uuid/uuid.dart';
 
 mostrarModalInicio(BuildContext context, {ExerciceModel? exercice}) {
@@ -14,7 +15,7 @@ mostrarModalInicio(BuildContext context, {ExerciceModel? exercice}) {
           exerciceModel: exercice,
         );
       },
-      backgroundColor: const Color.fromARGB(255, 74, 164, 238),
+      backgroundColor: const Color(0xff3DDFFF),
       //"isDismissible" define se vai ou não fechar ao clicar fora
       isDismissible: true,
       isScrollControlled: true,
@@ -76,40 +77,38 @@ class _ExerciceModalState extends State<ExerciceModal> {
                         style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                            color: MinhasCores.azulExerciceModal),
                       ),
                     ),
                     IconButton(
                         onPressed: () => Navigator.pop(context),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.close,
-                          color: Colors.white,
+                          color: Colors.red.shade900,
                         ))
                   ],
                 ),
                 const Divider(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 Column(
                   children: [
-                    myTextForm('Qual o exercício?', _nomeCtrl),
-                    myTextForm('Qual treino pertence?', _treinoCtrl),
-                    const Text(
-                      'Use o mesmo nome para exercícios que pertencem ao mesmo treino',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    myTextForm('Anotações', _anotacoesCtrl),
+                    myTextExercicesModal(
+                        texto: 'Qual o exercício?', textController: _nomeCtrl),
+                    myTextExercicesModal(
+                        texto: 'Qual treino pertence?',
+                        textController: _treinoCtrl,
+                        obs: 'Exemplo: Treino A'),
+                    myTextExercicesModal(
+                        texto: 'Anotações', textController: _anotacoesCtrl),
                     Visibility(
                       visible: (widget.exerciceModel == null),
                       child: Column(
                         children: [
-                          myTextForm('O que está sentindo?', _sentindoCtrl),
-                          const Text(
-                            'Preenchimento do sentimento é opcional',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 12),
-                          ),
+                          myTextExercicesModal(
+                              texto: 'O que está sentindo?',
+                              textController: _sentindoCtrl,
+                              obs: 'Preenchimento do sentimento é opcional'),
                         ],
                       ),
                     )
@@ -118,8 +117,8 @@ class _ExerciceModalState extends State<ExerciceModal> {
               ],
             ),
             ElevatedButton(
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Colors.blue[900]),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0D47A1)),
               onPressed: () {
                 enviar();
               },
@@ -136,16 +135,6 @@ class _ExerciceModalState extends State<ExerciceModal> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget myTextForm(String texto, TextEditingController controller) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: myInputDecoration(texto),
       ),
     );
   }
