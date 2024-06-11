@@ -133,7 +133,7 @@ class _ExerciceModalState extends State<ExerciceModal> {
                           ? 'Salvar alterações'
                           : 'Criar exercício',
                     ),
-            )
+            ),
           ],
         ),
       ),

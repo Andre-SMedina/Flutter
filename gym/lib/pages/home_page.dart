@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ExerciceService service = ExerciceService();
+  bool isDecrescente = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +53,16 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           backgroundColor: Colors.blue,
           title: const Text('Meus Exercícios'),
+          actions: [
+            IconButton(
+                color: Colors.white,
+                onPressed: () {
+                  setState(() {
+                    isDecrescente = !isDecrescente;
+                  });
+                },
+                icon: const Icon(Icons.sort_by_alpha_rounded))
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
@@ -62,7 +73,7 @@ class _HomePageState extends State<HomePage> {
         ),
         //
         body: StreamBuilder(
-          stream: service.connectStreamExercices(),
+          stream: service.connectStreamExercices(isDecrescente),
           //snapshot são as informações do usuário guardadas na memória do celular que está com o login ativo
           builder: (context, snapshot) {
             //condicional para mostrar o loading enquanto está buscando os dados no servidor para mostar os exercícios no body
@@ -88,13 +99,23 @@ class _HomePageState extends State<HomePage> {
                       title: Text(exerciceModel.nome),
                       subtitle: Text(exerciceModel.treino),
                       //'trailing' mostra um widget(geralmente icone) do lado direito do 'title'
-                      trailing: IconButton(
-                          //passando o 'exerciceModel', vai carregar os campos pra editar o exercício
-                          onPressed: () {
-                            mostrarModalInicio(context,
-                                exercice: exerciceModel);
-                          },
-                          icon: const Icon(Icons.edit)),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                              //passando o 'exerciceModel', vai carregar os campos pra editar o exercício
+                              onPressed: () {
+                                mostrarModalInicio(context,
+                                    exercice: exerciceModel);
+                              },
+                              icon: const Icon(Icons.edit)),
+                          IconButton(
+                              onPressed: () {
+                                service.delExercice(exerciceModel.id);
+                              },
+                              icon: const Icon(color: Colors.red, Icons.delete))
+                        ],
+                      ),
                       onTap: () {
                         Navigator.push(
                             context,

@@ -25,8 +25,16 @@ class ExerciceService {
         .set(sentimentoModelo.toMap());
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> connectStreamExercices() {
+  Future<void> delExercice(String idExercice) async {
+    await _firestore.collection(userId).doc(idExercice).delete();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> connectStreamExercices(
+      bool isDecrescente) {
     //acessar lista de exercícios do usuário
-    return _firestore.collection(userId).orderBy('treino').snapshots();
+    return _firestore
+        .collection(userId)
+        .orderBy('treino', descending: isDecrescente)
+        .snapshots();
   }
 }
