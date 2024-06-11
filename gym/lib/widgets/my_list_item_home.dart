@@ -13,38 +13,7 @@ class MyListItemHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(exerciceModel.nome),
-      subtitle: Text(exerciceModel.treino),
-      //'trailing' mostra um widget(geralmente icone) do lado direito do 'title'
-      trailing: Row(
-        //utilizado para resolver o problema de overflow na horizontal
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-              //passando o 'exerciceModel', vai carregar os campos pra editar o exercício
-              onPressed: () {
-                mostrarModalInicio(context, exercice: exerciceModel);
-              },
-              icon: const Icon(Icons.edit)),
-          IconButton(
-              onPressed: () {
-                SnackBar snackBar = SnackBar(
-                  backgroundColor: Colors.red,
-                  content: Text('Deseja remover ${exerciceModel.nome}?'),
-                  action: SnackBarAction(
-                    textColor: Colors.yellow,
-                    label: 'REMOVER',
-                    onPressed: () {
-                      service.delExercice(exerciceModel.id);
-                    },
-                  ),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              icon: const Icon(color: Colors.red, Icons.delete))
-        ],
-      ),
+    return InkWell(
       onTap: () {
         Navigator.push(
             context,
@@ -54,5 +23,47 @@ class MyListItemHome extends StatelessWidget {
                     )));
       },
     );
+
+    // ListTile(
+    //   title: Text(exerciceModel.nome),
+    //   subtitle: Text(exerciceModel.treino),
+    //   //'trailing' mostra um widget(geralmente icone) do lado direito do 'title'
+    //   trailing: Row(
+    //     //utilizado para resolver o problema de overflow na horizontal
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       IconButton(
+    //           //passando o 'exerciceModel', vai carregar os campos pra editar o exercício
+    //           onPressed: () {
+    //             mostrarModalInicio(context, exercice: exerciceModel);
+    //           },
+    //           icon: const Icon(Icons.edit)),
+    //       IconButton(
+    //           onPressed: () {
+    //             SnackBar snackBar = SnackBar(
+    //               backgroundColor: Colors.red,
+    //               content: Text('Deseja remover ${exerciceModel.nome}?'),
+    //               action: SnackBarAction(
+    //                 textColor: Colors.yellow,
+    //                 label: 'REMOVER',
+    //                 onPressed: () {
+    //                   service.delExercice(exerciceModel.id);
+    //                 },
+    //               ),
+    //             );
+    //             ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    //           },
+    //           icon: const Icon(color: Colors.red, Icons.delete))
+    //     ],
+    //   ),
+    //   onTap: () {
+    //     Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //             builder: (context) => ExercicePage(
+    //                   exerciceModel: exerciceModel,
+    //                 )));
+    //   },
+    // );
   }
 }
