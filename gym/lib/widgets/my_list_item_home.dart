@@ -18,6 +18,7 @@ class MyListItemHome extends StatelessWidget {
       subtitle: Text(exerciceModel.treino),
       //'trailing' mostra um widget(geralmente icone) do lado direito do 'title'
       trailing: Row(
+        //utilizado para resolver o problema de overflow na horizontal
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
