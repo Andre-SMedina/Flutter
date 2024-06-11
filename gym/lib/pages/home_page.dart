@@ -56,18 +56,22 @@ class _HomePageState extends State<HomePage> {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
+            //passando apenas o 'context' sem 'exerciceModel' faz carregar apenas o campos para adicionar um novo exercício
             mostrarModalInicio(context);
           },
         ),
         //
         body: StreamBuilder(
           stream: service.connectStreamExercices(),
+          //snapshot são as informações do usuário guardadas na memória do celular que está com o login ativo
           builder: (context, snapshot) {
+            //condicional para mostrar o loading enquanto está buscando os dados no servidor para mostar os exercícios no body
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             } else {
+              //condicional para verificar se tem álgum exercício cadastrado
               if (snapshot.hasData &&
                   snapshot.data != null &&
                   snapshot.data!.docs.isNotEmpty) {
@@ -83,6 +87,14 @@ class _HomePageState extends State<HomePage> {
                     return ListTile(
                       title: Text(exerciceModel.nome),
                       subtitle: Text(exerciceModel.treino),
+                      //'trailing' mostra um widget(geralmente icone) do lado direito do 'title'
+                      trailing: IconButton(
+                          //passando o 'exerciceModel', vai carregar os campos pra editar o exercício
+                          onPressed: () {
+                            mostrarModalInicio(context,
+                                exercice: exerciceModel);
+                          },
+                          icon: const Icon(Icons.edit)),
                       onTap: () {
                         Navigator.push(
                             context,

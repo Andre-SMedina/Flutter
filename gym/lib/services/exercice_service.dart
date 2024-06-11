@@ -26,6 +26,7 @@ class ExerciceService {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> connectStreamExercices() {
-    return _firestore.collection(userId).snapshots();
+    //acessar lista de exercícios do usuário
+    return _firestore.collection(userId).orderBy('treino').snapshots();
   }
 }

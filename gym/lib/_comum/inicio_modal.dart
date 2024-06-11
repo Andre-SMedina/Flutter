@@ -5,11 +5,14 @@ import 'package:gym/services/exercice_service.dart';
 import 'package:gym/widgets/my_input_decoration.dart';
 import 'package:uuid/uuid.dart';
 
-mostrarModalInicio(BuildContext context) {
+mostrarModalInicio(BuildContext context, {ExerciceModel? exercice}) {
   showModalBottomSheet(
       context: context,
       builder: (context) {
-        return const ExerciceModal();
+        //passando o 'exerciceModel' para posterior verificação se é null
+        return ExerciceModal(
+          exerciceModel: exercice,
+        );
       },
       backgroundColor: const Color.fromARGB(255, 74, 164, 238),
       //"isDismissible" define se vai ou não fechar ao clicar fora
@@ -20,7 +23,8 @@ mostrarModalInicio(BuildContext context) {
 }
 
 class ExerciceModal extends StatefulWidget {
-  const ExerciceModal({super.key});
+  final ExerciceModel? exerciceModel;
+  const ExerciceModal({super.key, this.exerciceModel});
 
   @override
   State<ExerciceModal> createState() => _ExerciceModalState();
@@ -35,6 +39,17 @@ class _ExerciceModalState extends State<ExerciceModal> {
   bool isCarregando = false;
 
   final ExerciceService _exerciceService = ExerciceService();
+
+  @override
+  void initState() {
+    //atribui os valores passados de 'exerciceModel' caso não sejam null
+    if (widget.exerciceModel != null) {
+      _nomeCtrl.text = widget.exerciceModel!.nome;
+      _treinoCtrl.text = widget.exerciceModel!.treino;
+      _anotacoesCtrl.text = widget.exerciceModel!.comoFazer;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +68,16 @@ class _ExerciceModalState extends State<ExerciceModal> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Adicionar exercício',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                    Flexible(
+                      child: Text(
+                        (widget.exerciceModel != null)
+                            ? 'Editar ${widget.exerciceModel!.nome}'
+                            : 'Adicionar exercício',
+                        style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
                     ),
                     IconButton(
                         onPressed: () => Navigator.pop(context),
@@ -81,29 +100,40 @@ class _ExerciceModalState extends State<ExerciceModal> {
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     myTextForm('Anotações', _anotacoesCtrl),
-                    myTextForm('O que está sentindo?', _sentindoCtrl),
-                    const Text(
-                      'Preenchimento do sentimento é opcional',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    Visibility(
+                      visible: (widget.exerciceModel == null),
+                      child: Column(
+                        children: [
+                          myTextForm('O que está sentindo?', _sentindoCtrl),
+                          const Text(
+                            'Preenchimento do sentimento é opcional',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),
               ],
             ),
             ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.blue[900]),
-                onPressed: () {
-                  enviar();
-                },
-                child: (isCarregando)
-                    ? const CircularProgressIndicator(
-                        color: Colors.white,
-                      )
-                    : const Text(
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                        'Criar exercício'))
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: Colors.blue[900]),
+              onPressed: () {
+                enviar();
+              },
+              child: (isCarregando)
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : Text(
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      (widget.exerciceModel != null)
+                          ? 'Salvar alterações'
+                          : 'Criar exercício',
+                    ),
+            )
           ],
         ),
       ),
@@ -133,7 +163,9 @@ class _ExerciceModalState extends State<ExerciceModal> {
         '${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}';
 
     ExerciceModel exercicio = ExerciceModel(
-        id: const Uuid().v1(),
+        id: (widget.exerciceModel != null)
+            ? widget.exerciceModel!.id
+            : const Uuid().v1(),
         nome: nome,
         treino: treino,
         comoFazer: anotacoes);
