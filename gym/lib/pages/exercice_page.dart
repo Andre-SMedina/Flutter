@@ -1,4 +1,6 @@
 import 'package:gym/_comum/minhas_cores.dart';
+import 'package:gym/components/add_edit_exerc_modal.dart';
+import 'package:gym/components/add_edit_sentimento_dialog.dart';
 import 'package:gym/models/sentimento_model.dart';
 import 'package:flutter/material.dart';
 import 'package:gym/components/my_elevated_btn.dart';
@@ -36,7 +38,9 @@ class ExercicePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
-        onPressed: () {},
+        onPressed: () {
+          showAddEditSentimentoDiaolg(context, idExercice: exerciceModel.id);
+        },
         child: const Icon(color: Colors.white, Icons.add),
       ),
       body: SingleChildScrollView(

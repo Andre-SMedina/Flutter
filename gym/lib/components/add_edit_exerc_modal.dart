@@ -3,6 +3,7 @@ import 'package:gym/_comum/minhas_cores.dart';
 import 'package:gym/models/sentimento_model.dart';
 import 'package:gym/services/exercice_service.dart';
 import 'package:gym/components/my_text_exercices_modal.dart';
+import 'package:gym/services/sentimento_service.dart';
 import 'package:uuid/uuid.dart';
 import '../models/exercice_model.dart';
 
@@ -163,7 +164,9 @@ class _ExerciceModalState extends State<ExerciceModal> {
       if (sentindo != '') {
         SentimentoModel sentimento = SentimentoModel(
             id: const Uuid().v1(), sentindo: sentindo, data: data);
-        _exerciceService.addEmotion(exercicio.id, sentimento).then((onValue) {
+        SentimentoService()
+            .addEmotion(idExercice: exercicio.id, sentimentoModelo: sentimento)
+            .then((onValue) {
           setState(() {
             isCarregando = false;
           });

@@ -15,16 +15,6 @@ class ExerciceService {
         .set(exerciceModel.toMap());
   }
 
-  Future<void> addEmotion(
-      String idExercice, SentimentoModel sentimentoModelo) async {
-    await _firestore
-        .collection(userId)
-        .doc(idExercice)
-        .collection('sentimentos')
-        .doc(sentimentoModelo.id)
-        .set(sentimentoModelo.toMap());
-  }
-
   Future<void> delExercice(String idExercice) async {
     await _firestore.collection(userId).doc(idExercice).delete();
   }

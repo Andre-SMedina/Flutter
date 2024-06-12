@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gym/components/add_edit-exerc_modal.dart';
+import 'package:gym/components/add_edit_exerc_modal.dart';
 import 'package:gym/services/auth_service.dart';
 import 'package:gym/services/exercice_service.dart';
 import 'package:gym/components/my_list_item_home.dart';
