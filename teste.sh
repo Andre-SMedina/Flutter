@@ -1,5 +1,6 @@
 #!/bin/bash
 msg=$1
+msg2=$2
 
-git add .
-git commit -m $msg
+echo $msg
+echo $msg2
