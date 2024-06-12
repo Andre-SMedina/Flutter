@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gym/_comum/minhas_cores.dart';
-import 'package:gym/models/exercice_model.dart';
 import 'package:gym/models/sentimento_model.dart';
 import 'package:gym/services/exercice_service.dart';
 import 'package:gym/components/my_text_exercices_modal.dart';
 import 'package:uuid/uuid.dart';
+import '../models/exercice_model.dart';
 
-mostrarModalInicio(BuildContext context, {ExerciceModel? exercice}) {
+showAddEditExerciceModal(BuildContext context, {ExerciceModel? exercice}) {
   showModalBottomSheet(
       context: context,
       builder: (context) {

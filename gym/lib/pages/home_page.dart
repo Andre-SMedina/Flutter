@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gym/components/inicio_modal.dart';
-import 'package:gym/models/exercice_model.dart';
+import 'package:gym/components/add_edit-exerc_modal.dart';
 import 'package:gym/services/auth_service.dart';
 import 'package:gym/services/exercice_service.dart';
 import 'package:gym/components/my_list_item_home.dart';
+import '../models/exercice_model.dart';
 
 class HomePage extends StatefulWidget {
   final User user;
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
           child: const Icon(Icons.add),
           onPressed: () {
             //passando apenas o 'context' sem 'exerciceModel' faz carregar apenas o campos para adicionar um novo exercício
-            mostrarModalInicio(context);
+            showAddEditExerciceModal(context);
           },
         ),
         //

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gym/services/exercice_service.dart';
 
 import '../models/exercice_model.dart';
-import 'inicio_modal.dart';
+import 'add_edit-exerc_modal.dart';
 import '../pages/exercice_page.dart';
 
 class MyListItemHome extends StatelessWidget {
@@ -87,7 +87,7 @@ class MyListItemHome extends StatelessWidget {
                           IconButton(
                               //passando o 'exerciceModel', vai carregar os campos pra editar o exercício
                               onPressed: () {
-                                mostrarModalInicio(context,
+                                showAddEditExerciceModal(context,
                                     exercice: exerciceModel);
                               },
                               icon: const Icon(Icons.edit)),
