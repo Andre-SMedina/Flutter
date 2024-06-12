@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gym/services/exercice_service.dart';
 
 import '../models/exercice_model.dart';
-import '../_comum/inicio_modal.dart';
+import 'inicio_modal.dart';
 import '../pages/exercice_page.dart';
 
 class MyListItemHome extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym/_comum/minhas_cores.dart';
-import 'package:gym/widgets/my_input_decoration.dart';
+import 'package:gym/components/my_input_decoration.dart';
 
 Widget myTextExercicesModal(
     {required String texto,

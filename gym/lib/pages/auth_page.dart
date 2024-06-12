@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gym/_comum/minhas_cores.dart';
 import 'package:gym/services/auth_service.dart';
-import 'package:gym/widgets/my_elevated_btn.dart';
-import 'package:gym/widgets/my_input_decoration.dart';
-import 'package:gym/widgets/my_snackbar.dart';
+import 'package:gym/components/my_elevated_btn.dart';
+import 'package:gym/components/my_input_decoration.dart';
+import 'package:gym/components/my_snackbar.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});

@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gym/_comum/inicio_modal.dart';
+import 'package:gym/components/inicio_modal.dart';
 import 'package:gym/models/exercice_model.dart';
 import 'package:gym/services/auth_service.dart';
 import 'package:gym/services/exercice_service.dart';
-import 'package:gym/widgets/my_list_item_home.dart';
+import 'package:gym/components/my_list_item_home.dart';
 
 class HomePage extends StatefulWidget {
   final User user;

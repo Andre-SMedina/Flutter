@@ -2,7 +2,7 @@ import 'package:gym/_comum/minhas_cores.dart';
 import 'package:gym/models/exercice_model.dart';
 import 'package:gym/models/sentimento_model.dart';
 import 'package:flutter/material.dart';
-import 'package:gym/widgets/my_elevated_btn.dart';
+import 'package:gym/components/my_elevated_btn.dart';
 
 class ExercicePage extends StatelessWidget {
   final ExerciceModel exerciceModel;

@@ -3,7 +3,7 @@ import 'package:gym/_comum/minhas_cores.dart';
 import 'package:gym/models/exercice_model.dart';
 import 'package:gym/models/sentimento_model.dart';
 import 'package:gym/services/exercice_service.dart';
-import 'package:gym/widgets/my_text_exercices_modal.dart';
+import 'package:gym/components/my_text_exercices_modal.dart';
 import 'package:uuid/uuid.dart';
 
 mostrarModalInicio(BuildContext context, {ExerciceModel? exercice}) {
