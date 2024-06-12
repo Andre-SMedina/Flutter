@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.blue[300],
         drawer: Drawer(
             child: ListView(
           children: [
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
           ],
         )),
         appBar: AppBar(
-          backgroundColor: Colors.blue,
+          // backgroundColor: Colors.blue,
           title: const Text('Meus Exercícios'),
           actions: [
             IconButton(
@@ -93,6 +94,7 @@ class _HomePageState extends State<HomePage> {
                 }
 
                 return ListView(
+                  padding: const EdgeInsets.only(top: 20),
                   children: List.generate(exerciceList.length, (index) {
                     ExerciceModel exerciceModel = exerciceList[index];
                     return MyListItemHome(

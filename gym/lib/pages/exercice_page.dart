@@ -8,12 +8,7 @@ class ExercicePage extends StatelessWidget {
   final ExerciceModel exerciceModel;
   ExercicePage({super.key, required this.exerciceModel});
 
-  final List<SentimentoModel> listaSentimentos = [
-    SentimentoModel(
-        id: "SE001", sentindo: "Pouca ativação hoje", data: "2024/05/08"),
-    SentimentoModel(
-        id: "SE002", sentindo: "Já senti ativação hoje", data: "2024/05/10")
-  ];
+  final List<SentimentoModel> listaSentimentos = [];
 
   @override
   Widget build(BuildContext context) {
