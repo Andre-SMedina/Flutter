@@ -47,10 +47,17 @@ Future<dynamic> showAddEditSentimentoDiaolg(
                     idExercice: idExercice,
                     sentimentoModelo: sentimento,
                   );
+                  Navigator.pop(context);
                 }),
             TextButton(
-              onPressed: () {},
-              child: const Text('Cancelar'),
+              style: TextButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         );

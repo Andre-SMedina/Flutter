@@ -1,16 +1,17 @@
 import 'package:gym/_comum/minhas_cores.dart';
-import 'package:gym/components/add_edit_exerc_modal.dart';
+// import 'package:gym/components/add_edit_exerc_modal.dart';
 import 'package:gym/components/add_edit_sentimento_dialog.dart';
 import 'package:gym/models/sentimento_model.dart';
 import 'package:flutter/material.dart';
 import 'package:gym/components/my_elevated_btn.dart';
+import 'package:gym/services/sentimento_service.dart';
 import '../models/exercice_model.dart';
 
 class ExercicePage extends StatelessWidget {
   final ExerciceModel exerciceModel;
   ExercicePage({super.key, required this.exerciceModel});
 
-  final List<SentimentoModel> listaSentimentos = [];
+  final SentimentoService _sentimentoService = SentimentoService();
 
   @override
   Widget build(BuildContext context) {
@@ -80,26 +81,70 @@ class ExercicePage extends StatelessWidget {
               ),
               const Text('Como estou me sentindo?',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              //TODO: Como percorrer uma lista
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: List.generate(listaSentimentos.length, (index) {
-                  SentimentoModel sentimentoAgora = listaSentimentos[index];
-                  //ListTile cria uma formatção de lista
-                  return ListTile(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(sentimentoAgora.sentindo),
-                    subtitle: Text(sentimentoAgora.data),
-                    leading: const Icon(Icons.double_arrow),
-                    trailing: IconButton(
-                      color: Colors.red,
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {},
-                    ),
-                  );
-                }),
+              StreamBuilder(
+                stream: _sentimentoService.connectStream(
+                    idExercice: exerciceModel.id),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    if (snapshot.hasData &&
+                        snapshot.data != null &&
+                        snapshot.data!.docs.isNotEmpty) {
+                      final List<SentimentoModel> listaSentimentos = [];
+
+                      for (var doc in snapshot.data!.docs) {
+                        listaSentimentos
+                            .add(SentimentoModel.fromMap(doc.data()));
+                      }
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children:
+                            List.generate(listaSentimentos.length, (index) {
+                          SentimentoModel sentimentoAgora =
+                              listaSentimentos[index];
+                          //ListTile cria uma formatção de lista
+                          return ListTile(
+                            dense: true,
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(sentimentoAgora.sentindo),
+                            subtitle: Text(sentimentoAgora.data),
+                            leading: const Icon(Icons.double_arrow),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      showAddEditSentimentoDiaolg(context,
+                                          idExercice: exerciceModel.id,
+                                          sentimentoModel: sentimentoAgora);
+                                    },
+                                    icon: const Icon(Icons.edit)),
+                                IconButton(
+                                  color: Colors.red,
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    _sentimentoService.removeSentimento(
+                                        exerciceId: exerciceModel.id,
+                                        sentimentoId: sentimentoAgora.id);
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      );
+                    } else {
+                      return const Text(
+                          'Sem nenhuma anotação de sentimento ainda!');
+                    }
+                  }
+                },
               )
+              //TODO: Como percorrer uma lista
             ],
           ),
         ),
