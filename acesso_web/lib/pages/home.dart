@@ -1,25 +1,30 @@
+import 'package:acesso_web/styles/colors.dart';
+import 'package:acesso_web/widgets/list_users.dart';
 import 'package:flutter/material.dart';
 import 'package:acesso_web/styles/texts.dart';
 import 'package:acesso_web/widgets/input_decorations.dart';
 
 class Home extends StatefulWidget {
-  Home({super.key});
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  final TextEditingController _nome = TextEditingController();
+
   final TextEditingController _cpf = TextEditingController();
 
-  final TextEditingController _rg = TextEditingController();
-
-  List<String> users = [
-    'Paulo Céser Faria',
-    'Maria Vitória das Neves',
-    'Carla Aparecida dos Santos',
-    'Carlos Carneiro Júnior'
+  List<Map<String, dynamic>> listUsers = [
+    {'nome': 'Paulo César Faria', 'profissao': 'Médico'},
+    {'nome': 'Maria Vitória das Neves', 'profissao': 'Advogado'},
+    {"nome": 'Carla Aparecida dos Santos', 'profissao': 'Desempregado'},
+    {"nome": 'Carlos Carneiro Júnior', 'profissao': 'Contador'},
+    {"nome": 'Pedro Rangel Moreira', 'profissao': 'Vendedor de carros'},
+    {"nome": 'João Carlos Costa e Silva', 'profissao': 'Padeiro'}
   ];
+  List<Map<String, dynamic>> showListUsers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +34,13 @@ class _HomeState extends State<Home> {
       home: Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          backgroundColor: Colors.red[900],
+          backgroundColor: const Color.fromARGB(255, 1, 47, 145),
           title: const Center(
             child: Text(
               'Controlole de acesso às dependências do Ministério Público',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 214, 200, 5)),
             ),
           ),
         ),
@@ -44,7 +51,7 @@ class _HomeState extends State<Home> {
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(10),
-                  color: const Color.fromARGB(255, 1, 72, 131)),
+                  color: MyColors.azulEscuro),
               padding: const EdgeInsets.all(20),
               // color: const Color.fromARGB(255, 1, 72, 131),
               child: Column(
@@ -62,9 +69,23 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         width: 350,
                         child: TextFormField(
-                          onChanged: (value) {},
-                          controller: _cpf,
-                          decoration: myInputDecoration('CPF'),
+                          autofocus: true,
+                          onChanged: (value) {
+                            showListUsers = [];
+                            for (var element in listUsers) {
+                              if (_nome.text.length > 2 &&
+                                  element['nome']
+                                      .toString()
+                                      .toUpperCase()
+                                      .contains(_nome.text.toUpperCase())) {
+                                setState(() {
+                                  showListUsers.add(element);
+                                });
+                              }
+                            }
+                          },
+                          controller: _nome,
+                          decoration: myInputDecoration('Nome'),
                         ),
                       ),
                       const SizedBox(
@@ -73,8 +94,8 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         width: 350,
                         child: TextFormField(
-                          controller: _rg,
-                          decoration: myInputDecoration('RG'),
+                          controller: _cpf,
+                          decoration: myInputDecoration('CPF'),
                         ),
                       ),
                     ],
@@ -85,18 +106,23 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red),
                             onPressed: () {
                               _cpf.text = '';
-                              _rg.text = '';
+                              _nome.text = '';
+                              setState(() {
+                                showListUsers = [];
+                              });
                             },
-                            child: const Text('Limpar')),
+                            child: const Text(
+                              'Limpar',
+                              style: TextStyle(color: Colors.white),
+                            ))
                       ],
                     ),
                   ),
-                  const TextField(
-                    // readOnly: true,
-                    expands: false,
-                  )
+                  ListUsers(listUsers: showListUsers)
                 ],
               ),
             ),
