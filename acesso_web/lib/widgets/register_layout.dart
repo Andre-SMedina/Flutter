@@ -1,14 +1,25 @@
 import 'package:acesso_web/widgets/input_decorations.dart';
 import 'package:flutter/material.dart';
 
-class RegisterLayout extends StatelessWidget {
-  RegisterLayout({super.key});
+class RegisterLayout extends StatefulWidget {
+  const RegisterLayout({super.key});
 
+  @override
+  State<RegisterLayout> createState() => _RegisterLayoutState();
+}
+
+class _RegisterLayoutState extends State<RegisterLayout> {
   final TextEditingController _nome = TextEditingController();
+
   final TextEditingController _cpf = TextEditingController();
+
   final TextEditingController _job = TextEditingController();
+
   final TextEditingController _rg = TextEditingController();
-  final TextEditingController _reasonVisit = TextEditingController();
+
+  final TextEditingController _whoVisit = TextEditingController();
+
+  List<Book> books = allBooks;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +34,7 @@ class RegisterLayout extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: 350,
+                      width: 420,
                       child: TextFormField(
                         controller: _nome,
                         decoration: myInputDecoration('Nome'),
@@ -47,8 +58,8 @@ class RegisterLayout extends StatelessWidget {
                     SizedBox(
                       width: 420,
                       child: TextFormField(
-                        controller: _reasonVisit,
-                        decoration: myInputDecoration('Motivo da visita'),
+                        controller: _whoVisit,
+                        decoration: myInputDecoration('Quem visitar'),
                       ),
                     ),
                     SizedBox(
@@ -83,3 +94,11 @@ class RegisterLayout extends StatelessWidget {
     );
   }
 }
+
+class Book {
+  final String title;
+
+  Book({required this.title});
+}
+
+var allBooks = [Book(title: 'Xuxa'), Book(title: 'Joao'), Book(title: 'Pedro')];

@@ -130,13 +130,13 @@ class _HomeState extends State<Home> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         // color: Colors.white,
-                        color: Color.fromARGB(255, 2, 146, 182),
+                        color: const Color.fromARGB(255, 2, 146, 182),
                         border: Border.all(color: Colors.black)),
                     padding: const EdgeInsets.all(30.0),
                     child: Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(bottom: 15),
+                          padding: const EdgeInsets.only(bottom: 35),
                           child: Text(
                             'Cadastro de Visitantes',
                             style: MyTexts.title,
