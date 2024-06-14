@@ -5,7 +5,7 @@ InputDecoration myInputDecoration(String label) {
     // hintText: label,
     label: Text(
       label,
-      style: const TextStyle(color: Color.fromARGB(255, 150, 150, 150)),
+      style: const TextStyle(color: Colors.black),
     ),
     filled: true,
     fillColor: Colors.white,

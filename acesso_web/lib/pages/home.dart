@@ -1,7 +1,8 @@
 import 'package:acesso_web/styles/colors.dart';
-import 'package:acesso_web/widgets/list_users.dart';
+import 'package:acesso_web/widgets/list_users_layout.dart';
+import 'package:acesso_web/widgets/register_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:acesso_web/styles/texts.dart';
+import 'package:acesso_web/styles/my_texts.dart';
 import 'package:acesso_web/widgets/input_decorations.dart';
 
 class Home extends StatefulWidget {
@@ -37,8 +38,9 @@ class _HomeState extends State<Home> {
           backgroundColor: const Color.fromARGB(255, 1, 47, 145),
           title: const Center(
             child: Text(
-              'Controlole de acesso às dependências do Ministério Público',
+              'Controle de acesso às dependências do Ministério Público',
               style: TextStyle(
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Color.fromARGB(255, 214, 200, 5)),
             ),
@@ -58,7 +60,7 @@ class _HomeState extends State<Home> {
                 children: [
                   Text(
                     'Identificação do visitante',
-                    style: Texts.title,
+                    style: MyTexts.title,
                   ),
                   const SizedBox(
                     height: 20,
@@ -82,6 +84,11 @@ class _HomeState extends State<Home> {
                                   showListUsers.add(element);
                                 });
                               }
+                              if (_nome.text.length < 3) {
+                                setState(() {
+                                  showListUsers = [];
+                                });
+                              }
                             }
                           },
                           controller: _nome,
@@ -90,13 +97,6 @@ class _HomeState extends State<Home> {
                       ),
                       const SizedBox(
                         width: 20,
-                      ),
-                      SizedBox(
-                        width: 350,
-                        child: TextFormField(
-                          controller: _cpf,
-                          decoration: myInputDecoration('CPF'),
-                        ),
                       ),
                     ],
                   ),
@@ -122,7 +122,30 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                  ListUsers(listUsers: showListUsers)
+                  ListUsers(listUsers: showListUsers),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        // color: Colors.white,
+                        color: Color.fromARGB(255, 2, 146, 182),
+                        border: Border.all(color: Colors.black)),
+                    padding: const EdgeInsets.all(30.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: Text(
+                            'Cadastro de Visitantes',
+                            style: MyTexts.title,
+                          ),
+                        ),
+                        RegisterLayout()
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

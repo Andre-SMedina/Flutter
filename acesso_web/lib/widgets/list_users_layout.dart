@@ -17,7 +17,7 @@ class _ListUsersState extends State<ListUsers> {
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
           border: Border.all(color: Colors.black)),
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+      padding: const EdgeInsets.all(0),
       alignment: Alignment.centerLeft,
       width: 600,
       child: Column(
