@@ -18,7 +18,7 @@ class Teste extends StatefulWidget {
 }
 
 class _TesteState extends State<Teste> {
-  List<String> users = ['Carla', 'Joao', 'Pedro'];
+  List<String> users = ['Carla', 'Joao', 'Pedra'];
 
   @override
   Widget build(BuildContext context) {
