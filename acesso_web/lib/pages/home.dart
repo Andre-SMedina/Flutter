@@ -142,7 +142,7 @@ class _HomeState extends State<Home> {
                             style: MyTexts.title,
                           ),
                         ),
-                        RegisterLayout()
+                        const RegisterLayout()
                       ],
                     ),
                   ),

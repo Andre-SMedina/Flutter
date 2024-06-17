@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   // runApp(const Home());
-  runApp(Teste());
+  runApp(const Teste());
 }
 
 teste() {}
@@ -24,25 +24,22 @@ class _TesteState extends State<Teste> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                  child: TextField(
-                onChanged: search,
-              )),
-              Expanded(
-                  child: ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  final user = users[index];
+        body: Column(
+          children: [
+            TextField(
+              onChanged: search,
+            ),
+            Expanded(
+                child: ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                final user = users[index];
 
-                  return ListTile(
-                      title: Text(user), onTap: () => print(users[index]));
-                },
-              ))
-            ],
-          ),
+                return ListTile(
+                    title: Text(user), onTap: () => print(users[index]));
+              },
+            ))
+          ],
         ),
       ),
     );
