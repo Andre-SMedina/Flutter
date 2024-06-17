@@ -35,6 +35,8 @@ class FoodItem extends StatelessWidget {
               ),
             ),
             Image(
+              width: 100,
+              height: 80,
               image: AssetImage(imageURI),
               fit: BoxFit.cover,
             ),

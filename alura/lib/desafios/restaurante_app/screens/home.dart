@@ -1,5 +1,7 @@
 // import 'package:alura/desafios/restaurante_app/components/main_drawer.dart';
 import 'package:alura/desafios/restaurante_app/components/main_drawer.dart';
+import 'package:alura/desafios/restaurante_app/screens/drinks.dart';
+import 'package:alura/desafios/restaurante_app/screens/food_menu.dart';
 import 'package:alura/desafios/restaurante_app/screens/highlights.dart';
 import 'package:alura/desafios/restaurante_app/themes/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final List<Widget> pages = const [Highlights(), FoodMenu(), Drinks()];
   int _currentPage = 0;
   @override
   Widget build(BuildContext context) {
@@ -65,7 +68,7 @@ class _HomeState extends State<Home> {
             });
           },
         ),
-        body: const Highlights(),
+        body: pages.elementAt(_currentPage),
       ),
     );
   }
