@@ -29,6 +29,11 @@ class Highlights extends StatelessWidget {
                     itemDescription: items[index]['description']);
               }, childCount: items.length),
             ),
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 80,
+              ),
+            )
           ],
         ));
   }

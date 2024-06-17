@@ -9,11 +9,18 @@ class FoodMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: CustomScrollView(
         slivers: <Widget>[
           const SliverToBoxAdapter(
-            child: Text('Menu'),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 15.0),
+              child: Text(
+                'Menu',
+                style: TextStyle(fontFamily: 'Caveat', fontSize: 32),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(

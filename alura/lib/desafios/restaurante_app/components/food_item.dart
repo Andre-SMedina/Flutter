@@ -14,6 +14,7 @@ class FoodItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Card(
+        margin: const EdgeInsets.only(bottom: 15),
         clipBehavior: Clip.hardEdge,
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
         elevation: 0,
