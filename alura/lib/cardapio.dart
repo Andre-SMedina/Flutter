@@ -33,7 +33,7 @@ const List<Object> destaques = [
     "name": "Lasagna Bolognese",
     "price": "55.00",
     "description":
-        "Um clássico da culinária italiana para sua mesa. Chame sua família toda para apreciar essa massa macia e cheia de recheio, com aquele gostinho de infância."
+        "Um clássico da culinária italiana para sua mesa. Chame sua família toda para apreciar essa massa macia e cheia de recheio."
   },
   {
     "image": "$_imageInitialPath/shrimp-n-rice.png",

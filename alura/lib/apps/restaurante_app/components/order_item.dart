@@ -1,4 +1,4 @@
-import 'package:alura/desafios/restaurante_app/components/counter_component.dart';
+import 'package:alura/apps/restaurante_app/components/counter_component.dart';
 import 'package:flutter/material.dart';
 
 class OrderItem extends StatefulWidget {
@@ -31,14 +31,19 @@ class _OrderItemState extends State<OrderItem> {
             image: AssetImage(widget.imageURI),
             fit: BoxFit.cover,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(widget.itemTitle),
-                Text(widget.itemPrice),
-              ],
+          //Expanded Faz o widget ocupar todo espaço disponível
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    widget.itemTitle,
+                  ),
+                  Text(widget.itemPrice),
+                ],
+              ),
             ),
           ),
           const Padding(

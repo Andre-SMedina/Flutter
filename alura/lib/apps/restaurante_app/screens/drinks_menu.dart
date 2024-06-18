@@ -1,6 +1,7 @@
 import 'package:alura/cardapio.dart';
-import 'package:alura/desafios/restaurante_app/components/drink_item.dart';
+import 'package:alura/apps/restaurante_app/components/drink_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class DrinksMenu extends StatelessWidget {
   const DrinksMenu({super.key});
@@ -30,14 +31,21 @@ class DrinksMenu extends StatelessWidget {
                   itemTitle: drinkList[index]['name'],
                   itemPrice: drinkList[index]['price']);
             }, childCount: drinkList.length),
-            //configura 2 colunas
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+            //configura para 2 colunas
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount:
+                  //Verifica se o celular está na vertical ou horizontal
+                  MediaQuery.of(context).orientation == Orientation.landscape
+                      ? 3
+                      : 2,
               //espaço entre os cards
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
               //tamanho de cada cartão, onde o primeiro valor é a largura e o segundo a altura 158/194
-              childAspectRatio: 158 / 194,
+              childAspectRatio:
+                  MediaQuery.of(context).orientation == Orientation.landscape
+                      ? 1.15
+                      : 158 / 194,
             ),
           ),
           const SliverToBoxAdapter(

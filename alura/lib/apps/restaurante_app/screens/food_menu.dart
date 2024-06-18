@@ -1,5 +1,5 @@
 import 'package:alura/cardapio.dart';
-import 'package:alura/desafios/restaurante_app/components/food_item.dart';
+import 'package:alura/apps/restaurante_app/components/food_item.dart';
 import 'package:flutter/material.dart';
 
 class FoodMenu extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:alura/desafios/restaurante_app/themes/app_colors.dart';
+import 'package:alura/apps/restaurante_app/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class PaymentTotal extends StatelessWidget {

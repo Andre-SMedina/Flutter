@@ -1,5 +1,5 @@
 import 'package:alura/cardapio.dart';
-import 'package:alura/desafios/restaurante_app/components/highlight_item.dart';
+import 'package:alura/apps/restaurante_app/components/highlight_item.dart';
 import 'package:flutter/material.dart';
 
 class Highlights extends StatelessWidget {
@@ -20,7 +20,7 @@ class Highlights extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontFamily: 'Caveat', fontSize: 32)),
             )),
-            SliverList(
+            SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
                 return HighlightItem(
                     imageURI: items[index]['image'],
@@ -28,6 +28,14 @@ class Highlights extends StatelessWidget {
                     itemPrice: items[index]['price'],
                     itemDescription: items[index]['description']);
               }, childCount: items.length),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: MediaQuery.of(context).orientation ==
+                          Orientation.landscape
+                      ? 2
+                      : 1,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 1.1),
             ),
             const SliverToBoxAdapter(
               child: SizedBox(
