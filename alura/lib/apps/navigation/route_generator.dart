@@ -1,4 +1,5 @@
-import 'package:alura/apps/navigation/home_navigtion.dart';
+import 'package:alura/apps/navigation/favorites_navigation.dart';
+import 'package:alura/apps/navigation/home_navigation.dart';
 import 'package:alura/apps/navigation/login_navigation.dart';
 import 'package:alura/apps/navigation/package_details_navigation.dart';
 import 'package:alura/apps/navigation/payment_navigation.dart';
@@ -13,13 +14,13 @@ class RouteGenerator {
 
     switch (settings.name) {
       case 'home':
-        return MaterialPageRoute(builder: (_) => const HomeNavigtion());
+        return MaterialPageRoute(builder: (_) => const HomeNavigation());
       case 'login':
         return MaterialPageRoute(builder: (_) => const LoginNavigation());
       case 'singup':
         return MaterialPageRoute(builder: (_) => const SingupNavigation());
       case 'favorites':
-        return MaterialPageRoute(builder: (_) => const SingupNavigation());
+        return MaterialPageRoute(builder: (_) => const FavoritesNavigation());
       case 'profile':
         return MaterialPageRoute(builder: (_) => const ProfileNavigation());
       case 'payment':

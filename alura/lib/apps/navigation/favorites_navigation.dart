@@ -5,9 +5,25 @@ class FavoritesNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    Object? data = ModalRoute.of(context)!.settings.arguments;
+    return Scaffold(
       body: Center(
-        child: Text('Favorites Navigation'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Favorites Navigation'),
+            ElevatedButton(
+                onPressed: () {
+                  print(data);
+                },
+                child: const Text('Teste')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/');
+                },
+                child: Text('Voltar'))
+          ],
+        ),
       ),
     );
   }
