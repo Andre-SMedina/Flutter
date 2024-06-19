@@ -1,15 +1,14 @@
 import 'package:alura/apps/navigation/arguments.dart';
-import 'package:alura/apps/navigation/page3.dart';
+import 'package:alura/apps/navigation/page2.dart';
 import 'package:flutter/material.dart';
 
-class Page2 extends StatelessWidget {
-  static String routeName = '/page2';
-  const Page2({super.key});
+class Page3 extends StatelessWidget {
+  static String routeName = '/page3';
+  const Page3({super.key});
 
   @override
   Widget build(BuildContext context) {
     TextEditingController textController = TextEditingController();
-    //o conteúdo enviado via argumentos pelo Navigator.pushNamed, serão armazenados na variável args e não podem ser nulos.
     var args = ModalRoute.of(context)!.settings.arguments as Arguments;
 
     return Scaffold(
@@ -17,7 +16,7 @@ class Page2 extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Página 2'),
+          const Text('Página 3'),
           Text('Title: ${args.title}'),
           Text('Message: ${args.message}'),
           TextField(
@@ -27,9 +26,9 @@ class Page2 extends StatelessWidget {
           ),
           ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, Page3.routeName,
+                Navigator.pushNamed(context, Page2.routeName,
                     arguments: Arguments(
-                        title: 'Menssagem da página 2',
+                        title: 'Menssagem da página 3',
                         message: textController.text));
               },
               child: const Text('Enviar'))
