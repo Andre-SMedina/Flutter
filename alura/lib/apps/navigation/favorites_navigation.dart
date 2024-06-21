@@ -21,7 +21,7 @@ class FavoritesNavigation extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, '/');
                 },
-                child: Text('Voltar'))
+                child: const Text('Voltar'))
           ],
         ),
       ),

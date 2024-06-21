@@ -15,8 +15,8 @@ class MyRoutes extends StatelessWidget {
       home: const HomeNavigation(),
       routes: {
         //Page2.routeName é apenas um parâmetro static do tipo String da Page2 que possui o nome da rota e evita ficar trocando em todos os lugares que chamam a rota2 caso o nome da rota2 precise ser alterado.
-        Page2.routeName: (context) => Page2(),
-        Page3.routeName: (context) => Page3()
+        Page2.routeName: (context) => const Page2(),
+        Page3.routeName: (context) => const Page3()
       },
     );
   }

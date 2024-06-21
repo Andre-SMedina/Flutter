@@ -1,4 +1,3 @@
-import 'package:alura/apps/restaurante_app/screens/checkout.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/home.dart';
