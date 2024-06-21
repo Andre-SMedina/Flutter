@@ -15,6 +15,7 @@ class _Desafio1State extends State<Tarefas> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -23,6 +24,21 @@ class _Desafio1State extends State<Tarefas> {
       home: Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                  color: Color.fromARGB(255, 250, 198, 28),
+                  onPressed: () {
+                    setState(() {
+                      show = (show == 1) ? 0 : 1;
+                    });
+                  },
+                  icon: (show == 1)
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off)),
+            )
+          ],
           leading: const Icon(
             Icons.task,
             color: Colors.yellow,
@@ -66,12 +82,7 @@ class _Desafio1State extends State<Tarefas> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              setState(() {
-                show = (show == 1) ? 0 : 1;
-              });
-            },
-            child: const Icon(Icons.remove_red_eye_outlined)),
+            onPressed: () {}, child: const Icon(Icons.add)),
       ),
     );
   }
