@@ -1,8 +1,11 @@
+import 'package:alura/apps/app1/tarefas/arguments.dart';
+import 'package:alura/apps/app1/tarefas/task_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
+  static const routeName = '/formscreen';
 
   @override
   State<FormScreen> createState() => _FormScreenState();
@@ -17,6 +20,7 @@ class _FormScreenState extends State<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var args = ModalRoute.of(context)!.settings.arguments as Arguments;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -68,15 +72,19 @@ class _FormScreenState extends State<FormScreen> {
                         onPressed: () {
                           setState(() {
                             if (_formKey.currentState!.validate()) {
+                              args.taskList.add(TaskCards(
+                                  task: nameController.text,
+                                  urlImage: imageController.text));
                               //https://dev.to/joaberamone/como-usar-snackbars-em-flutter-4ce
-                              ScaffoldMessenger.of(context)
+                              ScaffoldMessenger.of(args.taskContext)
                                   .showSnackBar(const SnackBar(
                                 content: Text('Tarefa adicionada!'),
                               ));
+                              Navigator.pop(context);
                             }
                           });
                         },
-                        child: Text('Adicionar')),
+                        child: const Text('Adicionar')),
                   ],
                 ),
               ),
@@ -123,7 +131,7 @@ class _FormScreenState extends State<FormScreen> {
         setState(() {});
       },
       decoration: InputDecoration(
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           hintText: textField,
           filled: true,
           fillColor: Colors.white70),

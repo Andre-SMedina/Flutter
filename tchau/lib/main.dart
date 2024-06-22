@@ -5,16 +5,19 @@ void main() {
   runApp(const MyApp());
 }
 
-String getTime() {
-  String hours = DateTime.now().hour.toString().padLeft(2, '0');
-  String minutes = DateTime.now().minute.toString().padLeft(2, '0');
-  String seconds = DateTime.now().second.toString().padLeft(2, '0');
-  String currentTime = '$hours:$minutes:$seconds';
-  return currentTime;
-}
+// String getTime() {
+//   String hours = DateTime.now().hour.toString().padLeft(2, '0');
+//   String minutes = DateTime.now().minute.toString().padLeft(2, '0');
+//   String seconds = DateTime.now().second.toString().padLeft(2, '0');
+//   String currentTime = '$hours:$minutes:$seconds';
+//   return currentTime;
+// }
 
 tchauTime() {
-  String dia = DateTime.now().day.toString();
+  var hora = DateTime.now().hour;
+  String dia = (hora > 18)
+      ? (DateTime.now().day + 1).toString()
+      : DateTime.now().day.toString();
   String mes = (DateTime.now().month.toString().length == 1)
       ? '0${DateTime.now().month.toString()}'
       : DateTime.now().month.toString();

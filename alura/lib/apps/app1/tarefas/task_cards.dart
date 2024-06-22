@@ -42,12 +42,16 @@ class _TaskState extends State<TaskCards> {
                       // color: Colors.black26,
                       //TODO:ClipRRect coloca bordas nos filhos do container
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          widget.urlImage,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                          borderRadius: BorderRadius.circular(10),
+                          child: (widget.urlImage.contains('http'))
+                              ? Image.network(
+                                  widget.urlImage,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  widget.urlImage,
+                                  fit: BoxFit.cover,
+                                )),
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
