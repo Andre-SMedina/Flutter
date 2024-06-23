@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 class TaskCards extends StatefulWidget {
   final String task;
   final String urlImage;
-  const TaskCards({super.key, required this.task, required this.urlImage});
+  TaskCards({super.key, required this.task, required this.urlImage});
+  int nivel = 0;
+  Stars dificulty = const Stars();
 
   @override
   State<TaskCards> createState() => _TaskState();
 }
 
 class _TaskState extends State<TaskCards> {
-  int nivel = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,7 +66,7 @@ class _TaskState extends State<TaskCards> {
                                 fontSize: 22, overflow: TextOverflow.ellipsis),
                           ),
                         ),
-                        const Stars()
+                        widget.dificulty
                       ],
                     ),
                     SizedBox(
@@ -78,8 +79,8 @@ class _TaskState extends State<TaskCards> {
                                   borderRadius: BorderRadius.circular(10))),
                           onPressed: () {
                             setState(() {
-                              if (nivel < 10) {
-                                nivel++;
+                              if (widget.nivel < 10) {
+                                widget.nivel++;
                               }
                             });
                           },
@@ -108,11 +109,11 @@ class _TaskState extends State<TaskCards> {
                       width: 250,
                       child: LinearProgressIndicator(
                         color: Colors.blue[900],
-                        value: nivel / 10,
+                        value: widget.nivel / 10,
                       ),
                     ),
                     Text(
-                      'Nível $nivel',
+                      'Nível ${widget.nivel}',
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],

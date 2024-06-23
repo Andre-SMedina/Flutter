@@ -6,15 +6,16 @@ class TaskInherited extends InheritedWidget {
   TaskInherited({super.key, required super.child});
 
   List<TaskCards> taskList = [
-    const TaskCards(
+    TaskCards(
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter todos os dias'),
-    const TaskCards(urlImage: 'assets/images/dart.png', task: 'Aprender Dart'),
-    const TaskCards(urlImage: 'assets/images/java.png', task: 'Aprender java'),
-    const TaskCards(
-        urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
-    const TaskCards(
-        urlImage: 'assets/images/person.jpg', task: 'Aprender inglês'),
+    TaskCards(urlImage: 'assets/images/dart.png', task: 'Aprender Dart'),
+    TaskCards(urlImage: 'assets/images/java.png', task: 'Aprender java'),
+    TaskCards(urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
+    TaskCards(urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
+    TaskCards(urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
+    TaskCards(urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
+    TaskCards(urlImage: 'assets/images/person.jpg', task: 'Aprender inglês'),
   ];
 
   void newTask(String task, String urlImage) {

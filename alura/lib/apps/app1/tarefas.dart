@@ -1,23 +1,10 @@
 import 'package:alura/apps/app1/tarefas/arguments.dart';
 import 'package:alura/apps/app1/tarefas/form_screen.dart';
-import 'package:alura/apps/app1/tarefas/task_cards.dart';
 import 'package:alura/apps/app1/tarefas/task_inherited.dart';
 import 'package:flutter/material.dart';
 
 class Tarefas extends StatefulWidget {
-  Tarefas({super.key});
-
-  final List<TaskCards> taskList = [
-    const TaskCards(
-        urlImage: 'assets/images/flutter.png',
-        task: 'Aprender Flutter todos os dias'),
-    const TaskCards(urlImage: 'assets/images/dart.png', task: 'Aprender Dart'),
-    const TaskCards(urlImage: 'assets/images/java.png', task: 'Aprender java'),
-    const TaskCards(
-        urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
-    const TaskCards(
-        urlImage: 'assets/images/person.jpg', task: 'Aprender inglês'),
-  ];
+  const Tarefas({super.key});
 
   @override
   State<Tarefas> createState() => _Tarefas();
@@ -61,13 +48,14 @@ class _Tarefas extends State<Tarefas> {
         opacity: show,
         duration: const Duration(milliseconds: 600),
         // ignore: prefer_const_literals_to_create_immutables
-        child: ListView(children: widget.taskList),
+        child: ListView(
+            padding: const EdgeInsets.only(bottom: 70),
+            children: TaskInherited.of(context)!.taskList),
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, FormScreen.routeName,
-                arguments:
-                    Arguments(taskList: widget.taskList, taskContext: context));
+                arguments: Arguments(taskContext: context));
           },
           child: const Icon(Icons.add)),
     );

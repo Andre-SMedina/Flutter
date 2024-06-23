@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/',
-      home: Tarefas(),
+      home: TaskInherited(child: Tarefas()),
       routes: {FormScreen.routeName: (context) => const FormScreen()},
     );
   }

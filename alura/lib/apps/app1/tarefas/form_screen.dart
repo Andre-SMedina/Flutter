@@ -1,5 +1,5 @@
 import 'package:alura/apps/app1/tarefas/arguments.dart';
-import 'package:alura/apps/app1/tarefas/task_cards.dart';
+import 'package:alura/apps/app1/tarefas/task_inherited.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -72,15 +72,22 @@ class _FormScreenState extends State<FormScreen> {
                         onPressed: () {
                           setState(() {
                             if (_formKey.currentState!.validate()) {
-                              args.taskList.add(TaskCards(
-                                  task: nameController.text,
-                                  urlImage: imageController.text));
+                              TaskInherited.of(args.taskContext)!.newTask(
+                                  nameController.text, imageController.text);
+                              // args.taskList.add(TaskCards(
+                              //     task: nameController.text,
+                              //     urlImage: imageController.text));
                               //https://dev.to/joaberamone/como-usar-snackbars-em-flutter-4ce
+                              Navigator.pop(context);
                               ScaffoldMessenger.of(args.taskContext)
                                   .showSnackBar(const SnackBar(
-                                content: Text('Tarefa adicionada!'),
+                                backgroundColor:
+                                    Color.fromARGB(255, 254, 202, 61),
+                                content: Text(
+                                  'Tarefa adicionada!',
+                                  style: TextStyle(color: Colors.black),
+                                ),
                               ));
-                              Navigator.pop(context);
                             }
                           });
                         },
