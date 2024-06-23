@@ -14,7 +14,7 @@ class FormScreen extends StatefulWidget {
 class _FormScreenState extends State<FormScreen> {
   //https://w7.pngwing.com/pngs/227/232/png-transparent-super-mario-run-super-mario-bros-new-super-mario-bros-super-mario-super-mario-bros-hand-nintendo.png
   TextEditingController nameController = TextEditingController();
-  TextEditingController dificultyController = TextEditingController();
+  TextEditingController difficultyController = TextEditingController();
   TextEditingController imageController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -46,8 +46,8 @@ class _FormScreenState extends State<FormScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     textFields('Nome', nameController),
-                    textFields('Dificuldade', dificultyController,
-                        type: true, valid: 'dificulty'),
+                    textFields('Dificuldade', difficultyController,
+                        type: true, valid: 'difficulty'),
                     textFields('Imagem', imageController, valid: 'image'),
                     Container(
                       height: 100,
@@ -73,7 +73,7 @@ class _FormScreenState extends State<FormScreen> {
                           setState(() {
                             if (_formKey.currentState!.validate()) {
                               TaskInherited.of(args.taskContext)!.newTask(
-                                  int.parse(dificultyController.text),
+                                  int.parse(difficultyController.text),
                                   nameController.text,
                                   imageController.text);
                               //https://dev.to/joaberamone/como-usar-snackbars-em-flutter-4ce
@@ -114,7 +114,7 @@ class _FormScreenState extends State<FormScreen> {
             return 'Insira o nome da tarefa';
           }
         }
-        if (valid == 'dificulty') {
+        if (valid == 'difficulty') {
           if (value == null ||
               value.isEmpty ||
               int.parse(value) < 1 ||

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 class TaskCards extends StatefulWidget {
   final String task;
-  final int dificulty;
+  final int difficulty;
   final String urlImage;
   TaskCards(
       {super.key,
       required this.task,
       required this.urlImage,
-      required this.dificulty});
+      required this.difficulty});
   double nivel = 0;
   double progressBar = 0;
 
@@ -20,7 +20,7 @@ class TaskCards extends StatefulWidget {
 class _TaskState extends State<TaskCards> {
   @override
   Widget build(BuildContext context) {
-    widget.progressBar = (widget.nivel / widget.dificulty) / 10;
+    widget.progressBar = (widget.nivel / widget.difficulty) / 10;
     return Container(
       margin: const EdgeInsets.all(10),
       child: Stack(
@@ -71,7 +71,7 @@ class _TaskState extends State<TaskCards> {
                                 fontSize: 22, overflow: TextOverflow.ellipsis),
                           ),
                         ),
-                        Stars(dificulty: widget.dificulty)
+                        Stars(difficulty: widget.difficulty)
                       ],
                     ),
                     SizedBox(

@@ -16,6 +16,8 @@ dependencies:
     git:
       url: https://github.com/bhavin-concetto/smoothratingbar.git
       ref: dev
+  sqflite: ^2.0.3+1
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:

@@ -7,42 +7,42 @@ class TaskInherited extends InheritedWidget {
 
   List<TaskCards> taskList = [
     TaskCards(
-        dificulty: 2,
+        difficulty: 2,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter todos os dias'),
     TaskCards(
-        dificulty: 1,
+        difficulty: 1,
         urlImage: 'assets/images/dart.png',
         task: 'Aprender Dart'),
     TaskCards(
-        dificulty: 3,
+        difficulty: 3,
         urlImage: 'assets/images/java.png',
         task: 'Aprender java'),
     TaskCards(
-        dificulty: 4,
+        difficulty: 4,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter'),
     TaskCards(
-        dificulty: 5,
+        difficulty: 5,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter'),
     TaskCards(
-        dificulty: 1,
+        difficulty: 1,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter'),
     TaskCards(
-        dificulty: 2,
+        difficulty: 2,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter'),
     TaskCards(
-        dificulty: 2,
+        difficulty: 2,
         urlImage: 'assets/images/person.jpg',
         task: 'Aprender inglês'),
   ];
 
-  void newTask(int dificulty, String task, String urlImage) {
+  void newTask(int difficulty, String task, String urlImage) {
     taskList
-        .add(TaskCards(dificulty: dificulty, task: task, urlImage: urlImage));
+        .add(TaskCards(difficulty: difficulty, task: task, urlImage: urlImage));
   }
 
   static TaskInherited? maybeOf(BuildContext context) {

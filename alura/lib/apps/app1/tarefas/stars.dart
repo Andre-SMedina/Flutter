@@ -87,8 +87,8 @@ import 'package:flutter/material.dart';
 // }
 
 class Stars extends StatefulWidget {
-  final int dificulty;
-  const Stars({super.key, required this.dificulty});
+  final int difficulty;
+  const Stars({super.key, required this.difficulty});
 
   @override
   State<Stars> createState() => _StarsState();
@@ -102,19 +102,19 @@ class _StarsState extends State<Stars> {
       children: [
         const Icon(color: Colors.blue, size: 20, Icons.star),
         Icon(
-            color: (widget.dificulty > 1) ? Colors.blue : Colors.blue[100],
+            color: (widget.difficulty > 1) ? Colors.blue : Colors.blue[100],
             size: 20,
             Icons.star),
         Icon(
-            color: (widget.dificulty > 2) ? Colors.blue : Colors.blue[100],
+            color: (widget.difficulty > 2) ? Colors.blue : Colors.blue[100],
             size: 20,
             Icons.star),
         Icon(
-            color: (widget.dificulty > 3) ? Colors.blue : Colors.blue[100],
+            color: (widget.difficulty > 3) ? Colors.blue : Colors.blue[100],
             size: 20,
             Icons.star),
         Icon(
-            color: (widget.dificulty > 4) ? Colors.blue : Colors.blue[100],
+            color: (widget.difficulty > 4) ? Colors.blue : Colors.blue[100],
             size: 20,
             Icons.star),
       ],
