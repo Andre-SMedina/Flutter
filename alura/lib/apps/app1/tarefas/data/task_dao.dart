@@ -55,7 +55,17 @@ class TaskDao {
     return toList(result);
   }
 
-  Future delete(String taskName) async {}
+  Future delete(String taskName) async {
+    print('Deletando tarefa: $taskName');
+
+    Database db = await getDatabase();
+
+    db.delete(
+      _tableName,
+      where: '$_taskName = ?',
+      whereArgs: [taskName],
+    );
+  }
 
   List<TaskCards> toList(List<Map<String, dynamic>> listMapTasks) {
     print('Convertendo toList...');

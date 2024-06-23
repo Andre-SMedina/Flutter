@@ -3,14 +3,14 @@ import 'package:alura/apps/app1/tarefas/form_screen.dart';
 import 'package:alura/apps/app1/tarefas/task_inherited.dart';
 import 'package:flutter/material.dart';
 
-class Tarefas extends StatefulWidget {
-  const Tarefas({super.key});
+class TarefasInherited extends StatefulWidget {
+  const TarefasInherited({super.key});
 
   @override
-  State<Tarefas> createState() => _Tarefas();
+  State<TarefasInherited> createState() => _TarefasInherited();
 }
 
-class _Tarefas extends State<Tarefas> {
+class _TarefasInherited extends State<TarefasInherited> {
   // This widget is the root of your application.
   double show = 1.0;
 

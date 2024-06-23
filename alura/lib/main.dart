@@ -1,4 +1,4 @@
-import 'package:alura/apps/app1/tarefas.dart';
+import 'package:alura/apps/app1/tarefas_sql.dart';
 import 'package:alura/apps/app1/tarefas/form_screen.dart';
 import 'package:alura/apps/app1/tarefas/task_inherited.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/',
-      home: TaskInherited(child: Tarefas()),
+      home: TaskInherited(child: TarefasSql()),
       routes: {FormScreen.routeName: (context) => const FormScreen()},
     );
   }
