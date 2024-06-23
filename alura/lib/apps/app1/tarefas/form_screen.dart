@@ -14,7 +14,7 @@ class FormScreen extends StatefulWidget {
 class _FormScreenState extends State<FormScreen> {
   //https://w7.pngwing.com/pngs/227/232/png-transparent-super-mario-run-super-mario-bros-new-super-mario-bros-super-mario-super-mario-bros-hand-nintendo.png
   TextEditingController nameController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
+  TextEditingController dificultyController = TextEditingController();
   TextEditingController imageController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -46,8 +46,8 @@ class _FormScreenState extends State<FormScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     textFields('Nome', nameController),
-                    textFields('Idade', ageController,
-                        type: true, valid: 'idade'),
+                    textFields('Dificuldade', dificultyController,
+                        type: true, valid: 'dificulty'),
                     textFields('Imagem', imageController, valid: 'image'),
                     Container(
                       height: 100,
@@ -73,19 +73,21 @@ class _FormScreenState extends State<FormScreen> {
                           setState(() {
                             if (_formKey.currentState!.validate()) {
                               TaskInherited.of(args.taskContext)!.newTask(
-                                  nameController.text, imageController.text);
-                              // args.taskList.add(TaskCards(
-                              //     task: nameController.text,
-                              //     urlImage: imageController.text));
+                                  int.parse(dificultyController.text),
+                                  nameController.text,
+                                  imageController.text);
                               //https://dev.to/joaberamone/como-usar-snackbars-em-flutter-4ce
                               Navigator.pop(context);
                               ScaffoldMessenger.of(args.taskContext)
                                   .showSnackBar(const SnackBar(
                                 backgroundColor:
-                                    Color.fromARGB(255, 254, 202, 61),
+                                    Color.fromARGB(255, 71, 71, 71),
                                 content: Text(
                                   'Tarefa adicionada!',
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ));
                             }
@@ -108,19 +110,20 @@ class _FormScreenState extends State<FormScreen> {
     return TextFormField(
       validator: (value) {
         if (valid == 'text') {
-          if (value != null && value.isEmpty) {
+          if (value == null || value.isEmpty) {
             return 'Insira o nome da tarefa';
           }
         }
-        if (valid == 'idade') {
-          if (value!.isEmpty ||
-              int.parse(value) > 100 ||
-              int.parse(value) < 5) {
-            return 'Idade deve ser entre 5 e 100';
+        if (valid == 'dificulty') {
+          if (value == null ||
+              value.isEmpty ||
+              int.parse(value) < 1 ||
+              int.parse(value) > 5) {
+            return 'Dificuldade deve ser entre 1 e 5';
           }
         }
         if (valid == 'image') {
-          if (value!.isEmpty) {
+          if (value == null || value.isEmpty) {
             return 'Insira uma URL de imagem';
           }
         }

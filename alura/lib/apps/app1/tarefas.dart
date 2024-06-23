@@ -19,29 +19,59 @@ class _Tarefas extends State<Tarefas> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
+        toolbarHeight: 70,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: IconButton(
-                color: const Color.fromARGB(255, 250, 198, 28),
-                onPressed: () {
-                  setState(() {
-                    show = (show == 1) ? 0 : 1;
-                  });
-                },
-                icon: (show == 1)
-                    ? const Icon(Icons.visibility)
-                    : const Icon(Icons.visibility_off)),
-          )
+          IconButton(
+              color: const Color.fromARGB(255, 250, 198, 28),
+              onPressed: () {
+                setState(() {
+                  show = (show == 1) ? 0 : 1;
+                });
+              },
+              icon: (show == 1)
+                  ? const Icon(Icons.visibility)
+                  : const Icon(Icons.visibility_off)),
         ],
         leading: const Icon(
           Icons.task,
           color: Colors.yellow,
         ),
         backgroundColor: Colors.blue,
-        title: const Text(
-          'Tarefas',
-          style: TextStyle(color: Colors.white),
+        title: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Tarefas',
+                  style: TextStyle(color: Colors.white),
+                ),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.refresh,
+                      color: Colors.white,
+                    ))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 160,
+                  child: LinearProgressIndicator(
+                    color: Colors.blue[900],
+                    value: 0.9,
+                  ),
+                ),
+                const Text(
+                  'Level: 3.00',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                )
+              ],
+            )
+          ],
         ),
       ),
       body: AnimatedOpacity(

@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 
 class TaskCards extends StatefulWidget {
   final String task;
+  final int dificulty;
   final String urlImage;
-  TaskCards({super.key, required this.task, required this.urlImage});
-  int nivel = 0;
-  Stars dificulty = const Stars();
+  TaskCards(
+      {super.key,
+      required this.task,
+      required this.urlImage,
+      required this.dificulty});
+  double nivel = 0;
+  double progressBar = 0;
 
   @override
   State<TaskCards> createState() => _TaskState();
@@ -15,6 +20,7 @@ class TaskCards extends StatefulWidget {
 class _TaskState extends State<TaskCards> {
   @override
   Widget build(BuildContext context) {
+    widget.progressBar = (widget.nivel / widget.dificulty) / 10;
     return Container(
       margin: const EdgeInsets.all(10),
       child: Stack(
@@ -40,7 +46,6 @@ class _TaskState extends State<TaskCards> {
                           borderRadius: BorderRadius.circular(10)),
                       height: 100,
                       width: 72,
-                      // color: Colors.black26,
                       //TODO:ClipRRect coloca bordas nos filhos do container
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -66,7 +71,7 @@ class _TaskState extends State<TaskCards> {
                                 fontSize: 22, overflow: TextOverflow.ellipsis),
                           ),
                         ),
-                        widget.dificulty
+                        Stars(dificulty: widget.dificulty)
                       ],
                     ),
                     SizedBox(
@@ -79,7 +84,7 @@ class _TaskState extends State<TaskCards> {
                                   borderRadius: BorderRadius.circular(10))),
                           onPressed: () {
                             setState(() {
-                              if (widget.nivel < 10) {
+                              if (widget.progressBar != 1) {
                                 widget.nivel++;
                               }
                             });
@@ -109,7 +114,7 @@ class _TaskState extends State<TaskCards> {
                       width: 250,
                       child: LinearProgressIndicator(
                         color: Colors.blue[900],
-                        value: widget.nivel / 10,
+                        value: widget.progressBar,
                       ),
                     ),
                     Text(

@@ -87,7 +87,8 @@ import 'package:flutter/material.dart';
 // }
 
 class Stars extends StatefulWidget {
-  const Stars({super.key});
+  final int dificulty;
+  const Stars({super.key, required this.dificulty});
 
   @override
   State<Stars> createState() => _StarsState();
@@ -96,8 +97,27 @@ class Stars extends StatefulWidget {
 class _StarsState extends State<Stars> {
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      children: [Icon(Icons.star_border)],
+    // ignore: prefer_const_constructors
+    return Row(
+      children: [
+        const Icon(color: Colors.blue, size: 20, Icons.star),
+        Icon(
+            color: (widget.dificulty > 1) ? Colors.blue : Colors.blue[100],
+            size: 20,
+            Icons.star),
+        Icon(
+            color: (widget.dificulty > 2) ? Colors.blue : Colors.blue[100],
+            size: 20,
+            Icons.star),
+        Icon(
+            color: (widget.dificulty > 3) ? Colors.blue : Colors.blue[100],
+            size: 20,
+            Icons.star),
+        Icon(
+            color: (widget.dificulty > 4) ? Colors.blue : Colors.blue[100],
+            size: 20,
+            Icons.star),
+      ],
     );
   }
 }

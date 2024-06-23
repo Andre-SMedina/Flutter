@@ -7,19 +7,42 @@ class TaskInherited extends InheritedWidget {
 
   List<TaskCards> taskList = [
     TaskCards(
+        dificulty: 2,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter todos os dias'),
-    TaskCards(urlImage: 'assets/images/dart.png', task: 'Aprender Dart'),
-    TaskCards(urlImage: 'assets/images/java.png', task: 'Aprender java'),
-    TaskCards(urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
-    TaskCards(urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
-    TaskCards(urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
-    TaskCards(urlImage: 'assets/images/flutter.png', task: 'Aprender Flutter'),
-    TaskCards(urlImage: 'assets/images/person.jpg', task: 'Aprender inglês'),
+    TaskCards(
+        dificulty: 1,
+        urlImage: 'assets/images/dart.png',
+        task: 'Aprender Dart'),
+    TaskCards(
+        dificulty: 3,
+        urlImage: 'assets/images/java.png',
+        task: 'Aprender java'),
+    TaskCards(
+        dificulty: 4,
+        urlImage: 'assets/images/flutter.png',
+        task: 'Aprender Flutter'),
+    TaskCards(
+        dificulty: 5,
+        urlImage: 'assets/images/flutter.png',
+        task: 'Aprender Flutter'),
+    TaskCards(
+        dificulty: 1,
+        urlImage: 'assets/images/flutter.png',
+        task: 'Aprender Flutter'),
+    TaskCards(
+        dificulty: 2,
+        urlImage: 'assets/images/flutter.png',
+        task: 'Aprender Flutter'),
+    TaskCards(
+        dificulty: 2,
+        urlImage: 'assets/images/person.jpg',
+        task: 'Aprender inglês'),
   ];
 
-  void newTask(String task, String urlImage) {
-    taskList.add(TaskCards(task: task, urlImage: urlImage));
+  void newTask(int dificulty, String task, String urlImage) {
+    taskList
+        .add(TaskCards(dificulty: dificulty, task: task, urlImage: urlImage));
   }
 
   static TaskInherited? maybeOf(BuildContext context) {
