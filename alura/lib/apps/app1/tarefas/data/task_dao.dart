@@ -6,35 +6,36 @@ import 'package:sqflite/sqflite.dart';
 
 class TaskDao {
   static const String tableSql =
-      'CREATE TABLE $_tablename($_name TEXT, $_difficulty INTEGER, $_image TEXT)';
+      'CREATE TABLE $_tableName($_taskName TEXT, $_difficulty INTEGER, $_image TEXT)';
 
-  static const String _tablename = 'taskTable';
-  static const String _name = 'name';
+  static const String _tableName = 'taskTable';
+  static const String _taskName = 'task';
   static const String _difficulty = 'difficulty';
-  static const String _image = 'image';
+  static const String _image = 'urlImage';
 
   Future save(TaskCards tarefa) async {
     print('Iniciando o save: ');
 
     final Database db = await getDatabase();
     var ifTaskExists = await find(tarefa.task);
+    Map<String, dynamic> taskMap = toMap(tarefa);
 
     if (ifTaskExists.isEmpty) {
       print('A tarefa não existia');
 
-      return await db.insert(_tablename, values);
+      return await db.insert(_tableName, taskMap);
     } else {
       print('A tarefa já existe');
 
-      await db.update(_tablename, values,
-          where: '$_name = ?', whereArgs: [tarefa.task]);
+      await db.update(_tableName, taskMap,
+          where: '$_taskName = ?', whereArgs: [tarefa.task]);
     }
   }
 
   Future<List<TaskCards>> findAll() async {
     print('Acessando o findAll');
     final Database db = await getDatabase();
-    final List<Map<String, dynamic>> result = await db.query(_tablename);
+    final List<Map<String, dynamic>> result = await db.query(_tableName);
     print(result);
 
     return toList(result);
@@ -44,8 +45,8 @@ class TaskDao {
     print('Acessando find');
     final Database db = await getDatabase();
     final List<Map<String, dynamic>> result = await db.query(
-      _tablename,
-      where: '$_name = ?',
+      _tableName,
+      where: '$_taskName = ?',
       whereArgs: [nameTask],
     );
 
@@ -62,7 +63,7 @@ class TaskDao {
 
     for (Map<String, dynamic> linha in listMapTasks) {
       final TaskCards task = TaskCards(
-          task: linha[_name],
+          task: linha[_taskName],
           urlImage: linha[_image],
           difficulty: linha[_difficulty]);
       tasks.add(task);
@@ -78,8 +79,12 @@ class TaskDao {
 
     final Map<String, dynamic> mapTasks = Map();
 
-    mapTasks['task'] = tarefa.task;
-    mapTasks['urlImage'] = tarefa.urlImage;
-    mapTasks['difficulty'] = tarefa.difficulty;
+    mapTasks[_taskName] = tarefa.task;
+    mapTasks[_image] = tarefa.urlImage;
+    mapTasks[_difficulty] = tarefa.difficulty;
+
+    print('Mapa de tarefas: $mapTasks');
+
+    return mapTasks;
   }
 }
