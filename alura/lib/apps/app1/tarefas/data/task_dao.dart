@@ -13,7 +13,7 @@ class TaskDao {
   static const String _difficulty = 'difficulty';
   static const String _image = 'urlImage';
 
-  Future save(TaskCards tarefa) async {
+  static Future save(Task tarefa) async {
     print('Iniciando o save: ');
 
     final Database db = await getDatabase();
@@ -32,7 +32,7 @@ class TaskDao {
     }
   }
 
-  Future<List<TaskCards>> findAll() async {
+  static Future<List<Task>> findAll() async {
     print('Acessando o findAll');
     final Database db = await getDatabase();
     final List<Map<String, dynamic>> result = await db.query(_tableName);
@@ -41,7 +41,7 @@ class TaskDao {
     return toList(result);
   }
 
-  Future<List<TaskCards>> find(String nameTask) async {
+  static Future<List<Task>> find(String nameTask) async {
     print('Acessando find');
     final Database db = await getDatabase();
     final List<Map<String, dynamic>> result = await db.query(
@@ -55,7 +55,7 @@ class TaskDao {
     return toList(result);
   }
 
-  Future delete(String taskName) async {
+  static Future delete(String taskName) async {
     print('Deletando tarefa: $taskName');
 
     Database db = await getDatabase();
@@ -67,12 +67,12 @@ class TaskDao {
     );
   }
 
-  List<TaskCards> toList(List<Map<String, dynamic>> listMapTasks) {
+  static List<Task> toList(List<Map<String, dynamic>> listMapTasks) {
     print('Convertendo toList...');
-    final List<TaskCards> tasks = [];
+    final List<Task> tasks = [];
 
     for (Map<String, dynamic> linha in listMapTasks) {
-      final TaskCards task = TaskCards(
+      final Task task = Task(
           task: linha[_taskName],
           urlImage: linha[_image],
           difficulty: linha[_difficulty]);
@@ -84,7 +84,7 @@ class TaskDao {
     return tasks;
   }
 
-  Map<String, dynamic> toMap(TaskCards tarefa) {
+  static Map<String, dynamic> toMap(Task tarefa) {
     print('Convertendo tarefa em Map');
 
     final Map<String, dynamic> mapTasks = Map();

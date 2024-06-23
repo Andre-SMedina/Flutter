@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class TarefasSql extends StatefulWidget {
   const TarefasSql({super.key});
+  static const String routeName = '/tarefas';
 
   @override
   State<TarefasSql> createState() => _TarefasSql();
@@ -81,10 +82,10 @@ class _TarefasSql extends State<TarefasSql> {
         // ignore: prefer_const_literals_to_create_immutables
         child: Padding(
             padding: const EdgeInsets.only(bottom: 70),
-            child: FutureBuilder<List<TaskCards>>(
-                future: TaskDao().findAll(),
+            child: FutureBuilder<List<Task>>(
+                future: TaskDao.findAll(),
                 builder: (context, snapshot) {
-                  List<TaskCards>? items = snapshot.data;
+                  List<Task>? items = snapshot.data;
 
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
@@ -120,7 +121,7 @@ class _TarefasSql extends State<TarefasSql> {
                           return ListView.builder(
                               itemCount: items.length,
                               itemBuilder: (BuildContext context, int index) {
-                                final TaskCards tarefa = items[index];
+                                final Task tarefa = items[index];
 
                                 return tarefa;
                               });

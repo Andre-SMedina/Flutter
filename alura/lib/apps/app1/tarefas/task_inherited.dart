@@ -5,44 +5,43 @@ import 'package:flutter/material.dart';
 class TaskInherited extends InheritedWidget {
   TaskInherited({super.key, required super.child});
 
-  List<TaskCards> taskList = [
-    TaskCards(
+  List<Task> taskList = [
+    Task(
         difficulty: 2,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter todos os dias'),
-    TaskCards(
+    Task(
         difficulty: 1,
         urlImage: 'assets/images/dart.png',
         task: 'Aprender Dart'),
-    TaskCards(
+    Task(
         difficulty: 3,
         urlImage: 'assets/images/java.png',
         task: 'Aprender java'),
-    TaskCards(
+    Task(
         difficulty: 4,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter'),
-    TaskCards(
+    Task(
         difficulty: 5,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter'),
-    TaskCards(
+    Task(
         difficulty: 1,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter'),
-    TaskCards(
+    Task(
         difficulty: 2,
         urlImage: 'assets/images/flutter.png',
         task: 'Aprender Flutter'),
-    TaskCards(
+    Task(
         difficulty: 2,
         urlImage: 'assets/images/person.jpg',
         task: 'Aprender inglês'),
   ];
 
   void newTask(int difficulty, String task, String urlImage) {
-    taskList
-        .add(TaskCards(difficulty: difficulty, task: task, urlImage: urlImage));
+    taskList.add(Task(difficulty: difficulty, task: task, urlImage: urlImage));
   }
 
   static TaskInherited? maybeOf(BuildContext context) {

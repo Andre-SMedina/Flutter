@@ -1,7 +1,6 @@
 import 'package:alura/apps/app1/tarefas/arguments.dart';
 import 'package:alura/apps/app1/tarefas/data/task_dao.dart';
 import 'package:alura/apps/app1/tarefas/task_cards.dart';
-import 'package:alura/apps/app1/tarefas/task_inherited.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,7 +18,6 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController difficultyController = TextEditingController();
   TextEditingController imageController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TaskDao db = TaskDao();
 
   @override
   Widget build(BuildContext context) {
@@ -75,18 +73,17 @@ class _FormScreenState extends State<FormScreen> {
                         onPressed: () {
                           setState(() {
                             if (_formKey.currentState!.validate()) {
-                              TaskCards task = TaskCards(
+                              TaskDao.save(Task(
                                   task: nameController.text,
                                   urlImage: imageController.text,
                                   difficulty:
-                                      int.parse(difficultyController.text));
-                              db.save(task);
+                                      int.parse(difficultyController.text)));
                               // TaskInherited.of(args.taskContext)!.newTask(
                               //     int.parse(difficultyController.text),
                               //     nameController.text,
                               //     imageController.text);
                               //https://dev.to/joaberamone/como-usar-snackbars-em-flutter-4ce
-                              Navigator.pop(context);
+                              Navigator.pushNamed(context, '/tarefas');
                               ScaffoldMessenger.of(args.taskContext)
                                   .showSnackBar(const SnackBar(
                                 backgroundColor:

@@ -1,11 +1,11 @@
 import 'package:alura/apps/app1/tarefas/stars.dart';
 import 'package:flutter/material.dart';
 
-class TaskCards extends StatefulWidget {
+class Task extends StatefulWidget {
   final String task;
   final int difficulty;
   final String urlImage;
-  TaskCards(
+  Task(
       {super.key,
       required this.task,
       required this.urlImage,
@@ -14,10 +14,10 @@ class TaskCards extends StatefulWidget {
   double progressBar = 0;
 
   @override
-  State<TaskCards> createState() => _TaskState();
+  State<Task> createState() => _TaskState();
 }
 
-class _TaskState extends State<TaskCards> {
+class _TaskState extends State<Task> {
   @override
   Widget build(BuildContext context) {
     widget.progressBar = (widget.nivel / widget.difficulty) / 10;

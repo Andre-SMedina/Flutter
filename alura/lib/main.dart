@@ -23,7 +23,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       initialRoute: '/',
       home: TaskInherited(child: TarefasSql()),
-      routes: {FormScreen.routeName: (context) => const FormScreen()},
+      routes: {
+        FormScreen.routeName: (context) => const FormScreen(),
+        TarefasSql.routeName: (context) => const TarefasSql()
+      },
     );
   }
 }
