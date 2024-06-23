@@ -2,7 +2,6 @@ import 'package:alura/apps/app1/tarefas/arguments.dart';
 import 'package:alura/apps/app1/tarefas/data/task_dao.dart';
 import 'package:alura/apps/app1/tarefas/form_screen.dart';
 import 'package:alura/apps/app1/tarefas/task_cards.dart';
-import 'package:alura/apps/app1/tarefas/task_inherited.dart';
 import 'package:flutter/material.dart';
 
 class TarefasSql extends StatefulWidget {
@@ -87,11 +86,63 @@ class _TarefasSql extends State<TarefasSql> {
                 builder: (context, snapshot) {
                   List<TaskCards>? items = snapshot.data;
 
-                  return ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final TaskCards tarefa = 
-                      });
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return const Center(
+                        child: Column(
+                          children: [
+                            CircularProgressIndicator(),
+                            Text('Carregando')
+                          ],
+                        ),
+                      );
+                    case ConnectionState.waiting:
+                      return const Center(
+                        child: Column(
+                          children: [
+                            CircularProgressIndicator(),
+                            Text('Carregando')
+                          ],
+                        ),
+                      );
+                    case ConnectionState.active:
+                      return const Center(
+                        child: Column(
+                          children: [
+                            CircularProgressIndicator(),
+                            Text('Carregando')
+                          ],
+                        ),
+                      );
+                    case ConnectionState.done:
+                      if (snapshot.hasData && items != null) {
+                        if (items.isNotEmpty) {
+                          return ListView.builder(
+                              itemCount: items.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final TaskCards tarefa = items[index];
+
+                                return tarefa;
+                              });
+                        }
+                        return const Center(
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                size: 128,
+                              ),
+                              Text(
+                                'Não há nenhuma tarefa!',
+                                style: TextStyle(fontSize: 32),
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                      return Text('Erro ao carregar tarefas!');
+                  }
+                  return const Text('Erro desconhecido!');
                 })),
       ),
       floatingActionButton: FloatingActionButton(
