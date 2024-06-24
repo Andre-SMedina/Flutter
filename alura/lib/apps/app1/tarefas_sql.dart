@@ -49,7 +49,9 @@ class _TarefasSql extends State<TarefasSql> {
                   style: TextStyle(color: Colors.white),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {});
+                    },
                     icon: const Icon(
                       Icons.refresh,
                       color: Colors.white,
@@ -143,11 +145,12 @@ class _TarefasSql extends State<TarefasSql> {
                       }
                       return Text('Erro ao carregar tarefas!');
                   }
-                  return const Text('Erro desconhecido!');
+                  // return const Text('Erro desconhecido!');
                 })),
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
+            //o then no final serve para executar uma função quando voltar da página para onde está sendo encaminhado. Neste caso está rodando o setState para recarregar a página e mostrar as novas informação adicionadas no banco.
             Navigator.pushNamed(context, FormScreen.routeName,
                 arguments: Arguments(taskContext: context));
           },

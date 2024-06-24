@@ -1,3 +1,5 @@
+import 'package:alura/apps/app1/tarefas/data/task_dao.dart';
+import 'package:alura/apps/app1/tarefas/data/task_dao_lv.dart';
 import 'package:alura/apps/app1/tarefas/stars.dart';
 import 'package:flutter/material.dart';
 
@@ -82,12 +84,18 @@ class _TaskState extends State<Task> {
                               padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
+                          onLongPress: () {
+                            _showMyDialog();
+                            // TaskDao.delete(widget.task);
+                          },
                           onPressed: () {
                             setState(() {
                               if (widget.progressBar != 1) {
                                 widget.nivel++;
                               }
                             });
+                            TaskDaoLv.findAll();
+                            // TaskDaoLv.save(widget.task, widget.nivel);
                           },
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -128,6 +136,36 @@ class _TaskState extends State<Task> {
           )
         ],
       ),
+    );
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Deseja apagar a tarefa?'),
+          actions: <Widget>[
+            Row(
+              children: [
+                TextButton(
+                  child: const Text('Sim'),
+                  onPressed: () {
+                    TaskDao.delete(widget.task);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Não'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

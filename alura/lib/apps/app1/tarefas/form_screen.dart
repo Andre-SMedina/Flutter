@@ -1,6 +1,7 @@
 import 'package:alura/apps/app1/tarefas/arguments.dart';
 import 'package:alura/apps/app1/tarefas/data/task_dao.dart';
 import 'package:alura/apps/app1/tarefas/task_cards.dart';
+import 'package:alura/apps/app1/tarefas_sql.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -83,7 +84,9 @@ class _FormScreenState extends State<FormScreen> {
                               //     nameController.text,
                               //     imageController.text);
                               //https://dev.to/joaberamone/como-usar-snackbars-em-flutter-4ce
-                              Navigator.pushNamed(context, '/tarefas');
+                              // Navigator.pop(context);
+                              Navigator.pushNamed(
+                                  context, TarefasSql.routeName);
                               ScaffoldMessenger.of(args.taskContext)
                                   .showSnackBar(const SnackBar(
                                 backgroundColor:
