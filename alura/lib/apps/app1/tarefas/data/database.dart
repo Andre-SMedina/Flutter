@@ -15,7 +15,7 @@ Future<Database> getDatabase() async {
 
 Future<Database> getDatabaseLv() async {
   //local onde será salvo o arquivo task.db
-  final String path = join(await getDatabasesPath(), 'task.db');
+  final String path = join(await getDatabasesPath(), 'tasklv.db');
 
   //tenta abrir o banco, se ele não existir, será criado.
   return openDatabase(path, onCreate: (db, version) {

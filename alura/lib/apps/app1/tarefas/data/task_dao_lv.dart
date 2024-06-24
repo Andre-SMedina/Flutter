@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:alura/apps/app1/tarefas/data/database.dart';
-import 'package:alura/apps/app1/tarefas/task_cards.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TaskDaoLv {
@@ -23,6 +22,8 @@ class TaskDaoLv {
       await db.update(_tableName, taskMap,
           where: '$_taskName = ?', whereArgs: [task]);
     }
+
+    print(taskMap);
   }
 
   static Future<List> findAll() async {
@@ -41,7 +42,7 @@ class TaskDaoLv {
       where: '$_taskName = ?',
       whereArgs: [nameTask],
     );
-
+    // print(result);
     return toList(result);
   }
 
