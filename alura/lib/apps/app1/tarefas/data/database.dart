@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 Future<Database> getDatabase() async {
   //local onde será salvo o arquivo task.db
   final String path = join(await getDatabasesPath(), 'task.db');
+  // await deleteDatabase(path);
 
   //tenta abrir o banco, se ele não existir, será criado.
   return openDatabase(path, onCreate: (db, version) {

@@ -6,11 +6,12 @@ import 'package:sqflite/sqflite.dart';
 
 class TaskDao {
   static const String tableSql =
-      'CREATE TABLE $_tableName($_taskName TEXT, $_difficulty INTEGER, $_image TEXT)';
+      'CREATE TABLE $_tableName($_taskName TEXT, $_difficulty INTEGER, $_level REAL, $_image TEXT)';
 
   static const String _tableName = 'taskTable';
   static const String _taskName = 'task';
   static const String _difficulty = 'difficulty';
+  static const String _level = 'level';
   static const String _image = 'urlImage';
 
   static Future save(Task tarefa) async {
@@ -59,9 +60,11 @@ class TaskDao {
 
     for (Map<String, dynamic> linha in listMapTasks) {
       final Task task = Task(
-          task: linha[_taskName],
-          urlImage: linha[_image],
-          difficulty: linha[_difficulty]);
+        task: linha[_taskName],
+        urlImage: linha[_image],
+        difficulty: linha[_difficulty],
+        level: linha[_level],
+      );
       tasks.add(task);
     }
 
@@ -74,6 +77,7 @@ class TaskDao {
     mapTasks[_taskName] = tarefa.task;
     mapTasks[_image] = tarefa.urlImage;
     mapTasks[_difficulty] = tarefa.difficulty;
+    mapTasks[_level] = tarefa.level;
 
     return mapTasks;
   }

@@ -1,17 +1,19 @@
 import 'package:alura/apps/app1/tarefas/data/task_dao.dart';
-import 'package:alura/apps/app1/tarefas/data/task_dao_lv.dart';
 import 'package:alura/apps/app1/tarefas/stars.dart';
+import 'package:alura/apps/app1/tarefas_sql.dart';
 import 'package:flutter/material.dart';
 
 class Task extends StatefulWidget {
   final String task;
   final int difficulty;
+  final double level;
   final String urlImage;
   Task(
       {super.key,
       required this.task,
       required this.urlImage,
-      required this.difficulty});
+      required this.difficulty,
+      this.level = 0});
   double nivel = 0;
   double progressBar = 0;
 
@@ -22,7 +24,8 @@ class Task extends StatefulWidget {
 class _TaskState extends State<Task> {
   @override
   Widget build(BuildContext context) {
-    widget.progressBar = (widget.nivel / widget.difficulty) / 10;
+    widget.progressBar =
+        ((widget.level + widget.nivel) / widget.difficulty) / 10;
     return Container(
       margin: const EdgeInsets.all(10),
       child: Stack(
@@ -94,7 +97,14 @@ class _TaskState extends State<Task> {
                                 widget.nivel++;
                               }
                             });
-                            TaskDaoLv.save(widget.task, widget.nivel);
+                            TaskDao.save(Task(
+                              task: widget.task,
+                              urlImage: widget.urlImage,
+                              difficulty: widget.difficulty,
+                              level: widget.nivel + widget.level,
+                            ));
+
+                            print(widget.nivel);
                           },
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -125,7 +135,7 @@ class _TaskState extends State<Task> {
                       ),
                     ),
                     Text(
-                      'Nível ${widget.nivel}',
+                      'Nível ${widget.level + widget.nivel}',
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],
@@ -151,7 +161,7 @@ class _TaskState extends State<Task> {
                   child: const Text('Sim'),
                   onPressed: () {
                     TaskDao.delete(widget.task);
-                    Navigator.of(context).pop();
+                    Navigator.pushNamed(context, TarefasSql.routeName);
                   },
                 ),
                 TextButton(

@@ -140,7 +140,7 @@ class _FormScreenState extends State<FormScreen> {
       },
       //TODO: Definir a entrada somente de números
       inputFormatters: [
-        (valid == 'idade')
+        (valid == 'difficulty')
             ? FilteringTextInputFormatter.digitsOnly
             : FilteringTextInputFormatter.singleLineFormatter,
       ],
