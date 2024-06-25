@@ -1,6 +1,8 @@
 import 'package:alura/apps/app1/tarefas/arguments.dart';
 import 'package:alura/apps/app1/tarefas/data/task_dao.dart';
+import 'package:alura/apps/app1/tarefas/data/task_dao_lv.dart';
 import 'package:alura/apps/app1/tarefas/form_screen.dart';
+import 'package:alura/apps/app1/tarefas/future_builder_task.dart';
 import 'package:alura/apps/app1/tarefas/task_cards.dart';
 import 'package:flutter/material.dart';
 
@@ -82,77 +84,16 @@ class _TarefasSql extends State<TarefasSql> {
         opacity: show,
         duration: const Duration(milliseconds: 600),
         // ignore: prefer_const_literals_to_create_immutables
-        child: Padding(
-            padding: const EdgeInsets.only(bottom: 70),
-            child: FutureBuilder<List<Task>>(
-                future: TaskDao.findAll(),
-                builder: (context, snapshot) {
-                  List<Task>? items = snapshot.data;
-
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return const Center(
-                        child: Column(
-                          children: [
-                            CircularProgressIndicator(),
-                            Text('Carregando')
-                          ],
-                        ),
-                      );
-                    case ConnectionState.waiting:
-                      return const Center(
-                        child: Column(
-                          children: [
-                            CircularProgressIndicator(),
-                            Text('Carregando')
-                          ],
-                        ),
-                      );
-                    case ConnectionState.active:
-                      return const Center(
-                        child: Column(
-                          children: [
-                            CircularProgressIndicator(),
-                            Text('Carregando')
-                          ],
-                        ),
-                      );
-                    case ConnectionState.done:
-                      if (snapshot.hasData && items != null) {
-                        if (items.isNotEmpty) {
-                          return ListView.builder(
-                              itemCount: items.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final Task tarefa = items[index];
-
-                                return tarefa;
-                              });
-                        }
-                        return const Center(
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.error_outline,
-                                size: 128,
-                              ),
-                              Text(
-                                'Não há nenhuma tarefa!',
-                                style: TextStyle(fontSize: 32),
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                      return Text('Erro ao carregar tarefas!');
-                  }
-                  // return const Text('Erro desconhecido!');
-                })),
+        child: const Padding(
+            padding: EdgeInsets.only(bottom: 70), child: FutureBuilderTask()),
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             //o then no final serve para executar uma função quando voltar da página para onde está sendo encaminhado. Neste caso está rodando o setState para recarregar a página e mostrar as novas informação adicionadas no banco.
-            Navigator.pushNamed(context, FormScreen.routeName,
-                arguments: Arguments(taskContext: context));
+            // Navigator.pushNamed(context, FormScreen.routeName,
+            //     arguments: Arguments(taskContext: context));
+            TaskDaoLv.findAll().then((onValue) => print(onValue));
+            // TaskDaoLv.delete('Assistir spiderman');
           },
           child: const Icon(Icons.add)),
     );

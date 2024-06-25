@@ -23,15 +23,6 @@ class _TaskState extends State<Task> {
   @override
   Widget build(BuildContext context) {
     widget.progressBar = (widget.nivel / widget.difficulty) / 10;
-    // widget.nivel = TaskDaoLv.find(widget.task)[0]['lv'];
-    double lv = 0;
-    TaskDaoLv.find(widget.task).then((onValue) {
-      if (onValue.isNotEmpty) {
-        lv = onValue[1]['lv'];
-      }
-      print(lv);
-    });
-    // print(lv);
     return Container(
       margin: const EdgeInsets.all(10),
       child: Stack(
