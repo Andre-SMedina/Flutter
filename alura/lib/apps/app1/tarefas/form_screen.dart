@@ -84,9 +84,9 @@ class _FormScreenState extends State<FormScreen> {
                               //     nameController.text,
                               //     imageController.text);
                               //https://dev.to/joaberamone/como-usar-snackbars-em-flutter-4ce
-                              // Navigator.pop(context);
-                              Navigator.pushNamed(
-                                  context, TarefasSql.routeName);
+                              Navigator.pop(context);
+                              // Navigator.pushNamed(
+                              //     context, TarefasSql.routeName);
                               ScaffoldMessenger.of(args.taskContext)
                                   .showSnackBar(const SnackBar(
                                 backgroundColor:

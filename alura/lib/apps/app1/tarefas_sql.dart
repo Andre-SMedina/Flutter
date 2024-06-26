@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:alura/apps/app1/tarefas/arguments.dart';
 import 'package:alura/apps/app1/tarefas/data/task_dao.dart';
 import 'package:alura/apps/app1/tarefas/form_screen.dart';
@@ -18,7 +20,6 @@ class _TarefasSql extends State<TarefasSql> {
 
   @override
   Widget build(BuildContext context) {
-    // setState(() {});
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -155,10 +156,11 @@ class _TarefasSql extends State<TarefasSql> {
                 })),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             //o then no final serve para executar uma função quando voltar da página para onde está sendo encaminhado. Neste caso está rodando o setState para recarregar a página e mostrar as novas informação adicionadas no banco.
-            Navigator.pushNamed(context, FormScreen.routeName,
+            await Navigator.pushNamed(context, FormScreen.routeName,
                 arguments: Arguments(taskContext: context));
+            Timer(const Duration(seconds: 1), () => setState(() {}));
             // TaskDao.findAll().then((onValue) => print(onValue));
             // TaskDaoLv.delete('Assistir spiderman');
             // TaskDao.find('Ajudar').then((onValue) {

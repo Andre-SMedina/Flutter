@@ -161,7 +161,9 @@ class _TaskState extends State<Task> {
                   child: const Text('Sim'),
                   onPressed: () {
                     TaskDao.delete(widget.task);
-                    Navigator.pushNamed(context, TarefasSql.routeName);
+                    // Navigator.pushNamed(context, TarefasSql.routeName);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        TarefasSql.routeName, ModalRoute.withName('/'));
                   },
                 ),
                 TextButton(
