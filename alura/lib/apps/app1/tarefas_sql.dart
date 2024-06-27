@@ -90,77 +90,83 @@ class _TarefasSql extends State<TarefasSql> {
         // ignore: prefer_const_literals_to_create_immutables
         child: Padding(
             padding: const EdgeInsets.only(bottom: 70),
-            child: FutureBuilder<List<Task>>(
-                future: TaskDao.findAll(),
-                builder: (context, snapshot) {
-                  List<Task>? items = snapshot.data;
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: (MediaQuery.of(context).size.height -
+                  kToolbarHeight -
+                  MediaQuery.of(context).padding.top),
+              child: FutureBuilder<List<Task>>(
+                  future: TaskDao.findAll(),
+                  builder: (context, snapshot) {
+                    List<Task>? items = snapshot.data;
 
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return const Center(
-                        child: Column(
-                          children: [
-                            CircularProgressIndicator(),
-                            Text('Carregando')
-                          ],
-                        ),
-                      );
-                    case ConnectionState.waiting:
-                      return const Center(
-                        child: Column(
-                          children: [
-                            CircularProgressIndicator(),
-                            Text('Carregando')
-                          ],
-                        ),
-                      );
-                    case ConnectionState.active:
-                      return const Center(
-                        child: Column(
-                          children: [
-                            CircularProgressIndicator(),
-                            Text('Carregando')
-                          ],
-                        ),
-                      );
-                    case ConnectionState.done:
-                      if (snapshot.hasData && items != null) {
-                        if (items.isNotEmpty) {
-                          // Text('ola');
-                          return ListView.builder(
-                              itemCount: items.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final Task tarefa = items[index];
-
-                                return tarefa;
-                              });
-                        }
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
                         return const Center(
                           child: Column(
                             children: [
-                              Icon(
-                                Icons.error_outline,
-                                size: 128,
-                              ),
-                              Text(
-                                'Não há nenhuma tarefa!',
-                                style: TextStyle(fontSize: 32),
-                              )
+                              CircularProgressIndicator(),
+                              Text('Carregando')
                             ],
                           ),
                         );
-                      }
-                      return Text('Erro ao carregar tarefas!');
-                  }
-                  // return const Text('Erro desconhecido!');
-                })),
+                      case ConnectionState.waiting:
+                        return const Center(
+                          child: Column(
+                            children: [
+                              CircularProgressIndicator(),
+                              Text('Carregando')
+                            ],
+                          ),
+                        );
+                      case ConnectionState.active:
+                        return const Center(
+                          child: Column(
+                            children: [
+                              CircularProgressIndicator(),
+                              Text('Carregando')
+                            ],
+                          ),
+                        );
+                      case ConnectionState.done:
+                        if (snapshot.hasData && items != null) {
+                          if (items.isNotEmpty) {
+                            // Text('ola');
+                            return ListView.builder(
+                                itemCount: items.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final Task tarefa = items[index];
+
+                                  return tarefa;
+                                });
+                          }
+                          return const Center(
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.error_outline,
+                                  size: 128,
+                                ),
+                                Text(
+                                  'Não há nenhuma tarefa!',
+                                  style: TextStyle(fontSize: 32),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                        return const Text('Erro ao carregar tarefas!');
+                    }
+                    // return const Text('Erro desconhecido!');
+                  }),
+            )),
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            //o then no final serve para executar uma função quando voltar da página para onde está sendo encaminhado. Neste caso está rodando o setState para recarregar a página e mostrar as novas informação adicionadas no banco.
+            //? O then no final serve para executar uma função quando voltar da página para onde está sendo encaminhado. Neste caso está rodando o setState para recarregar a página e mostrar as novas informação adicionadas no banco.
             await Navigator.pushNamed(context, FormScreen.routeName,
                 arguments: Arguments(taskContext: context));
-            Timer(const Duration(seconds: 1), () => setState(() {}));
+            Timer(const Duration(milliseconds: 500), () => setState(() {}));
             // TaskDao.findAll().then((onValue) => print(onValue));
             // TaskDaoLv.delete('Assistir spiderman');
             // TaskDao.find('Ajudar').then((onValue) {
