@@ -19,6 +19,13 @@ class _TarefasSql extends State<TarefasSql> {
   double show = 1.0;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance
+        .addPostFrameCallback((e) => print('Testando verificação!'));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
@@ -52,11 +59,7 @@ class _TarefasSql extends State<TarefasSql> {
                 ),
                 IconButton(
                     onPressed: () {
-                      setState(() {
-                        TaskDao.findAll().then((e) {
-                          print(e);
-                        });
-                      });
+                      setState(() {});
                     },
                     icon: const Icon(
                       Icons.refresh,
@@ -163,10 +166,8 @@ class _TarefasSql extends State<TarefasSql> {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            //? O then no final serve para executar uma função quando voltar da página para onde está sendo encaminhado. Neste caso está rodando o setState para recarregar a página e mostrar as novas informação adicionadas no banco.
-            await Navigator.pushNamed(context, FormScreen.routeName,
-                arguments: Arguments(taskContext: context));
-            Timer(const Duration(milliseconds: 500), () => setState(() {}));
+            await teste(context);
+            Timer(const Duration(seconds: 1), () => setState(() {}));
             // TaskDao.findAll().then((onValue) => print(onValue));
             // TaskDaoLv.delete('Assistir spiderman');
             // TaskDao.find('Ajudar').then((onValue) {
@@ -175,5 +176,13 @@ class _TarefasSql extends State<TarefasSql> {
           },
           child: const Icon(Icons.add)),
     );
+  }
+
+  teste(BuildContext context) async {
+    if (context.mounted) {
+      //? O then no final serve para executar uma função quando voltar da página para onde está sendo encaminhado. Neste caso está rodando o setState para recarregar a página e mostrar as novas informação adicionadas no banco.
+      await Navigator.pushNamed(context, FormScreen.routeName,
+          arguments: Arguments(taskContext: context));
+    }
   }
 }
