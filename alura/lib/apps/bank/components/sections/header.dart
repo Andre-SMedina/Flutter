@@ -12,6 +12,7 @@ class _HeaderState extends State<Header> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
