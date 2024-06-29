@@ -1,4 +1,5 @@
 import 'package:alura/apps/bank/pages/home_page_bank.dart';
+import 'package:alura/apps/bank/themes/my_theme.dart';
 import 'package:flutter/material.dart';
 
 class InitBank extends StatelessWidget {
@@ -7,6 +8,7 @@ class InitBank extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: MyTheme,
       title: 'Bank',
       home: const HomePageBank(),
       initialRoute: '/',
