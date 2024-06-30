@@ -1,5 +1,7 @@
 import 'package:alura/apps/bank/components/box_card.dart';
+import 'package:alura/apps/bank/components/color_dot.dart';
 import 'package:alura/apps/bank/components/content_division.dart';
+import 'package:alura/apps/bank/themes/my_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class AccountPoints extends StatelessWidget {
@@ -31,7 +33,24 @@ class AccountPoints extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Row(
-                children: [],
+                children: [
+                  ColorDot(
+                      color: MyThemeColors.recentActivity(EnumColors.delivery)),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 8.0, top: 4.0),
+                    child: Text('Entrega grátis: 1500pts'),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  ColorDot(
+                      color: MyThemeColors.recentActivity(EnumColors.stream)),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 8.0, top: 4.0),
+                    child: Text('1 mês de streaming: 3000pts'),
+                  )
+                ],
               )
             ],
           )),

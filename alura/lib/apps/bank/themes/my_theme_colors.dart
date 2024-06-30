@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 enum EnumColors {
   spent(Color.fromRGBO(255, 175, 29, 1.0)),
-  income(Color.fromRGBO(191, 69, 198, 1.0));
+  income(Color.fromRGBO(191, 69, 198, 1.0)),
+  delivery(Color.fromRGBO(238, 30, 30, 1)),
+  stream(Color.fromRGBO(16, 2, 212, 1));
 
   final Color color;
   const EnumColors(this.color);
