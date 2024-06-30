@@ -16,5 +16,5 @@ class MyThemeColors {
     Color.fromRGBO(195, 107, 254, 1)
   ];
   static const division = Color.fromRGBO(166, 166, 166, 1.0);
-  static Color recentActivit(EnumColors enumColor) => enumColor.color;
+  static Color recentActivity(EnumColors enumColor) => enumColor.color;
 }
