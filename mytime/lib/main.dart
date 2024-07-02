@@ -20,14 +20,18 @@ class _MyTimeState extends State<MyTime> {
   //texto no formato hora mostrado no início
   DateTime oldTimeDt = DateTime.now();
   String oldTimeTxt = '';
-  DateTime oldDateGeralDt = DateTime(0000, 0, 0, 0, 0);
   //tempo total mostrado na tela
-  String timeTotalTxt = '00:00';
+  String timeTotalTxt = '00:00:00';
   List<Widget> registers = [];
+  List<Widget> historic = [];
 
   //TODO: atualizar listas
-  Future<List<Widget>> getData() {
+  Future<List<Widget>> getRegisters() {
     return Future.value(registers);
+  }
+
+  Future<List<Widget>> getHistoric() {
+    return Future.value(historic);
   }
 
   @override
@@ -51,12 +55,22 @@ class _MyTimeState extends State<MyTime> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
+                      // if (timeTotalGeral.day != DateTime.now().day) {
+                      if (true) {
+                        historic.add(historicCard());
+                        // registers = [];
+                        // timeTotalTxt = '00:00:00';
+                        // oldTimeTxt = '';
+                        // timeTotalGeral = DateTime(DateTime.now().year,
+                        //     DateTime.now().month, DateTime.now().day, 0, 0);
+                      }
+
                       List<dynamic> result = dayRegisterList(
                         toggleBtn,
                         registers,
                         oldTimeTxt: oldTimeTxt,
                         oldTimeDt: oldTimeDt,
-                        timeTotalGeralDt: timeTotalGeralDt,
+                        timeTotalGeralDt: timeTotalGeral,
                         // oldDate: oldDateGeralDt,
                       );
 
@@ -70,6 +84,7 @@ class _MyTimeState extends State<MyTime> {
                         timeTotalTxt = result[1];
                         timeTotalGeral = result[2];
                       }
+
                       toggleBtn = !toggleBtn;
                     });
                   },
@@ -81,23 +96,23 @@ class _MyTimeState extends State<MyTime> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    'Registros de hoje $timeTotal',
+                    'Registros de hoje $timeTotalTxt',
                     style: MyTextStyles.title,
                   ),
                 ),
                 Container(
                   // alignment: Alignment.topCenter,
                   height: 300,
-                  width: 340,
+                  width: 400,
                   margin: const EdgeInsets.only(top: 5, bottom: 15),
                   decoration: BoxDecoration(
                       color: Colors.grey[600],
                       borderRadius: BorderRadius.circular(10)),
                   padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   //TODO: atualizar listas
                   child: FutureBuilder(
-                      future: getData(),
+                      future: getRegisters(),
                       builder: (_, data) {
                         return ListView.builder(
                             itemCount: registers.length,
@@ -119,9 +134,15 @@ class _MyTimeState extends State<MyTime> {
                       borderRadius: BorderRadius.circular(10)),
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
-                  child: Column(
-                    children: [],
-                  ),
+                  child: FutureBuilder(
+                      future: getHistoric(),
+                      builder: (_, data) {
+                        return ListView.builder(
+                            itemCount: historic.length,
+                            itemBuilder: (_, int index) {
+                              return historic[index];
+                            });
+                      }),
                 ),
               ],
             ),
@@ -130,4 +151,8 @@ class _MyTimeState extends State<MyTime> {
       ),
     );
   }
+}
+
+Widget historicCard() {
+  return Text('Blz');
 }
