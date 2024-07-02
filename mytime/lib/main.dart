@@ -17,9 +17,12 @@ class _MyTimeState extends State<MyTime> {
   bool toggleBtn = true;
   DateTime timeTotalGeral = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0);
-  DateTime oldTime = DateTime.now();
-  DateTime oldDate = DateTime(0000, 0, 0, 0, 0);
-  var timeTotal = '00:00';
+  //texto no formato hora mostrado no início
+  DateTime oldTimeDt = DateTime.now();
+  String oldTimeTxt = '';
+  DateTime oldDateGeralDt = DateTime(0000, 0, 0, 0, 0);
+  //tempo total mostrado na tela
+  String timeTotalTxt = '00:00';
   List<Widget> registers = [];
 
   //TODO: atualizar listas
@@ -49,17 +52,22 @@ class _MyTimeState extends State<MyTime> {
                   onPressed: () {
                     setState(() {
                       List<dynamic> result = dayRegisterList(
-                          toggleBtn, registers,
-                          oldTime: oldTime,
-                          oldDate: oldDate,
-                          timeTotalGeral: timeTotalGeral);
+                        toggleBtn,
+                        registers,
+                        oldTimeTxt: oldTimeTxt,
+                        oldTimeDt: oldTimeDt,
+                        timeTotalGeralDt: timeTotalGeralDt,
+                        // oldDate: oldDateGeralDt,
+                      );
 
                       if (toggleBtn) {
-                        oldTime = result[0];
+                        //oldTimeDt é a hora inicial para calcular a hora na linha
+                        oldTimeDt = result[0];
                         registers.add(result[1]);
+                        oldTimeTxt = result[2];
                       } else {
                         registers[registers.length - 1] = result[0];
-                        timeTotal = result[1];
+                        timeTotalTxt = result[1];
                         timeTotalGeral = result[2];
                       }
                       toggleBtn = !toggleBtn;
@@ -119,37 +127,6 @@ class _MyTimeState extends State<MyTime> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class MyWidget extends StatefulWidget {
-  final String initHour;
-  final String finalHour;
-  const MyWidget({super.key, required this.initHour, required this.finalHour});
-
-  @override
-  State<MyWidget> createState() => _MyWidgetState();
-}
-
-class _MyWidgetState extends State<MyWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(10)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Início ${widget.initHour}',
-            style: MyTextStyles.comum,
-          ),
-          Text('Término: ${widget.finalHour}', style: MyTextStyles.comum)
-        ],
       ),
     );
   }
