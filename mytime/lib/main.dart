@@ -15,6 +15,11 @@ class MyTime extends StatefulWidget {
 
 class _MyTimeState extends State<MyTime> {
   bool toggleBtn = true;
+  DateTime timeTotalGeral = DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0);
+  DateTime oldTime = DateTime.now();
+  DateTime oldDate = DateTime(0000, 0, 0, 0, 0);
+  var timeTotal = '00:00';
   List<Widget> registers = [];
 
   //TODO: atualizar listas
@@ -42,14 +47,20 @@ class _MyTimeState extends State<MyTime> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // List<Widget> mylist = [];
-                    // registers = dayRegisterList(toggleBtn, registers);
                     setState(() {
+                      List<dynamic> result = dayRegisterList(
+                          toggleBtn, registers,
+                          oldTime: oldTime,
+                          oldDate: oldDate,
+                          timeTotalGeral: timeTotalGeral);
+
                       if (toggleBtn) {
-                        registers.add(dayRegisterList(toggleBtn, registers));
+                        oldTime = result[0];
+                        registers.add(result[1]);
                       } else {
-                        registers[registers.length - 1] =
-                            dayRegisterList(toggleBtn, registers);
+                        registers[registers.length - 1] = result[0];
+                        timeTotal = result[1];
+                        timeTotalGeral = result[2];
                       }
                       toggleBtn = !toggleBtn;
                     });
@@ -62,7 +73,7 @@ class _MyTimeState extends State<MyTime> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    'Registros de hoje',
+                    'Registros de hoje $timeTotal',
                     style: MyTextStyles.title,
                   ),
                 ),

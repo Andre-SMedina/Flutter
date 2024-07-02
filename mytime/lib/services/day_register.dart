@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:mytime/styles/my_text_styles.dart';
 
-dayRegisterList(bool toggle, List lista) {
-  // List<Widget> listRegisters = [];
-  // var dateNow = DateTime.now().add(const Duration(hours: -3));
-  var hourNow = DateTime.now().add(const Duration(hours: -3)).hour.toString();
-  var minNow = DateTime.now().add(const Duration(hours: -3)).minute.toString();
-  var hourFullNow = '$hourNow:$minNow';
+List<dynamic> dayRegisterList(bool toggle, List lista,
+    {var oldTime, var oldDate, var timeTotalGeral}) {
+  DateTime dateNow = DateTime.now();
+  DateTime? hourTotal;
+  String hourNow = dateNow.hour.toString();
+  String minNow = dateNow.minute.toString();
+  String hourFullNow =
+      '${(hourNow.length == 2) ? hourNow : '0$hourNow'}:${(minNow.length == 2) ? minNow : '0$minNow'}';
 
   if (toggle) {
-    return MyWidget(initHour: hourFullNow, finalHour: '...');
+    return [
+      dateNow,
+      MyWidget(initHour: hourFullNow, finalHour: 'xx:xx'),
+    ];
   } else {
-    lista[lista.length - 1] = MyWidget(initHour: hourFullNow, finalHour: 'xxx');
-    return lista[lista.length - 1];
-  }
-  // print(hourFullNow);
+    var seconds = dateNow.difference(oldDate).inSeconds;
+    hourTotal = timeTotalGeral.add(Duration(seconds: seconds));
+    String buildHourTotal =
+        '${hourTotal!.hour}:${hourTotal.minute}:${hourTotal.second}';
+    // var hourTotal = dateNow.difference(oldDate).toString().split('.')[0];
 
-  // return lista;
+    lista[lista.length - 1] =
+        MyWidget(initHour: oldTime, finalHour: hourFullNow);
+    return [lista[lista.length - 1], buildHourTotal, hourTotal];
+  }
 }
 
 class MyWidget extends StatefulWidget {
