@@ -14,6 +14,18 @@ class MyTime extends StatefulWidget {
 }
 
 class _MyTimeState extends State<MyTime> {
+  Map<String, dynamic> mapTime = {
+    'toggleBtn': true,
+    'oldTimeTxt': '',
+    //texto no formato hora mostrado no início
+    'oldTimeDt': DateTime.now(),
+    //tempo total mostrado na tela
+    'timeTotalTxt': '00:00:00',
+    'timeTotalGeral': DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0),
+    'register': '',
+    'historic': '',
+  };
   bool toggleBtn = true;
   DateTime timeTotalGeral = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0);
@@ -35,6 +47,8 @@ class _MyTimeState extends State<MyTime> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        floatingActionButton:
+            ElevatedButton(onPressed: () {}, child: const Text('add')),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 190, 13, 0),
           title: const Text(
@@ -52,47 +66,51 @@ class _MyTimeState extends State<MyTime> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      if (timeTotalGeral.day != DateTime.now().day) {
+                      if (mapTime['timeTotalGeral'].day != DateTime.now().day) {
                         historicCard();
                         registers = [];
-                        timeTotalTxt = '00:00:00';
-                        oldTimeTxt = '';
-                        timeTotalGeral = DateTime(DateTime.now().year,
-                            DateTime.now().month, DateTime.now().day, 0, 0);
+                        mapTime['timeTotalTxt'] = '00:00:00';
+                        mapTime['oldTimeTxt'] = '';
+                        mapTime['timeTotalGeral'] = DateTime(
+                            DateTime.now().year,
+                            DateTime.now().month,
+                            DateTime.now().day,
+                            0,
+                            0);
                       }
 
                       List<dynamic> result = dayRegisterList(
-                        toggleBtn,
+                        mapTime['toggleBtn'],
                         registers,
-                        oldTimeTxt: oldTimeTxt,
-                        oldTimeDt: oldTimeDt,
-                        timeTotalGeralDt: timeTotalGeral,
+                        oldTimeTxt: mapTime['oldTimeTxt'],
+                        oldTimeDt: mapTime['oldTimeDt'],
+                        timeTotalGeralDt: mapTime['timeTotalGeral'],
                         // oldDate: oldDateGeralDt,
                       );
 
-                      if (toggleBtn) {
+                      if (mapTime['toggleBtn']) {
                         //oldTimeDt é a hora inicial para calcular a hora na linha
-                        oldTimeDt = result[0];
+                        mapTime['oldTimeDt'] = result[0];
                         registers.add(result[1]);
-                        oldTimeTxt = result[2];
+                        mapTime['oldTimeTxt'] = result[2];
                       } else {
                         registers[registers.length - 1] = result[0];
-                        timeTotalTxt = result[1];
-                        timeTotalGeral = result[2];
+                        mapTime['timeTotalTxt'] = result[1];
+                        mapTime['timeTotalGeral'] = result[2];
                       }
 
-                      toggleBtn = !toggleBtn;
+                      mapTime['toggleBtn'] = !mapTime['toggleBtn'];
                     });
                   },
                   child: Text(
-                    (toggleBtn) ? 'Iniciar' : 'Finalizar',
+                    (mapTime['toggleBtn']) ? 'Iniciar' : 'Finalizar',
                     style: const TextStyle(color: Colors.black, fontSize: 18),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    'Registros de hoje $timeTotalTxt',
+                    'Registros de hoje ${mapTime['timeTotalTxt']}',
                     style: MyTextStyles.title,
                   ),
                 ),
@@ -162,12 +180,12 @@ class _MyTimeState extends State<MyTime> {
   }
 
   historicCard() {
-    String day = formatTime(timeTotalGeral.day.toString());
-    String month = formatTime(timeTotalGeral.month.toString());
-    String year = formatTime(timeTotalGeral.year.toString());
-    String hour = formatTime(timeTotalGeral.hour.toString());
-    String minute = formatTime(timeTotalGeral.minute.toString());
-    String second = formatTime(timeTotalGeral.second.toString());
+    String day = formatTime(mapTime['timeTotalGeral'].day.toString());
+    String month = formatTime(mapTime['timeTotalGeral'].month.toString());
+    String year = formatTime(mapTime['timeTotalGeral'].year.toString());
+    String hour = formatTime(mapTime['timeTotalGeral'].hour.toString());
+    String minute = formatTime(mapTime['timeTotalGeral'].minute.toString());
+    String second = formatTime(mapTime['timeTotalGeral'].second.toString());
     historic.add(Container(
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10)),
