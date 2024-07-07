@@ -11,9 +11,9 @@ List<dynamic> dayRegisterList(bool toggle, List lista,
     var historic}) {
   DateTime dateNow = DateTime.now();
   DateTime? hourTotal;
-  String hourNow = formatTime(dateNow.hour.toString());
-  String minNow = formatTime(dateNow.minute.toString());
-  String secNow = formatTime(dateNow.second.toString());
+  String hourNow = dateNow.hour.toString().padLeft(2, '0');
+  String minNow = dateNow.minute.toString().padLeft(2, '0');
+  String secNow = dateNow.second.toString().padLeft(2, '0');
   //texto no formato hora mostrado no início
   String hourFullNow = '$hourNow:$minNow:$secNow';
 
@@ -27,7 +27,7 @@ List<dynamic> dayRegisterList(bool toggle, List lista,
     var seconds = dateNow.difference(oldTimeDt).inSeconds;
     hourTotal = timeTotalGeralDt!.add(Duration(seconds: seconds));
     String buildHourTotalTxt =
-        '${formatTime(hourTotal.hour.toString())}:${formatTime(hourTotal.minute.toString())}:${formatTime(hourTotal.second.toString())}';
+        '${hourTotal.hour.toString().padLeft(2, '0')}:${hourTotal.minute.toString().padLeft(2, '0')}:${hourTotal.second.toString().padLeft(2, '0')}';
 
     lista[lista.length - 1] =
         MyWidget(initHour: oldTimeTxt, finalHour: hourFullNow);
@@ -64,8 +64,4 @@ class _MyWidgetState extends State<MyWidget> {
       ),
     );
   }
-}
-
-formatTime(String time) {
-  return (time.length == 1) ? '0$time' : time;
 }

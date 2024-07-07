@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:panucci_delivery/screens/home.dart';
+import 'package:panucci_delivery/store/carrinho_store.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const PanucciDelivery());
@@ -16,7 +18,11 @@ class PanucciDelivery extends StatelessWidget {
             seedColor: Color.fromARGB(255, 255, 83, 83),
           ),
           useMaterial3: true),
-      home: Home(),
+      //?Provider serve para tornar variáveis globais
+      home: Provider(
+        create: (_) => CarrinhoStore(),
+        child: Home(),
+      ),
     );
   }
 }

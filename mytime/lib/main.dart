@@ -180,12 +180,12 @@ class _MyTimeState extends State<MyTime> {
   }
 
   historicCard() {
-    String day = formatTime(mapTime['timeTotalGeral'].day.toString());
-    String month = formatTime(mapTime['timeTotalGeral'].month.toString());
-    String year = formatTime(mapTime['timeTotalGeral'].year.toString());
-    String hour = formatTime(mapTime['timeTotalGeral'].hour.toString());
-    String minute = formatTime(mapTime['timeTotalGeral'].minute.toString());
-    String second = formatTime(mapTime['timeTotalGeral'].second.toString());
+    String day = mapTime['timeTotalGeral'].day.toString().padLeft(2, '0');
+    String month = mapTime['timeTotalGeral'].month.toString().padLeft(2, '0');
+    String year = mapTime['timeTotalGeral'].year.toString().padLeft(2, '0');
+    String hour = mapTime['timeTotalGeral'].hour.toString().padLeft(2, '0');
+    String minute = mapTime['timeTotalGeral'].minute.toString().padLeft(2, '0');
+    String second = mapTime['timeTotalGeral'].second.toString().padLeft(2, '0');
     historic.add(Container(
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10)),
@@ -201,9 +201,5 @@ class _MyTimeState extends State<MyTime> {
         ],
       ),
     ));
-  }
-
-  formatTime(String time) {
-    return (time.length == 1) ? '0$time' : time;
   }
 }
