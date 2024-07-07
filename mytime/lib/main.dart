@@ -1,205 +1,301 @@
 import 'package:flutter/material.dart';
-import 'package:mytime/services/day_register.dart';
-import 'package:mytime/styles/my_text_styles.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const MyTime());
+  runApp(MyApp());
 }
 
-class MyTime extends StatefulWidget {
-  const MyTime({super.key});
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: const Color(0xFF3F51B5),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          secondary: const Color(0xFFFF4081),
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Color(0xFF212121)),
+          bodyMedium: TextStyle(color: Color(0xFF757575)),
+        ),
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<MyTime> createState() => _MyTimeState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _MyTimeState extends State<MyTime> {
-  Map<String, dynamic> mapTime = {
-    'toggleBtn': true,
-    'oldTimeTxt': '',
-    //texto no formato hora mostrado no início
-    'oldTimeDt': DateTime.now(),
-    //tempo total mostrado na tela
-    'timeTotalTxt': '00:00:00',
-    'timeTotalGeral': DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0),
-    'register': '',
-    'historic': '',
-  };
-  bool toggleBtn = true;
-  DateTime timeTotalGeral = DateTime(
-      DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0);
-  //texto no formato hora mostrado no início
-  DateTime oldTimeDt = DateTime.now();
-  String oldTimeTxt = '';
-  //tempo total mostrado na tela
-  String timeTotalTxt = '00:00:00';
-  List<Widget> registers = [];
-  List<Widget> historic = [];
+class _HomeScreenState extends State<HomeScreen> {
+  List<Map<String, String>> _entries = [];
+  List<Map<String, dynamic>> _history = [];
+  bool _isStarted = false;
+  String? _startTime;
+  DateTime _currentDate = DateTime.now();
+  int totalSeconds = 0;
 
-  //TODO: atualizar listas
-  Future<List<Widget>> getRegisters() {
-    return Future.value(registers);
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+    _loadEntries();
+  }
+
+  void _loadHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('history')) {
+      setState(() {
+        _history = prefs.getStringList('history')!.map((item) {
+          List<String> parts = item.split(';');
+          return {
+            'date': parts[0],
+            'totalSeconds': int.parse(parts[1]),
+            'entries':
+                List<Map<String, String>>.from(parts[2].split('|').map((entry) {
+              List<String> entryParts = entry.split(':');
+              return {'start': entryParts[0], 'end': entryParts[1]};
+            })),
+          };
+        }).toList();
+      });
+    }
+  }
+
+  void _saveHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> historyList = _history.map((entry) {
+      String entriesString =
+          entry['entries'].map((e) => '${e['start']}:${e['end']}').join('|');
+      return '${entry['date']};${entry['totalSeconds']};$entriesString';
+    }).toList();
+    prefs.setStringList('history', historyList);
+  }
+
+  void _loadEntries() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('entries')) {
+      setState(() {
+        _entries = prefs
+            .getStringList('entries')!
+            .map((item) => item.split(':'))
+            .map((parts) => {'start': parts[0], 'end': parts[1]})
+            .toList();
+        _calculateTotalSeconds();
+      });
+    }
+  }
+
+  void _saveEntries() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> entriesList = _entries.map((entry) {
+      return '${entry['start']}:${entry['end']}';
+    }).toList();
+    await prefs.setStringList('entries', entriesList);
+  }
+
+  void _toggleButton() {
+    if (_entries.isNotEmpty && _currentDate.day != DateTime.now().day) {
+      _finalizeLastEntryIfNeeded();
+      _moveToHistory();
+    }
+
+    if (_isStarted) {
+      String endTime = DateFormat('kk:mm:ss').format(DateTime.now());
+      setState(() {
+        _entries[_entries.length - 1]['end'] = endTime;
+        _isStarted = false;
+        _calculateTotalSeconds();
+        _saveEntries();
+      });
+    } else {
+      _startTime = DateFormat('kk:mm:ss').format(DateTime.now());
+      setState(() {
+        _entries.add({'start': _startTime!, 'end': ''});
+        _isStarted = true;
+        _saveEntries();
+      });
+    }
+  }
+
+  void _finalizeLastEntryIfNeeded() {
+    if (_isStarted && _entries.isNotEmpty && _entries.last['end'] == '') {
+      String endTime = DateFormat('kk:mm:ss').format(DateTime.now());
+      setState(() {
+        _entries[_entries.length - 1]['end'] = endTime;
+        _isStarted = false;
+        _calculateTotalSeconds();
+      });
+    }
+  }
+
+  void _calculateTotalSeconds() {
+    int total = 0;
+    for (var entry in _entries) {
+      if (entry['start'] != null && entry['end'] != null) {
+        DateTime startTime = DateFormat('kk:mm:ss').parse(entry['start']!);
+        DateTime endTime = DateFormat('kk:mm:ss').parse(entry['end']!);
+        Duration difference = endTime.difference(startTime);
+        total += difference.inSeconds;
+      }
+    }
+    setState(() {
+      totalSeconds = total;
+    });
+  }
+
+  void _moveToHistory() {
+    if (_entries.isNotEmpty) {
+      _history.add({
+        'date': DateFormat('yyyy-MM-dd').format(_currentDate),
+        'totalSeconds': totalSeconds,
+        'entries': List.from(_entries),
+      });
+      _saveHistory();
+    }
+    setState(() {
+      _entries.clear();
+      totalSeconds = 0;
+      _currentDate = DateTime.now();
+    });
+  }
+
+  void _clearAllData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    setState(() {
+      _entries.clear();
+      _history.clear();
+      totalSeconds = 0;
+      _currentDate = DateTime.now();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        floatingActionButton:
-            ElevatedButton(onPressed: () {}, child: const Text('add')),
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 190, 13, 0),
-          title: const Text(
-            'My Time',
-            style: TextStyle(color: Colors.white),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Time'),
+        backgroundColor: const Color(0xFF3F51B5),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _clearAllData,
           ),
-        ),
-        backgroundColor: Colors.black,
-        body: Padding(
-          padding:
-              const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.00),
-          child: Center(
-            child: Column(
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ElevatedButton(
+              onPressed: _toggleButton,
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    _isStarted ? Colors.redAccent : const Color(0xFF4CAF50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: Text(
+                _isStarted ? 'Finalizar' : 'Iniciar',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      if (mapTime['timeTotalGeral'].day != DateTime.now().day) {
-                        historicCard();
-                        registers = [];
-                        mapTime['timeTotalTxt'] = '00:00:00';
-                        mapTime['oldTimeTxt'] = '';
-                        mapTime['timeTotalGeral'] = DateTime(
-                            DateTime.now().year,
-                            DateTime.now().month,
-                            DateTime.now().day,
-                            0,
-                            0);
-                      }
-
-                      List<dynamic> result = dayRegisterList(
-                        mapTime['toggleBtn'],
-                        registers,
-                        oldTimeTxt: mapTime['oldTimeTxt'],
-                        oldTimeDt: mapTime['oldTimeDt'],
-                        timeTotalGeralDt: mapTime['timeTotalGeral'],
-                        // oldDate: oldDateGeralDt,
-                      );
-
-                      if (mapTime['toggleBtn']) {
-                        //oldTimeDt é a hora inicial para calcular a hora na linha
-                        mapTime['oldTimeDt'] = result[0];
-                        registers.add(result[1]);
-                        mapTime['oldTimeTxt'] = result[2];
-                      } else {
-                        registers[registers.length - 1] = result[0];
-                        mapTime['timeTotalTxt'] = result[1];
-                        mapTime['timeTotalGeral'] = result[2];
-                      }
-
-                      mapTime['toggleBtn'] = !mapTime['toggleBtn'];
-                    });
-                  },
-                  child: Text(
-                    (mapTime['toggleBtn']) ? 'Iniciar' : 'Finalizar',
-                    style: const TextStyle(color: Colors.black, fontSize: 18),
-                  ),
+                Text(
+                  'Registros de hoje',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    'Registros de hoje ${mapTime['timeTotalTxt']}',
-                    style: MyTextStyles.title,
-                  ),
+                Text(
+                  'Total: ${_formatDuration(Duration(seconds: totalSeconds))}',
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                Container(
-                  // alignment: Alignment.topCenter,
-                  height: 300,
-                  width: 400,
-                  margin: const EdgeInsets.only(top: 5, bottom: 15),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[600],
-                      borderRadius: BorderRadius.circular(10)),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  //TODO: atualizar listas
-                  child: FutureBuilder(
-                      future: getRegisters(),
-                      builder: (_, data) {
-                        return ListView.builder(
-                            itemCount: registers.length,
-                            itemBuilder: (_, int index) {
-                              return registers[index];
-                            });
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 7.0),
-                  child: Text(
-                    'Histórico',
-                    style: MyTextStyles.title,
-                  ),
-                ),
-                Ink(
-                  height: 200,
-                  width: 340,
-                  // margin: const EdgeInsets.only(top: 5),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[600],
-                      borderRadius: BorderRadius.circular(10)),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  child: CustomScrollView(
-                    slivers: <Widget>[
-                      SliverGrid(
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          return historic[index];
-                        }, childCount: historic.length),
-                        //configura para 2 colunas
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          //espaço entre os cards
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          //tamanho de cada cartão, onde o primeiro valor é a largura e o segundo a altura 158/194
-                          childAspectRatio: 3.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
-          ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: const Color(0xFFE0E0E0),
+                    width: 1,
+                  ),
+                ),
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: _entries.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Início: ${_entries[index]['start']}'),
+                          Text('Término: ${_entries[index]['end']}'),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Histórico',
+              style: Theme.of(context).textTheme.bodyLarge,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: const Color(0xFFE0E0E0),
+                    width: 1,
+                  ),
+                ),
+                child: _history.isEmpty
+                    ? const Center(child: Text('Histórico vazio'))
+                    : ListView.builder(
+                        padding: const EdgeInsets.all(8.0),
+                        itemCount: _history.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text('Data: ${_history[index]['date']}'),
+                            subtitle: Text(
+                                'Total: ${_formatDuration(Duration(seconds: _history[index]['totalSeconds']))}'),
+                          );
+                        },
+                      ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  historicCard() {
-    String day = mapTime['timeTotalGeral'].day.toString().padLeft(2, '0');
-    String month = mapTime['timeTotalGeral'].month.toString().padLeft(2, '0');
-    String year = mapTime['timeTotalGeral'].year.toString().padLeft(2, '0');
-    String hour = mapTime['timeTotalGeral'].hour.toString().padLeft(2, '0');
-    String minute = mapTime['timeTotalGeral'].minute.toString().padLeft(2, '0');
-    String second = mapTime['timeTotalGeral'].second.toString().padLeft(2, '0');
-    historic.add(Container(
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        children: [
-          Text(
-            '$day/$month/$year',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text(
-            '$hour:$minute:$second',
-          ),
-        ],
-      ),
-    ));
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 }
