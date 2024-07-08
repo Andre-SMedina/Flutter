@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color(0xFF3F51B5),
         colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -178,6 +179,38 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _confirmClearData() async {
+    bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: const Text('Confirmar Limpeza de Dados'),
+          content:
+              const Text('Tem certeza que deseja apagar todos os registros?'),
+          actions: [
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: const Text('Confirmar'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirm == true) {
+      _clearAllData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,8 +219,10 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: const Color(0xFF3F51B5),
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: _clearAllData,
+            icon: const Icon(Icons.delete_forever),
+            onPressed: _confirmClearData,
+            color: const Color.fromARGB(255, 250, 58, 58),
+            iconSize: 25,
           ),
         ],
       ),
