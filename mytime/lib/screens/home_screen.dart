@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _loadHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey('history')) {
+      // print(prefs.getStringList('history'));
       setState(() {
         _history = prefs.getStringList('history')!.map((item) {
           List<String> parts = item.split(';');
@@ -63,6 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
             .getStringList('entries')!
             .map((item) => Entry.fromString(item))
             .toList();
+        if (_entries.last.start == _entries.last.end) {
+          _entries.removeLast();
+        }
         _calculateTotalSeconds();
       });
     }
@@ -92,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       _startTime = DateFormat('kk:mm:ss').format(DateTime.now());
       setState(() {
-        _entries.add(Entry(start: _startTime!, end: ''));
+        _entries.add(Entry(start: _startTime!, end: _startTime!));
         _isStarted = true;
         _saveEntries();
       });
@@ -111,15 +115,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _calculateTotalSeconds() {
-    int total = 0;
+    int total = 0; // Inicializa uma variável para armazenar o total de segundos
+
     for (var entry in _entries) {
-      if (entry.start.isNotEmpty && entry.end.isNotEmpty) {
-        DateTime startTime = DateFormat('kk:mm:ss').parse(entry.start);
-        DateTime endTime = DateFormat('kk:mm:ss').parse(entry.end);
-        Duration difference = endTime.difference(startTime);
-        total += difference.inSeconds;
-      }
+      String? start = entry.start;
+      String? end = entry.end;
+
+      // Converte as strings de início e fim em objetos DateTime
+      DateTime startTime = DateFormat('kk:mm:ss').parse(start);
+      DateTime endTime = DateFormat('kk:mm:ss').parse(end);
+      // Calcula a diferença entre o tempo de início e fim
+      Duration difference = endTime.difference(startTime);
+      // Adiciona a diferença em segundos ao total
+      total += difference.inSeconds;
     }
+
+    // Atualiza o estado para armazenar o total de segundos calculado
     setState(() {
       totalSeconds = total;
     });
@@ -189,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Time'),
+        title: const Text('My Time', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF3F51B5),
         actions: [
           IconButton(
@@ -272,9 +283,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: _history.length,
                         itemBuilder: (context, index) {
                           return ListTile(
-                            title: Text('Data: ${_history[index].date}'),
+                            title: Text(
+                              'Data: ${_history[index].date}',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
                             subtitle: Text(
-                                'Total: ${_formatDuration(Duration(seconds: _history[index].totalSeconds))}'),
+                              'Total: ${_formatDuration(Duration(seconds: _history[index].totalSeconds))}',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
                           );
                         },
                       ),

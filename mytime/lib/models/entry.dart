@@ -6,11 +6,11 @@ class Entry {
 
   @override
   String toString() {
-    return '$start:$end';
+    return '$start,$end';
   }
 
   static Entry fromString(String string) {
-    List<String> parts = string.split(':');
+    List<String> parts = string.split(',');
     return Entry(
       start: parts[0],
       end: parts[1],

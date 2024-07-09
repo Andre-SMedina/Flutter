@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Color(0xFF212121)),
           bodyMedium: TextStyle(color: Color(0xFF757575), fontSize: 16),
+          bodySmall: TextStyle(color: Color(0xFF757575), fontSize: 14),
           headlineLarge: TextStyle(color: Color(0xFF212121), fontSize: 20),
         ),
       ),
