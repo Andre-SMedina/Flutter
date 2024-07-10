@@ -17,7 +17,7 @@ class EntryList extends StatelessWidget {
           children: [
             Text('Início: ${entries[index].start}'),
             Text(
-                'Fim: ${entries[index].end.isEmpty ? 'loading..' : entries[index].end}')
+                'Fim: ${entries[index].end == entries[index].start ? 'loading..' : entries[index].end}')
           ],
         );
       },
