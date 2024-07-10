@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mytime/models/entry.dart';
 import 'package:mytime/models/history_entry.dart';
+import 'package:mytime/services/multi_service.dart';
+import 'package:mytime/services/storage_service.dart';
 import 'package:mytime/widgets/entry_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,6 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _startTime;
   DateTime _currentDate = DateTime.now();
   int totalSeconds = 0;
+  StorageService storage = StorageService();
+  MultiService calc = MultiService();
 
   @override
   void initState() {
@@ -47,15 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _saveHistory() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> historyList = _history.map((entry) {
-      String entriesString = entry.entries.map((e) => e.toString()).join('|');
-      return '${entry.date};${entry.totalSeconds};$entriesString';
-    }).toList();
-    prefs.setStringList('history', historyList);
-  }
-
   void _loadEntries() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey('entries')) {
@@ -67,22 +62,18 @@ class _HomeScreenState extends State<HomeScreen> {
         if (_entries.last.start == _entries.last.end) {
           _entries.removeLast();
         }
-        _calculateTotalSeconds();
+        totalSeconds = calc.calculateTotalSeconds(_entries, totalSeconds);
       });
     }
   }
 
-  void _saveEntries() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> entriesList =
-        _entries.map((entry) => entry.toString()).toList();
-    await prefs.setStringList('entries', entriesList);
-  }
-
   void _toggleButton() {
     if (_entries.isNotEmpty && _currentDate.day != DateTime.now().day) {
-      _finalizeLastEntryIfNeeded();
-      _moveToHistory();
+      _isStarted = false;
+      storage.moveToHistory(_entries, _history, _currentDate, totalSeconds);
+      _entries.clear();
+      totalSeconds = 0;
+      _currentDate = DateTime.now();
     }
 
     if (_isStarted) {
@@ -90,67 +81,34 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _entries[_entries.length - 1].end = endTime;
         _isStarted = false;
-        _calculateTotalSeconds();
-        _saveEntries();
+        totalSeconds = calc.calculateTotalSeconds(_entries, totalSeconds);
+        storage.saveEntries(_entries);
       });
     } else {
       _startTime = DateFormat('kk:mm:ss').format(DateTime.now());
       setState(() {
         _entries.add(Entry(start: _startTime!, end: _startTime!));
         _isStarted = true;
-        _saveEntries();
+        storage.saveEntries(_entries);
       });
     }
   }
 
-  void _finalizeLastEntryIfNeeded() {
-    if (_isStarted && _entries.isNotEmpty && _entries.last.end.isEmpty) {
-      String endTime = DateFormat('kk:mm:ss').format(DateTime.now());
-      setState(() {
-        _entries[_entries.length - 1].end = endTime;
-        _isStarted = false;
-        _calculateTotalSeconds();
-      });
-    }
-  }
-
-  void _calculateTotalSeconds() {
-    int total = 0; // Inicializa uma variável para armazenar o total de segundos
-
-    for (var entry in _entries) {
-      String? start = entry.start;
-      String? end = entry.end;
-
-      // Converte as strings de início e fim em objetos DateTime
-      DateTime startTime = DateFormat('kk:mm:ss').parse(start);
-      DateTime endTime = DateFormat('kk:mm:ss').parse(end);
-      // Calcula a diferença entre o tempo de início e fim
-      Duration difference = endTime.difference(startTime);
-      // Adiciona a diferença em segundos ao total
-      total += difference.inSeconds;
-    }
-
-    // Atualiza o estado para armazenar o total de segundos calculado
-    setState(() {
-      totalSeconds = total;
-    });
-  }
-
-  void _moveToHistory() {
-    if (_entries.isNotEmpty) {
-      _history.add(HistoryEntry(
-        date: DateFormat('yyyy-MM-dd').format(_currentDate),
-        totalSeconds: totalSeconds,
-        entries: List.from(_entries),
-      ));
-      _saveHistory();
-    }
-    setState(() {
-      _entries.clear();
-      totalSeconds = 0;
-      _currentDate = DateTime.now();
-    });
-  }
+  // void _moveToHistory() {
+  //   if (_entries.isNotEmpty) {
+  //     _history.add(HistoryEntry(
+  //       date: DateFormat('yyyy-MM-dd').format(_currentDate),
+  //       totalSeconds: totalSeconds,
+  //       entries: List.from(_entries),
+  //     ));
+  //     storage.saveHistory(_history);
+  //   }
+  //   setState(() {
+  //     _entries.clear();
+  //     totalSeconds = 0;
+  //     _currentDate = DateTime.now();
+  //   });
+  // }
 
   void _clearAllData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -278,22 +236,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: _history.isEmpty
                     ? const Center(child: Text('Histórico vazio'))
-                    : ListView.builder(
+                    : ListView.separated(
                         padding: const EdgeInsets.all(8.0),
                         itemCount: _history.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(
+                          return Column(children: [
+                            Text(
                               'Data: ${_history[index].date}',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
-                            subtitle: Text(
+                            Text(
                               'Total: ${_formatDuration(Duration(seconds: _history[index].totalSeconds))}',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
-                          );
+                          ]);
                         },
-                      ),
+                        separatorBuilder: (context, index) => const Divider(
+                              color: Colors.black,
+                            )),
               ),
             ),
           ],
