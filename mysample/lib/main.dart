@@ -1,4 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mysample/widgets/checkbox.dart';
+import 'package:mysample/widgets/my_expanded.dart';
 
-void main() => runApp(MyCheckbox());
+void main() => runApp(MyExpanded());
