@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime _currentDate = DateTime.now();
   int totalSeconds = 0;
   StorageService storage = StorageService();
-  MultiService calc = MultiService();
+  MultiService service = MultiService();
 
   @override
   void initState() {
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (_entries.last.start == _entries.last.end) {
           _entries.removeLast();
         }
-        totalSeconds = calc.calculateTotalSeconds(_entries, totalSeconds);
+        totalSeconds = service.calculateTotalSeconds(_entries, totalSeconds);
       });
     }
   }
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _entries[_entries.length - 1].end = endTime;
         _isStarted = false;
-        totalSeconds = calc.calculateTotalSeconds(_entries, totalSeconds);
+        totalSeconds = service.calculateTotalSeconds(_entries, totalSeconds);
         storage.saveEntries(_entries);
       });
     } else {
@@ -93,22 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
-
-  // void _moveToHistory() {
-  //   if (_entries.isNotEmpty) {
-  //     _history.add(HistoryEntry(
-  //       date: DateFormat('yyyy-MM-dd').format(_currentDate),
-  //       totalSeconds: totalSeconds,
-  //       entries: List.from(_entries),
-  //     ));
-  //     storage.saveHistory(_history);
-  //   }
-  //   setState(() {
-  //     _entries.clear();
-  //     totalSeconds = 0;
-  //     _currentDate = DateTime.now();
-  //   });
-  // }
 
   void _clearAllData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -198,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  'Total: ${_formatDuration(Duration(seconds: totalSeconds))}',
+                  'Total: ${service.formatDuration(Duration(seconds: totalSeconds))}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -246,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             Text(
-                              'Total: ${_formatDuration(Duration(seconds: _history[index].totalSeconds))}',
+                              'Total: ${service.formatDuration(Duration(seconds: _history[index].totalSeconds))}',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ]);
@@ -260,12 +244,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 }
