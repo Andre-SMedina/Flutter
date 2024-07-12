@@ -30,14 +30,14 @@ class Cartao extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
                       item.nome,
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text("R\$ ${item.preco.toStringAsFixed(2)}"),
                   ),
                   Contador(item: item),

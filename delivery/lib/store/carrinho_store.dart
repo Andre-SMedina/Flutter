@@ -21,10 +21,20 @@ abstract class _CarrinhoStore with Store {
   @action
   void adicionaCarrinho(Item item) {
     listaItem.add(item);
+    atualizaTotalDaCompra();
   }
 
   @action
   void removerCarrinho(Item item) {
     listaItem.remove(item);
+    atualizaTotalDaCompra();
+  }
+
+  @action
+  void atualizaTotalDaCompra() {
+    totalDaCompra = 0;
+    for (var i = 0; i < listaItem.length; i++) {
+      totalDaCompra += listaItem[i].preco;
+    }
   }
 }

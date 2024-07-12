@@ -82,6 +82,17 @@ mixin _$CarrinhoStore on _CarrinhoStore, Store {
   }
 
   @override
+  void atualizaTotalDaCompra() {
+    final _$actionInfo = _$_CarrinhoStoreActionController.startAction(
+        name: '_CarrinhoStore.atualizaTotalDaCompra');
+    try {
+      return super.atualizaTotalDaCompra();
+    } finally {
+      _$_CarrinhoStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 listaItem: ${listaItem},

@@ -8,7 +8,7 @@ class InitBank extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: MyTheme,
+      theme: myTheme,
       title: 'Bank',
       home: const HomePageBank(),
       initialRoute: '/',

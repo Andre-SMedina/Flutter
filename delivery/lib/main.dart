@@ -15,7 +15,7 @@ class PanucciDelivery extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.from(
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Color.fromARGB(255, 255, 83, 83),
+            seedColor: const Color.fromARGB(255, 255, 83, 83),
           ),
           useMaterial3: true),
       //?Provider serve para tornar variáveis globais
