@@ -62,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (_entries.last.start == _entries.last.end) {
           _entries.removeLast();
         }
+        print(_entries);
         totalSeconds = service.calculateTotalSeconds(_entries, totalSeconds);
       });
     }

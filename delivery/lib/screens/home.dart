@@ -16,6 +16,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     //?O listen é para o caso de haver mudanças
     final carrinhoStore = Provider.of<CarrinhoStore>(context, listen: false);
+    final BuildContext homeContext = context;
 
     return SafeArea(
       child: Scaffold(
@@ -48,7 +49,9 @@ class Home extends StatelessWidget {
                             onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return const Checkout();
+                                return Checkout(
+                                  homeContext: homeContext,
+                                );
                               }));
                             },
                             child: Ink(
