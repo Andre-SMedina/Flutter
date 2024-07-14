@@ -1,12 +1,13 @@
 class Entry {
   String start;
   String end;
+  String day;
 
-  Entry({required this.start, required this.end});
+  Entry({required this.start, required this.end, required this.day});
 
   @override
   String toString() {
-    return '$start,$end';
+    return '$start,$end,$day';
   }
 
   static Entry fromString(String string) {
@@ -14,6 +15,7 @@ class Entry {
     return Entry(
       start: parts[0],
       end: parts[1],
+      day: parts[2],
     );
   }
 }

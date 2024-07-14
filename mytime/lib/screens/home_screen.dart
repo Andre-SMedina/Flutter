@@ -27,14 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadHistory();
     _loadEntries();
+    _loadHistory();
   }
 
   void _loadHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey('history')) {
-      // print(prefs.getStringList('history'));
       setState(() {
         _history = prefs.getStringList('history')!.map((item) {
           List<String> parts = item.split(';');
@@ -59,23 +58,36 @@ class _HomeScreenState extends State<HomeScreen> {
             .getStringList('entries')!
             .map((item) => Entry.fromString(item))
             .toList();
-        if (_entries.last.start == _entries.last.end) {
+        _currentDate = DateTime.parse(_entries.last.day);
+        totalSeconds = service.calculateTotalSeconds(_entries, totalSeconds);
+        if (_entries.last.start == _entries.last.end &&
+            _currentDate.day == DateTime.now().day) {
           _entries.removeLast();
         }
-        print(_entries);
-        totalSeconds = service.calculateTotalSeconds(_entries, totalSeconds);
+        afterDay();
       });
     }
   }
 
-  void _toggleButton() {
+  void afterDay() async {
     if (_entries.isNotEmpty && _currentDate.day != DateTime.now().day) {
+      // if (_entries.isNotEmpty && false) {
+      if (_entries.last.start == _entries.last.end) {
+        _entries[_entries.length - 1].end = '24:59:59';
+        totalSeconds = service.calculateTotalSeconds(_entries, totalSeconds);
+      }
       _isStarted = false;
       storage.moveToHistory(_entries, _history, _currentDate, totalSeconds);
+      _currentDate = DateTime.now();
       _entries.clear();
       totalSeconds = 0;
-      _currentDate = DateTime.now();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('entries');
     }
+  }
+
+  void _toggleButton() async {
+    afterDay();
 
     if (_isStarted) {
       String endTime = DateFormat('kk:mm:ss').format(DateTime.now());
@@ -88,7 +100,10 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       _startTime = DateFormat('kk:mm:ss').format(DateTime.now());
       setState(() {
-        _entries.add(Entry(start: _startTime!, end: _startTime!));
+        _entries.add(Entry(
+            start: _startTime!,
+            end: _startTime!,
+            day: _currentDate.toString()));
         _isStarted = true;
         storage.saveEntries(_entries);
       });
@@ -104,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _history.clear();
       totalSeconds = 0;
       _currentDate = DateTime.now();
+      _isStarted = false;
     });
   }
 
