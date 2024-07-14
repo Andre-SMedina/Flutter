@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_entries.isNotEmpty && _currentDate.day != DateTime.now().day) {
       // if (_entries.isNotEmpty && false) {
       if (_entries.last.start == _entries.last.end) {
-        _entries[_entries.length - 1].end = '24:59:59';
+        _entries[_entries.length - 1].end = '23:59:59';
         totalSeconds = service.calculateTotalSeconds(_entries, totalSeconds);
       }
       _isStarted = false;
