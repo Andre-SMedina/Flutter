@@ -1,33 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:useapi/models/journal.dart';
 import 'package:useapi/screens/add_journal_screen/add_journal_screen.dart';
-import 'package:useapi/services/journal_service.dart';
 import 'screens/home_screen/home_screen.dart';
 
 void main() {
-  runApp(const ApiTest());
-}
-
-class ApiTest extends StatelessWidget {
-  const ApiTest({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    JournalService service = JournalService();
-
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              service.get();
-            },
-            child: const Text('Aperte'),
-          ),
-        ),
-      ),
-    );
-  }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -40,6 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
         appBarTheme: const AppBarTheme(
+          actionsIconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: Colors.white),
           elevation: 0,
           backgroundColor: Colors.black,
           titleTextStyle: TextStyle(color: Colors.white),
@@ -48,10 +28,24 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.light,
-      initialRoute: "add-journal",
+      initialRoute: "home",
       routes: {
         "home": (context) => const HomeScreen(),
-        "add-journal": (context) => const AddJournalScreen(),
+        // "add-journal": (context) => AddJournalScreen(
+        //       journal: Journal(
+        //           content: '',
+        //           id: '',
+        //           createdAt: DateTime.now(),
+        //           updatedAt: DateTime.now()),
+        //     ),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == "add-journal") {
+          final Journal journal = settings.arguments as Journal;
+          return MaterialPageRoute(builder: (context) {
+            return AddJournalScreen(journal: journal);
+          });
+        }
       },
     );
   }
