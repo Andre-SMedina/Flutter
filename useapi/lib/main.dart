@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:useapi/models/journal.dart';
 import 'package:useapi/screens/add_journal_screen/add_journal_screen.dart';
+import 'package:useapi/services/journal_service.dart';
 import 'screens/home_screen/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
+
+  JournalService service = JournalService();
+  service.register(Journal.empty());
+  // service.get();
 }
 
 class MyApp extends StatelessWidget {
@@ -31,13 +36,6 @@ class MyApp extends StatelessWidget {
       initialRoute: "home",
       routes: {
         "home": (context) => const HomeScreen(),
-        // "add-journal": (context) => AddJournalScreen(
-        //       journal: Journal(
-        //           content: '',
-        //           id: '',
-        //           createdAt: DateTime.now(),
-        //           updatedAt: DateTime.now()),
-        //     ),
       },
       onGenerateRoute: (settings) {
         if (settings.name == "add-journal") {
@@ -45,6 +43,8 @@ class MyApp extends StatelessWidget {
           return MaterialPageRoute(builder: (context) {
             return AddJournalScreen(journal: journal);
           });
+        } else {
+          throw Exception('Rota não encontrada: ${settings.name}');
         }
       },
     );
