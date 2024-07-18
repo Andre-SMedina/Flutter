@@ -17,8 +17,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           // primarySwatch: Colors.red,
           appBarTheme: const AppBarTheme(
-              titleTextStyle: TextStyle(color: Colors.white, fontSize: 28),
-              backgroundColor: Color.fromARGB(255, 14, 0, 167))),
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 28),
+            backgroundColor: Color.fromARGB(255, 14, 0, 167),
+          ),
+          inputDecorationTheme: const InputDecorationTheme(
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    width: 2, color: Color.fromARGB(255, 14, 0, 167))),
+            border: OutlineInputBorder(borderSide: BorderSide()),
+          ),
+          textTheme: const TextTheme(headlineLarge: TextStyle(fontSize: 20))),
       home: const HomePage(),
     );
   }
