@@ -1,4 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mysample/widgets/my_expanded.dart';
+import 'package:mysample/widgets/my_dropdown.dart';
 
-void main() => runApp(MyExpanded());
+void main() => runApp(MyDropdown());

@@ -1,6 +1,7 @@
 import 'package:acesso_mp/models/model_home_fields.dart';
 import 'package:acesso_mp/models/model_visitors.dart';
 import 'package:acesso_mp/services/database.dart';
+import 'package:acesso_mp/widgets/my_dropdown.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
+    // TextEditingController searchController = TextEditingController();
 
     ModelHomeFields nameField = ModelHomeFields(text: 'Nome');
     ModelHomeFields cpfField = ModelHomeFields(text: 'CPF');
@@ -37,34 +38,35 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 8),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 500),
-                child: TextField(
-                  controller: searchController,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Nome',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                child: const MyDropdown(),
+                // child: TextField(
+                //   controller: searchController,
+                //   autofocus: true,
+                //   decoration: const InputDecoration(
+                //     labelText: 'Nome',
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
               ),
               const SizedBox(height: 16),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    //!Fazer verificações******************************
-                    db.get(searchController.text).then((onValue) {
-                      if (onValue != null) {
-                        nameField.loadData(onValue!.name);
-                        cpfField.loadData(onValue.cpf);
-                        rgField.loadData(onValue.rg);
-                        phoneField.loadData(onValue.phone);
-                        jobField.loadData(onValue.job);
-                        whoVisitField.loadData(onValue.whoVisit);
-                      }
-                    });
-                  },
-                  child: const Text('Buscar Visitante'),
-                ),
-              ),
+              // Center(
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       //!Fazer verificações******************************
+              //       db.get(searchController.text).then((onValue) {
+              //         if (onValue != null) {
+              //           nameField.loadData(onValue.name);
+              //           cpfField.loadData(onValue.cpf);
+              //           rgField.loadData(onValue.rg);
+              //           phoneField.loadData(onValue.phone);
+              //           jobField.loadData(onValue.job);
+              //           whoVisitField.loadData(onValue.whoVisit);
+              //         }
+              //       });
+              //     },
+              //     child: const Text('Buscar Visitante'),
+              //   ),
+              // ),
               const SizedBox(
                 height: 60,
                 child: Divider(),
