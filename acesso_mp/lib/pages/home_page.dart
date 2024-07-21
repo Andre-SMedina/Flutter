@@ -1,11 +1,29 @@
-import 'package:acesso_mp/models/home_fields.dart';
+import 'package:acesso_mp/models/model_home_fields.dart';
+import 'package:acesso_mp/models/model_visitors.dart';
+import 'package:acesso_mp/services/database.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final Database db = Database();
+
+  @override
   Widget build(BuildContext context) {
+    TextEditingController searchController = TextEditingController();
+
+    ModelHomeFields nameField = ModelHomeFields(text: 'Nome');
+    ModelHomeFields cpfField = ModelHomeFields(text: 'CPF');
+    ModelHomeFields rgField = ModelHomeFields(text: 'RG');
+    ModelHomeFields phoneField = ModelHomeFields(text: 'Telefone');
+    ModelHomeFields jobField = ModelHomeFields(text: 'Profissão');
+    ModelHomeFields whoVisitField = ModelHomeFields(text: 'Quem Visitar');
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -19,9 +37,10 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 8),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 500),
-                child: const TextField(
+                child: TextField(
+                  controller: searchController,
                   autofocus: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Nome',
                     border: OutlineInputBorder(),
                   ),
@@ -30,7 +49,19 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    //!Fazer verificações******************************
+                    db.get(searchController.text).then((onValue) {
+                      if (onValue != null) {
+                        nameField.loadData(onValue!.name);
+                        cpfField.loadData(onValue.cpf);
+                        rgField.loadData(onValue.rg);
+                        phoneField.loadData(onValue.phone);
+                        jobField.loadData(onValue.job);
+                        whoVisitField.loadData(onValue.whoVisit);
+                      }
+                    });
+                  },
                   child: const Text('Buscar Visitante'),
                 ),
               ),
@@ -51,17 +82,26 @@ class HomePage extends StatelessWidget {
                       child: Form(
                         child: Column(
                           children: [
-                            const HomeFields(text: 'Nome'),
-                            const HomeFields(text: 'CPF'),
-                            const HomeFields(text: 'RG'),
-                            const HomeFields(text: 'Telefone'),
-                            const HomeFields(text: 'Profissão'),
-                            const HomeFields(text: 'Quem visitar'),
+                            nameField,
+                            cpfField,
+                            rgField,
+                            phoneField,
+                            jobField,
+                            whoVisitField,
                             const SizedBox(
                               height: 20,
                             ),
                             ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  db.register(ModelVisitors(
+                                      name: nameField.fieldController.text,
+                                      cpf: cpfField.fieldController.text,
+                                      rg: rgField.fieldController.text,
+                                      phone: phoneField.fieldController.text,
+                                      job: jobField.fieldController.text,
+                                      whoVisit:
+                                          whoVisitField.fieldController.text));
+                                },
                                 child: const Text('Cadastrar'))
                           ],
                         ),
