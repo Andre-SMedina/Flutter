@@ -22,4 +22,8 @@ class ModelHomeFields extends StatelessWidget {
   void loadData(String text) {
     fieldController.text = text;
   }
+
+  void clearData() {
+    fieldController.clear();
+  }
 }
