@@ -1,8 +1,18 @@
 import 'package:acesso_mp/pages/home_page.dart';
+import 'package:acesso_mp/teste/teste.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+late List<CameraDescription> cameras;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  cameras = await availableCameras();
+  runApp(CameraApp(
+    cameras: cameras,
+  ));
+  // runApp(MyTest());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +37,7 @@ class MyApp extends StatelessWidget {
             border: OutlineInputBorder(borderSide: BorderSide()),
           ),
           textTheme: const TextTheme(headlineLarge: TextStyle(fontSize: 20))),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
