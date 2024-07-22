@@ -1,11 +1,13 @@
 import 'package:acesso_mp/models/model_home_fields.dart';
 import 'package:acesso_mp/models/model_visitors.dart';
 import 'package:acesso_mp/services/database.dart';
+import 'package:acesso_mp/teste/teste.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
+  // final camera;
   const HomePage({super.key});
 
   @override
@@ -149,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Center(
-                              child: Text('Imagem'),
+                              child: CameraApp(cameras: cameras),
                             ),
                           ),
                           const SizedBox(
