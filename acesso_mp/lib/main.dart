@@ -8,7 +8,7 @@ Future<void> main() async {
   //garante que o binding do Flutter esteja inicializado antes de executar qualquer código que dependa dele. No Flutter, o binding é a ponte entre o código Dart e a plataforma subjacente (Android ou iOS). Ele é responsável por fornecer acesso a recursos do sistema, como a câmera, armazenamento, rede, etc.
   WidgetsFlutterBinding.ensureInitialized();
 
-  // cameras = await availableCameras();
+  cameras = await availableCameras();
   // runApp(CameraApp(
   //   cameras: cameras,
   // ));
@@ -37,7 +37,9 @@ class MyApp extends StatelessWidget {
             border: OutlineInputBorder(borderSide: BorderSide()),
           ),
           textTheme: const TextTheme(headlineLarge: TextStyle(fontSize: 20))),
-      home: const HomePage(),
+      home: HomePage(
+        cameras: cameras,
+      ),
     );
   }
 }

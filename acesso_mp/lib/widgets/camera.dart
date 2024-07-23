@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:acesso_mp/helpers/show_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,13 +9,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CameraApp extends StatefulWidget {
   /// Default Constructor
   final List<CameraDescription> cameras;
-  const CameraApp({super.key, required this.cameras});
+  final BuildContext context;
+  const CameraApp({super.key, required this.cameras, required this.context});
 
   @override
-  State<CameraApp> createState() => _CameraAppState();
+  State<CameraApp> createState() => CameraAppState();
 }
 
-class _CameraAppState extends State<CameraApp> {
+class CameraAppState extends State<CameraApp> {
   CameraController? controller;
   Uint8List? capturedImage;
 
@@ -25,17 +27,16 @@ class _CameraAppState extends State<CameraApp> {
   }
 
   // Função para inicializar a câmera
-  Future<void> _initializeCamera() async {
+  Future<void> initializeCamera() async {
     controller = CameraController(widget.cameras[0], ResolutionPreset.max);
     await controller!.initialize();
     setState(() {});
   }
 
   // Função para capturar a imagem
-  Future<void> _captureImage() async {
+  Future<void> captureImage(BuildContext context) async {
     try {
       if (controller == null || !controller!.value.isInitialized) {
-        print('A câmera não está inicializada');
         return;
       }
 
@@ -63,7 +64,7 @@ class _CameraAppState extends State<CameraApp> {
       controller = null;
       setState(() {});
     } catch (e) {
-      print('Erro ao capturar a imagem: $e');
+      showErrorDialog(context, 'Erro no método captureImage');
     }
   }
 
@@ -84,52 +85,41 @@ class _CameraAppState extends State<CameraApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Capturar Imagem pela Câmera'),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (controller != null && controller!.value.isInitialized)
-                Container(
-                  height: 400, // Definindo a altura explicitamente
-                  width: 400, // Definindo a largura explicitamente
-                  child: CameraPreview(controller!),
-                )
-              else
-                const Center(
-                  child: Text('Câmera Desativada'),
-                ),
-              if (capturedImage != null)
-                Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    height: 400,
-                    width: 400,
-                    child: Image.memory(
-                      capturedImage!,
-                      fit: BoxFit.cover,
-                    )),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed:
-                      controller == null ? _initializeCamera : _captureImage,
-                  child: Text(
-                      controller == null ? 'Ligar Câmera' : 'Capturar Imagem'),
-                ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          if (controller != null && controller!.value.isInitialized)
+            SizedBox(
+              height: 300, // Definindo a altura explicitamente
+              width: 400, // Definindo a largura explicitamente
+              child: CameraPreview(controller!),
+            )
+          else
+            const SizedBox(),
+          if (capturedImage != null && controller == null)
+            SizedBox(
+              height: 300,
+              width: 400,
+              child: Image.memory(
+                capturedImage!,
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: _showCapturedImage,
-                  child: const Text('Mostrar Imagem Capturada'),
-                ),
-              ),
-            ],
+            ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 4.0),
+            child: ElevatedButton(
+              onPressed: () {
+                if (controller == null) {
+                  initializeCamera();
+                } else {
+                  captureImage(context);
+                }
+              },
+              child:
+                  Text(controller == null ? 'Ligar Câmera' : 'Capturar Imagem'),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

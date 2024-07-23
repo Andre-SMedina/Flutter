@@ -1,14 +1,16 @@
+import 'package:acesso_mp/main.dart';
 import 'package:acesso_mp/models/model_home_fields.dart';
 import 'package:acesso_mp/models/model_visitors.dart';
 import 'package:acesso_mp/services/database.dart';
-import 'package:acesso_mp/teste/teste.dart';
+import 'package:acesso_mp/widgets/camera.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  // final camera;
-  const HomePage({super.key});
+  final List<CameraDescription> cameras;
+  const HomePage({super.key, required this.cameras});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -88,6 +90,7 @@ class _HomePageState extends State<HomePage> {
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 900),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Form(
@@ -142,24 +145,28 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Expanded(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: 300,
-                            height: 360,
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Center(
-                              child: CameraApp(cameras: cameras),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              height: 350,
+                              width: 320,
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Center(
+                                child: CameraApp(
+                                  context: context,
+                                  cameras: cameras,
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(
                             height: 16,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Capturar'),
                           ),
                         ],
                       ),
