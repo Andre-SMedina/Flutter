@@ -28,7 +28,7 @@ class CameraAppState extends State<CameraApp> {
 
   // Função para inicializar a câmera
   Future<void> initializeCamera() async {
-    controller = CameraController(widget.cameras[0], ResolutionPreset.max);
+    controller = CameraController(widget.cameras[0], ResolutionPreset.low);
     await controller!.initialize();
     setState(() {});
   }
@@ -54,6 +54,8 @@ class CameraAppState extends State<CameraApp> {
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('capturedImage', base64Image);
+
+      print(base64Image);
 
       setState(() {
         capturedImage = bytes;
