@@ -35,12 +35,10 @@ class MyDropdownState extends State<MyDropdown> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> items = prefs.getStringList('visitors') ?? [];
-    List<String> visitedItems = prefs.getStringList('visited') ?? [];
     filterList = items.where((item) {
-      return item.toLowerCase().contains(query.toLowerCase());
-    }).toList();
-    visitedList = visitedItems.where((item) {
-      return item.toLowerCase().contains(query.toLowerCase());
+      // remove o nome do visitado para não entrar na pesquisa quando digitar
+      String outVisited = item.split(',').sublist(0, 5).join(',');
+      return outVisited.toLowerCase().contains(query.toLowerCase());
     }).toList();
 
     List<String> listDropdown = filterList.map((item) {
@@ -81,17 +79,13 @@ class MyDropdownState extends State<MyDropdown> {
           var dataVisitor = filterList.firstWhere((item) {
             return item.contains(suggestion);
           }).split(',');
-          var dataVisited = visitedList.firstWhere((item) {
-            return item.contains(suggestion);
-          }).split(',');
 
-          // print(dataVisitor[0]);
           widget.name.loadData(dataVisitor[0]);
           widget.cpf.loadData(dataVisitor[1]);
           widget.rg.loadData(dataVisitor[2]);
           widget.phone.loadData(dataVisitor[3]);
           widget.job.loadData(dataVisitor[4]);
-          widget.whoVisit.loadData(dataVisited[1]);
+          widget.whoVisit.loadData(dataVisitor[5]);
         },
       ),
     );

@@ -19,26 +19,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final Database db = Database();
   final List<String> cadVisitors = [
-    'Andre Luis Silva Medina, 111, 111, 111, gari',
-    'Maria Madalena Silva, 222, 222, 222, vendedora',
-    'Carlos Eduardo Moreno, 333, 333, 333, gerente',
-    'Jorge Silva Nogueira, 444, 444, 444, garçom',
-    'Maria do Rosario, 555, 555, 555, doméstica',
-    'Augusto Carlos de Abreu, 666, 666, 666, eletricista'
-  ];
-  final List<String> cadVisited = [
-    'Andre Luis Silva Medina, Xuxa',
-    'Maria Madalena Silva, Pablo',
-    'Carlos Eduardo Moreno, Tati',
-    'Jorge Silva Nogueira, Jonas',
-    'Maria do Rosario, Fabricio',
-    'Augusto Carlos de Abreu, Fernando'
+    'Andre Luis Silva Medina, 111, 111, 111, gari, xuxa',
+    'Maria Madalena Silva, 222, 222, 222, vendedora, pablo',
+    'Carlos Eduardo Moreno, 333, 333, 333, gerente, tati',
+    'Jorge Silva Nogueira, 444, 444, 444, garçom, jonas',
+    'Maria do Rosario, 555, 555, 555, doméstica, fabricio',
+    'Augusto Carlos de Abreu, 666, 666, 666, eletricista, fernando'
   ];
 
   void initLoad() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setStringList('visitors', cadVisitors);
-    prefs.setStringList('visited', cadVisited);
   }
 
   @override
