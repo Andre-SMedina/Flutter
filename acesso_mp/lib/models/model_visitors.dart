@@ -5,6 +5,7 @@ class ModelVisitors {
   final String phone;
   final String job;
   final String whoVisit;
+  final String image;
 
   ModelVisitors(
       {required this.name,
@@ -12,5 +13,6 @@ class ModelVisitors {
       required this.rg,
       required this.phone,
       required this.job,
-      required this.whoVisit});
+      required this.whoVisit,
+      required this.image});
 }

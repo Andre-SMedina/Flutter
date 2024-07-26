@@ -55,7 +55,7 @@ class CameraAppState extends State<CameraApp> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('capturedImage', base64Image);
 
-      print(base64Image);
+      // print(base64Image);
 
       setState(() {
         capturedImage = bytes;
@@ -64,7 +64,7 @@ class CameraAppState extends State<CameraApp> {
       // **Descartar o controlador após capturar a imagem**
       controller!.dispose();
       controller = null;
-      setState(() {});
+      // setState(() {});
     } catch (e) {
       showErrorDialog(context, 'Erro no método captureImage');
     }

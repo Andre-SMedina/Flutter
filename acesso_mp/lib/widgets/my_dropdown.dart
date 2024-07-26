@@ -4,20 +4,11 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDropdown extends StatefulWidget {
-  final ModelHomeFields name;
-  final ModelHomeFields cpf;
-  final ModelHomeFields rg;
-  final ModelHomeFields phone;
-  final ModelHomeFields job;
-  final ModelHomeFields whoVisit;
-  const MyDropdown(
-      {super.key,
-      required this.name,
-      required this.cpf,
-      required this.rg,
-      required this.phone,
-      required this.job,
-      required this.whoVisit});
+  final VoidCallback loadData;
+  const MyDropdown({
+    super.key,
+    required this.loadData,
+  });
 
   @override
   MyDropdownState createState() => MyDropdownState();
@@ -48,6 +39,15 @@ class MyDropdownState extends State<MyDropdown> {
     return listDropdown;
   }
 
+  void foundVisitor(String suggestion) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var dataVisitor = filterList.firstWhere((item) {
+      return item.contains(suggestion);
+    });
+    prefs.setString('visitor', dataVisitor);
+    widget.loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -76,16 +76,19 @@ class MyDropdownState extends State<MyDropdown> {
           return _getSuggestions(search);
         },
         onSelected: (suggestion) {
-          var dataVisitor = filterList.firstWhere((item) {
-            return item.contains(suggestion);
-          }).split(',');
+          // var dataVisitor = filterList.firstWhere((item) {
+          //   return item.contains(suggestion);
+          // }).split(',');
 
-          widget.name.loadData(dataVisitor[0]);
-          widget.cpf.loadData(dataVisitor[1]);
-          widget.rg.loadData(dataVisitor[2]);
-          widget.phone.loadData(dataVisitor[3]);
-          widget.job.loadData(dataVisitor[4]);
-          widget.whoVisit.loadData(dataVisitor[5]);
+          foundVisitor(suggestion);
+
+          // widget.getImage();
+          // widget.name.loadData(dataVisitor[0]);
+          // widget.cpf.loadData(dataVisitor[1]);
+          // widget.rg.loadData(dataVisitor[2]);
+          // widget.phone.loadData(dataVisitor[3]);
+          // widget.job.loadData(dataVisitor[4]);
+          // widget.whoVisit.loadData(dataVisitor[5]);
         },
       ),
     );

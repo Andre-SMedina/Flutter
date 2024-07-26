@@ -8,13 +8,10 @@ class Database {
 
     // List<String>? list = prefs.getStringList('visitors');
     List<String> list = prefs.getStringList('visitors') ?? [];
-    List<String> listVisited = prefs.getStringList('visited') ?? [];
     String visitor = Convert.forString(data);
     list.add(visitor);
-    listVisited.add('${data.name}, ${data.whoVisit}');
 
     await prefs.setStringList('visitors', list);
-    await prefs.setStringList('visited', listVisited);
   }
 
   Future<ModelVisitors?> get(String name) async {
