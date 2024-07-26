@@ -2,7 +2,7 @@ import 'package:acesso_mp/models/model_visitors.dart';
 
 class Convert {
   static String forString(ModelVisitors list) {
-    return '${list.name},${list.cpf},${list.rg},${list.phone},${list.job}';
+    return '${list.name},${list.cpf},${list.rg},${list.phone},${list.job},${list.whoVisit},${list.image}';
   }
 
   static List<ModelVisitors> forModel(List<String> list) {
@@ -17,7 +17,8 @@ class Convert {
           rg: listSplit[2],
           phone: listSplit[3],
           job: listSplit[4],
-          whoVisit: listSplit[5]));
+          whoVisit: listSplit[5],
+          image: listSplit[6]));
     }
 
     return listVisitors;

@@ -6,15 +6,11 @@ class Database {
   Future<void> register(ModelVisitors data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // List<String>? list = prefs.getStringList('visitors');
     List<String> list = prefs.getStringList('visitors') ?? [];
-    List<String> listVisited = prefs.getStringList('visited') ?? [];
     String visitor = Convert.forString(data);
     list.add(visitor);
-    listVisited.add('${data.name}, ${data.whoVisit}');
 
     await prefs.setStringList('visitors', list);
-    await prefs.setStringList('visited', listVisited);
   }
 
   Future<ModelVisitors?> get(String name) async {
@@ -31,11 +27,5 @@ class Database {
     }
 
     return null;
-
-    // print(Convert.forModel(list)[1].job);
-    // print(list);
-    // await prefs.clear();
-
-    // Convert.forMap(list!);
   }
 }
