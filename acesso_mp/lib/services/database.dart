@@ -6,7 +6,6 @@ class Database {
   Future<void> register(ModelVisitors data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // List<String>? list = prefs.getStringList('visitors');
     List<String> list = prefs.getStringList('visitors') ?? [];
     String visitor = Convert.forString(data);
     list.add(visitor);
@@ -28,11 +27,5 @@ class Database {
     }
 
     return null;
-
-    // print(Convert.forModel(list)[1].job);
-    // print(list);
-    // await prefs.clear();
-
-    // Convert.forMap(list!);
   }
 }
