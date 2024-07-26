@@ -1,4 +1,4 @@
-import 'package:acesso_mp/models/model_home_fields.dart';
+// import 'package:acesso_mp/models/model_home_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,19 +76,7 @@ class MyDropdownState extends State<MyDropdown> {
           return _getSuggestions(search);
         },
         onSelected: (suggestion) {
-          // var dataVisitor = filterList.firstWhere((item) {
-          //   return item.contains(suggestion);
-          // }).split(',');
-
           foundVisitor(suggestion);
-
-          // widget.getImage();
-          // widget.name.loadData(dataVisitor[0]);
-          // widget.cpf.loadData(dataVisitor[1]);
-          // widget.rg.loadData(dataVisitor[2]);
-          // widget.phone.loadData(dataVisitor[3]);
-          // widget.job.loadData(dataVisitor[4]);
-          // widget.whoVisit.loadData(dataVisitor[5]);
         },
       ),
     );
