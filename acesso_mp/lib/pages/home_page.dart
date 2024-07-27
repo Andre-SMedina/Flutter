@@ -127,6 +127,7 @@ class _HomePageState extends State<HomePage> {
                                               .fieldController.text,
                                           image: e,
                                         ));
+                                        setState(() {});
                                       });
                                     },
                                     child: const Text('Cadastrar')),
@@ -170,13 +171,27 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: Center(
                                 child: (loadImage)
-                                    ? SizedBox(
-                                        height: 350,
-                                        width: 400,
-                                        child: Image.memory(
-                                          base64Decode(widget.image),
-                                          fit: BoxFit.cover,
-                                        ))
+                                    ? Column(
+                                        children: [
+                                          Expanded(
+                                            child: Image.memory(
+                                              base64Decode(widget.image),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: ElevatedButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    loadImage = false;
+                                                  });
+                                                },
+                                                child: const Text('Capturar')),
+                                          )
+                                        ],
+                                      )
                                     : CameraApp(
                                         context: context,
                                         cameras: cameras,

@@ -7,10 +7,28 @@ class Database {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     List<String> list = prefs.getStringList('visitors') ?? [];
-    String visitor = Convert.forString(data);
-    list.add(visitor);
+    bool ifContain = false;
 
-    await prefs.setStringList('visitors', list);
+    List<String> newList = list.map((elem) {
+      List<String> elemList = elem.split(',');
+
+      if (elemList[0] == data.name) {
+        ifContain = true;
+
+        return Convert.forString(data);
+      }
+
+      return elem;
+    }).toList();
+
+    if (!ifContain) {
+      String visitor = Convert.forString(data);
+      list.add(visitor);
+
+      await prefs.setStringList('visitors', list);
+    } else {
+      await prefs.setStringList('visitors', newList);
+    }
   }
 
   Future<ModelVisitors?> get(String name) async {
