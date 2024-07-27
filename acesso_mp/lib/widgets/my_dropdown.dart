@@ -45,6 +45,7 @@ class MyDropdownState extends State<MyDropdown> {
       return item.contains(suggestion);
     });
     prefs.setString('visitor', dataVisitor);
+    searchController.text = '';
     widget.loadData();
   }
 

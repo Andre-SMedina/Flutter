@@ -66,7 +66,8 @@ class CameraAppState extends State<CameraApp> {
       controller = null;
       // setState(() {});
     } catch (e) {
-      showErrorDialog(context, 'Erro no método captureImage');
+      showErrorDialog(context, 'A aplicação apresentou erro',
+          'Erro no método captureImage');
     }
   }
 

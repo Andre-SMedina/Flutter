@@ -1,9 +1,9 @@
 // import 'dart:convert';
 import 'dart:convert';
 
+import 'package:acesso_mp/helpers/show_dialog.dart';
 import 'package:acesso_mp/main.dart';
 import 'package:acesso_mp/models/model_home_fields.dart';
-import 'package:acesso_mp/models/model_visitors.dart';
 import 'package:acesso_mp/services/database.dart';
 import 'package:acesso_mp/widgets/camera.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
@@ -15,12 +15,30 @@ class HomePage extends StatefulWidget {
   final List<CameraDescription> cameras;
   HomePage({super.key, required this.cameras});
 
-  ModelHomeFields nameField = ModelHomeFields(text: 'Nome');
-  ModelHomeFields cpfField = ModelHomeFields(text: 'CPF');
-  ModelHomeFields rgField = ModelHomeFields(text: 'RG');
-  ModelHomeFields phoneField = ModelHomeFields(text: 'Telefone');
-  ModelHomeFields jobField = ModelHomeFields(text: 'Profissão');
-  ModelHomeFields whoVisitField = ModelHomeFields(text: 'Quem Visitar');
+  ModelHomeFields nameField = ModelHomeFields(
+    text: 'Nome',
+    validadtor: 'name',
+  );
+  ModelHomeFields cpfField = ModelHomeFields(
+    text: 'CPF',
+    validadtor: 'cpf',
+  );
+  ModelHomeFields rgField = ModelHomeFields(
+    text: 'RG',
+    validadtor: 'rg',
+  );
+  ModelHomeFields phoneField = ModelHomeFields(
+    text: 'Telefone',
+    validadtor: 'phone',
+  );
+  ModelHomeFields jobField = ModelHomeFields(
+    text: 'Profissão',
+    validadtor: 'job',
+  );
+  ModelHomeFields whoVisitField = ModelHomeFields(
+    text: 'Quem Visitar',
+    validadtor: 'who',
+  );
   String image = '';
 
   @override
@@ -31,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   final Database db = Database();
   List<String> visitor = [];
   bool loadImage = false;
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Future<String> getImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('capturedImage') != null) {
@@ -45,6 +63,8 @@ class _HomePageState extends State<HomePage> {
     if (prefs.getString('visitor') != null) {
       visitor = prefs.getString('visitor')!.split(',');
     }
+    //linha necessária quando for atualizar os dados, pois o getImage pega do capturedImage
+    prefs.setString('capturedImage', visitor[6]);
 
     loadImage = true;
     widget.image = visitor[6];
@@ -95,6 +115,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Expanded(
                       child: Form(
+                        key: _formKey,
                         child: Column(
                           children: [
                             widget.nameField,
@@ -111,32 +132,40 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 ElevatedButton(
                                     onPressed: () {
-                                      getImage().then((e) {
-                                        db.register(ModelVisitors(
-                                          name: widget
-                                              .nameField.fieldController.text,
-                                          cpf: widget
-                                              .cpfField.fieldController.text,
-                                          rg: widget
-                                              .rgField.fieldController.text,
-                                          phone: widget
-                                              .phoneField.fieldController.text,
-                                          job: widget
-                                              .jobField.fieldController.text,
-                                          whoVisit: widget.whoVisitField
-                                              .fieldController.text,
-                                          image: e,
-                                        ));
-                                        setState(() {});
-                                      });
+                                      if (_formKey.currentState!.validate()) {
+                                        // Formulário válido
+                                        showErrorDialog(
+                                            context,
+                                            'Cadastro realizado com sucesso!',
+                                            '');
+                                      }
+                                      // getImage().then((e) {
+                                      //   db.register(ModelVisitors(
+                                      //     name: widget
+                                      //         .nameField.fieldController.text,
+                                      //     cpf: widget
+                                      //         .cpfField.fieldController.text,
+                                      //     rg: widget
+                                      //         .rgField.fieldController.text,
+                                      //     phone: widget
+                                      //         .phoneField.fieldController.text,
+                                      //     job: widget
+                                      //         .jobField.fieldController.text,
+                                      //     whoVisit: widget.whoVisitField
+                                      //         .fieldController.text,
+                                      //     image: e,
+                                      //   ));
+                                      //   setState(() {});
+                                      // });
                                     },
                                     child: const Text('Cadastrar')),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.red[300]),
                                   onPressed: () {
-                                    loadImage = false;
-                                    setState(() {});
+                                    setState(() {
+                                      loadImage = false;
+                                    });
                                     widget.nameField.clearData();
                                     widget.cpfField.clearData();
                                     widget.rgField.clearData();
