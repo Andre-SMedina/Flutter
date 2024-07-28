@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:acesso_mp/helpers/show_dialog.dart';
 import 'package:acesso_mp/main.dart';
 import 'package:acesso_mp/models/model_home_fields.dart';
+import 'package:acesso_mp/models/model_visitors.dart';
 import 'package:acesso_mp/services/database.dart';
 import 'package:acesso_mp/widgets/camera.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
@@ -50,12 +51,21 @@ class _HomePageState extends State<HomePage> {
   List<String> visitor = [];
   bool loadImage = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Future<String> getImage() async {
+
+  Future<List<String>> getDataVisitor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('capturedImage') != null) {
       widget.image = prefs.getString('capturedImage')!;
     }
-    return prefs.getString('capturedImage')!;
+    String name = widget.nameField.fieldController.text;
+    String cpf = widget.cpfField.fieldController.text;
+    String rg = widget.rgField.fieldController.text;
+    String phone = widget.phoneField.fieldController.text;
+    String job = widget.jobField.fieldController.text;
+    String whoVisit = widget.whoVisitField.fieldController.text;
+    String img = prefs.getString('capturedImage')!;
+
+    return [name, cpf, rg, phone, job, whoVisit, img];
   }
 
   void loadData() async {
@@ -75,6 +85,20 @@ class _HomePageState extends State<HomePage> {
     widget.phoneField.loadData(visitor[3]);
     widget.jobField.loadData(visitor[4]);
     widget.whoVisitField.loadData(visitor[5]);
+  }
+
+  void clearFields() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('capturedImage', '');
+    loadImage = true;
+    widget.image = '';
+    setState(() {});
+    widget.nameField.clearData();
+    widget.cpfField.clearData();
+    widget.rgField.clearData();
+    widget.phoneField.clearData();
+    widget.jobField.clearData();
+    widget.whoVisitField.clearData();
   }
 
   @override
@@ -133,45 +157,74 @@ class _HomePageState extends State<HomePage> {
                                 ElevatedButton(
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
-                                        // Formulário válido
-                                        showErrorDialog(
-                                            context,
-                                            'Cadastro realizado com sucesso!',
-                                            '');
+                                        getDataVisitor().then((e) {
+                                          if (e[6] != '') {
+                                            db
+                                                .register(ModelVisitors(
+                                              name: e[0],
+                                              cpf: e[1],
+                                              rg: e[2],
+                                              phone: e[3],
+                                              job: e[4],
+                                              whoVisit: e[5],
+                                              image: e[6],
+                                            ))
+                                                .then((v) {
+                                              if (v) {
+                                                showDialogMsg(context,
+                                                    'Pessoa já cadastrada!');
+                                              } else {
+                                                showDialogMsg(context,
+                                                    'Cadastro realizado com sucesso!');
+                                                clearFields();
+                                              }
+                                            });
+                                          } else {
+                                            showDialogMsg(context,
+                                                'Imagem não capturada!');
+                                          }
+                                        });
                                       }
-                                      // getImage().then((e) {
-                                      //   db.register(ModelVisitors(
-                                      //     name: widget
-                                      //         .nameField.fieldController.text,
-                                      //     cpf: widget
-                                      //         .cpfField.fieldController.text,
-                                      //     rg: widget
-                                      //         .rgField.fieldController.text,
-                                      //     phone: widget
-                                      //         .phoneField.fieldController.text,
-                                      //     job: widget
-                                      //         .jobField.fieldController.text,
-                                      //     whoVisit: widget.whoVisitField
-                                      //         .fieldController.text,
-                                      //     image: e,
-                                      //   ));
-                                      //   setState(() {});
-                                      // });
                                     },
-                                    child: const Text('Cadastrar')),
+                                    child: const Text('Novo Cadastro')),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        getDataVisitor().then((e) {
+                                          if (e[6] != '') {
+                                            db
+                                                .update(ModelVisitors(
+                                              name: e[0],
+                                              cpf: e[1],
+                                              rg: e[2],
+                                              phone: e[3],
+                                              job: e[4],
+                                              whoVisit: e[5],
+                                              image: e[6],
+                                            ))
+                                                .then((v) {
+                                              if (v) {
+                                                showDialogMsg(context,
+                                                    'Registro atualizado!');
+                                                clearFields();
+                                              } else {
+                                                showDialogMsg(context,
+                                                    'Registro não encontrado!');
+                                              }
+                                            });
+                                          } else {
+                                            showDialogMsg(context,
+                                                'Imagem não capturada!');
+                                          }
+                                        });
+                                      }
+                                    },
+                                    child: const Text('Atualizar')),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.red[300]),
                                   onPressed: () {
-                                    setState(() {
-                                      loadImage = false;
-                                    });
-                                    widget.nameField.clearData();
-                                    widget.cpfField.clearData();
-                                    widget.rgField.clearData();
-                                    widget.phoneField.clearData();
-                                    widget.jobField.clearData();
-                                    widget.whoVisitField.clearData();
+                                    clearFields();
                                   },
                                   child: Text(
                                     'Limpar',
@@ -203,10 +256,16 @@ class _HomePageState extends State<HomePage> {
                                     ? Column(
                                         children: [
                                           Expanded(
-                                            child: Image.memory(
-                                              base64Decode(widget.image),
-                                              fit: BoxFit.cover,
-                                            ),
+                                            child: (widget.image == '')
+                                                ? const Icon(
+                                                    Icons
+                                                        .image_not_supported_outlined,
+                                                    size: 200,
+                                                  )
+                                                : Image.memory(
+                                                    base64Decode(widget.image),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(

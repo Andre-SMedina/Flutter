@@ -3,32 +3,44 @@ import 'package:acesso_mp/services/convert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Database {
-  Future<void> register(ModelVisitors data) async {
+  Future<bool> register(ModelVisitors data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     List<String> list = prefs.getStringList('visitors') ?? [];
-    bool ifContain = false;
 
-    List<String> newList = list.map((elem) {
-      List<String> elemList = elem.split(',');
+    bool found = list.any((elem) => elem.split(',')[0] == data.name);
 
-      if (elemList[0] == data.name) {
-        ifContain = true;
-
-        return Convert.forString(data);
-      }
-
-      return elem;
-    }).toList();
-
-    if (!ifContain) {
+    if (!found) {
       String visitor = Convert.forString(data);
       list.add(visitor);
 
       await prefs.setStringList('visitors', list);
-    } else {
+    }
+
+    return found;
+  }
+
+  Future<bool> update(ModelVisitors data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> list = prefs.getStringList('visitors') ?? [];
+
+    bool found = list.any((elem) => elem.split(',')[0] == data.name);
+
+    if (found) {
+      List<String> newList = list.map((elem) {
+        List<String> elemList = elem.split(',');
+
+        if (elemList[0] == data.name) {
+          return Convert.forString(data);
+        }
+
+        return elem;
+      }).toList();
+
       await prefs.setStringList('visitors', newList);
     }
+
+    return found;
   }
 
   Future<ModelVisitors?> get(String name) async {
