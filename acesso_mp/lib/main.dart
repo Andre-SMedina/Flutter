@@ -21,7 +21,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Acesso MP',
       theme: ThemeData(
-          // primarySwatch: Colors.red,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  side: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                  elevation: 3,
+                  textStyle: const TextStyle(color: Colors.black))),
           appBarTheme: const AppBarTheme(
             titleTextStyle: TextStyle(color: Colors.white, fontSize: 28),
             backgroundColor: Color.fromARGB(255, 14, 0, 167),

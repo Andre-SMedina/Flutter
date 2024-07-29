@@ -5,6 +5,7 @@ import 'package:acesso_mp/helpers/show_dialog.dart';
 import 'package:acesso_mp/main.dart';
 import 'package:acesso_mp/models/model_home_fields.dart';
 import 'package:acesso_mp/models/model_visitors.dart';
+import 'package:acesso_mp/services/convert.dart';
 import 'package:acesso_mp/services/database.dart';
 import 'package:acesso_mp/widgets/camera.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
@@ -54,18 +55,25 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<String>> getDataVisitor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String img = '';
+
     if (prefs.getString('capturedImage') != null) {
       widget.image = prefs.getString('capturedImage')!;
+      img = prefs.getString('capturedImage')!;
+    } else {
+      prefs.setString('capturedImage', '');
     }
-    String name = widget.nameField.fieldController.text;
-    String cpf = widget.cpfField.fieldController.text;
-    String rg = widget.rgField.fieldController.text;
-    String phone = widget.phoneField.fieldController.text;
-    String job = widget.jobField.fieldController.text;
-    String whoVisit = widget.whoVisitField.fieldController.text;
-    String img = prefs.getString('capturedImage')!;
 
-    return [name, cpf, rg, phone, job, whoVisit, img];
+    return [
+      widget.nameField.fieldController.text,
+      widget.cpfField.fieldController.text,
+      widget.rgField.fieldController.text,
+      widget.phoneField.fieldController.text,
+      widget.jobField.fieldController.text,
+      widget.whoVisitField.fieldController.text,
+      img,
+    ];
   }
 
   void loadData() async {
@@ -79,13 +87,15 @@ class _HomePageState extends State<HomePage> {
     loadImage = true;
     widget.image = visitor[6];
     setState(() {});
-    widget.nameField.loadData(visitor[0]);
+    widget.nameField.loadData(Convert.firstUpper(visitor[0]));
     widget.cpfField.loadData(visitor[1]);
     widget.rgField.loadData(visitor[2]);
     widget.phoneField.loadData(visitor[3]);
     widget.jobField.loadData(visitor[4]);
     widget.whoVisitField.loadData(visitor[5]);
   }
+
+  void authorized() {}
 
   void clearFields() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -222,15 +232,25 @@ class _HomePageState extends State<HomePage> {
                                     child: const Text('Atualizar')),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red[300]),
+                                      backgroundColor:
+                                          const Color.fromARGB(255, 254, 3, 3)),
                                   onPressed: () {
                                     clearFields();
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Limpar',
-                                    style: TextStyle(color: Colors.blue[900]),
+                                    style: TextStyle(color: Colors.white),
                                   ),
-                                )
+                                ),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 10, 1, 194)),
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'Histórico',
+                                      style: TextStyle(color: Colors.white),
+                                    ))
                               ],
                             ),
                           ],
@@ -288,8 +308,10 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 16,
+                            height: 30,
                           ),
+                          ElevatedButton(
+                              onPressed: () {}, child: const Text('Autorizar'))
                         ],
                       ),
                     ),

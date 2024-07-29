@@ -1,8 +1,9 @@
 import 'package:acesso_mp/models/model_visitors.dart';
+import 'package:flutter/material.dart';
 
 class Convert {
   static String forString(ModelVisitors list) {
-    return '${list.name},${list.cpf},${list.rg},${list.phone},${list.job},${list.whoVisit},${list.image}';
+    return '${list.name.toLowerCase()},${list.cpf},${list.rg},${list.phone},${list.job},${list.whoVisit},${list.image}';
   }
 
   static List<ModelVisitors> forModel(List<String> list) {
@@ -22,5 +23,27 @@ class Convert {
     }
 
     return listVisitors;
+  }
+
+  static String firstUpper(String name) {
+    List<String> listName = name.split(' ');
+    List<String> newListName = [];
+    for (String slice in listName) {
+      newListName.add('${slice[0].toUpperCase()}${slice.substring(1)}');
+    }
+
+    return newListName.join(' ');
+  }
+
+  static String removeAccent(String data) {
+    const String withAccents = 'áàâãäéèêëíìîïóòôõöúùûüçÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ';
+    const String withoutAccents =
+        'aaaaaeeeeiiiiooooouuuucAAAAAEEEEIIIIOOOOOUUUUC';
+    String name = data.split(',')[0];
+
+    return name.characters.map((char) {
+      final index = withAccents.indexOf(char);
+      return index == -1 ? char : withoutAccents[index];
+    }).join();
   }
 }

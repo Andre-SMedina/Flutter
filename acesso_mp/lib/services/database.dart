@@ -8,7 +8,8 @@ class Database {
 
     List<String> list = prefs.getStringList('visitors') ?? [];
 
-    bool found = list.any((elem) => elem.split(',')[0] == data.name);
+    bool found =
+        list.any((elem) => elem.split(',')[0] == data.name.toLowerCase());
 
     if (!found) {
       String visitor = Convert.forString(data);
@@ -24,13 +25,14 @@ class Database {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('visitors') ?? [];
 
-    bool found = list.any((elem) => elem.split(',')[0] == data.name);
+    bool found =
+        list.any((elem) => Convert.firstUpper(elem.split(',')[0]) == data.name);
 
     if (found) {
       List<String> newList = list.map((elem) {
         List<String> elemList = elem.split(',');
 
-        if (elemList[0] == data.name) {
+        if (Convert.firstUpper(elemList[0]) == data.name) {
           return Convert.forString(data);
         }
 

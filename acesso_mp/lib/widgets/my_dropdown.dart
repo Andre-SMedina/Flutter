@@ -1,4 +1,5 @@
 // import 'package:acesso_mp/models/model_home_fields.dart';
+import 'package:acesso_mp/services/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,11 +30,13 @@ class MyDropdownState extends State<MyDropdown> {
     filterList = items.where((item) {
       // remove o nome do visitado para não entrar na pesquisa quando digitar
       String outVisited = item.split(',').sublist(0, 5).join(',');
-      return outVisited.toLowerCase().contains(query.toLowerCase());
+      //remove os acentos das palavras para pesquisa
+      outVisited = Convert.removeAccent(outVisited);
+      return outVisited.contains(Convert.removeAccent(query.toLowerCase()));
     }).toList();
 
     List<String> listDropdown = filterList.map((item) {
-      return item.split(',')[0];
+      return Convert.firstUpper(item.split(',')[0]);
     }).toList();
 
     return listDropdown;
@@ -41,8 +44,8 @@ class MyDropdownState extends State<MyDropdown> {
 
   void foundVisitor(String suggestion) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var dataVisitor = filterList.firstWhere((item) {
-      return item.contains(suggestion);
+    String dataVisitor = filterList.firstWhere((item) {
+      return item.contains(suggestion.toLowerCase());
     });
     prefs.setString('visitor', dataVisitor);
     searchController.text = '';
