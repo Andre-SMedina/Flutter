@@ -317,10 +317,12 @@ class _HomePageState extends State<HomePage> {
                                           )
                                         ],
                                       )
-                                    : CameraApp(
-                                        context: context,
-                                        cameras: cameras,
-                                      ),
+                                    : (cameras.isEmpty)
+                                        ? const Text('Câmera não encontrada!')
+                                        : CameraApp(
+                                            context: context,
+                                            cameras: cameras,
+                                          ),
                               ),
                             ),
                           ),
