@@ -11,6 +11,7 @@ import 'package:acesso_mp/widgets/camera.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -81,6 +82,7 @@ class _HomePageState extends State<HomePage> {
     if (prefs.getString('visitor') != null) {
       visitor = prefs.getString('visitor')!.split(',');
     }
+
     //linha necessária quando for atualizar os dados, pois o getImage pega do capturedImage
     prefs.setString('capturedImage', visitor[6]);
 
@@ -95,7 +97,21 @@ class _HomePageState extends State<HomePage> {
     widget.whoVisitField.loadData(visitor[5]);
   }
 
-  void authorized() {}
+  void authorized() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? dates = prefs.getStringList('managementDate');
+    if (prefs.getString('visitor') != null) {
+      visitor = prefs.getString('visitor')!.split(',');
+    }
+
+    // List<String> newDate = dates.map((e) {
+    //   if (e == visitor[1]) {
+    //     String dateNow =
+    //         DateFormat('dd/MM/yyy HH:mm:ss').format(DateTime.now());
+
+    //   }
+    // });
+  }
 
   void clearFields() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -168,7 +184,8 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         getDataVisitor().then((e) {
-                                          if (e[6] != '') {
+                                          // if (e[6] != '') {
+                                          if (true) {
                                             db
                                                 .register(ModelVisitors(
                                               name: e[0],

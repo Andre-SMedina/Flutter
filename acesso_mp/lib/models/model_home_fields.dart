@@ -13,7 +13,7 @@ class ModelHomeFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<TextInputFormatter>? onlyNumbers = [];
-    if (validadtor != '') {
+    if (validadtor == '') {
       listValidator.add(Validatorless.required('Campo obrigatório!'));
 
       switch (validadtor) {
@@ -24,9 +24,11 @@ class ModelHomeFields extends StatelessWidget {
         case 'cpf':
           listValidator.add(Validatorless.cpf('CPF inválido!'));
           onlyNumbers.add(FilteringTextInputFormatter.digitsOnly);
+          onlyNumbers.add(LengthLimitingTextInputFormatter(11));
           break;
         case 'rg' || 'phone':
           onlyNumbers.add(FilteringTextInputFormatter.digitsOnly);
+          onlyNumbers.add(LengthLimitingTextInputFormatter(20));
           break;
       }
     }

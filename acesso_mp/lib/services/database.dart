@@ -1,5 +1,6 @@
 import 'package:acesso_mp/models/model_visitors.dart';
 import 'package:acesso_mp/services/convert.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Database {
@@ -7,15 +8,25 @@ class Database {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     List<String> list = prefs.getStringList('visitors') ?? [];
+    List<String> listManagementDate =
+        prefs.getStringList('managementDate') ?? [];
+
+    String dateNow = DateFormat('dd/MM/yyy HH:mm:ss').format(DateTime.now());
 
     bool found =
         list.any((elem) => elem.split(',')[0] == data.name.toLowerCase());
 
     if (!found) {
       String visitor = Convert.forString(data);
+      String dayOfVisit = '${data.cpf},$dateNow';
+      // String cpfLocated =
+      //     listManagementDate.firstWhere((e) => e.contains(data.cpf));
+
+      listManagementDate.add(dayOfVisit);
       list.add(visitor);
 
       await prefs.setStringList('visitors', list);
+      await prefs.setStringList('managementDate', listManagementDate);
     }
 
     return found;
