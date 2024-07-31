@@ -61,7 +61,6 @@ class Database {
 
     List<String> list = prefs.getStringList('visitors') ?? [];
     List<ModelVisitors> listModels = Convert.forModel(list);
-    // print(listModels[0].name);
 
     for (ModelVisitors entry in listModels) {
       if (entry.name == name) {

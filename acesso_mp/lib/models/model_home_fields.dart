@@ -36,6 +36,7 @@ class ModelHomeFields extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(
+        keyboardType: TextInputType.text,
         validator: Validatorless.multiple(listValidator),
         controller: fieldController,
         inputFormatters: onlyNumbers,

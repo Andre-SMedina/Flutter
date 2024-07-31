@@ -99,18 +99,24 @@ class _HomePageState extends State<HomePage> {
 
   void authorized() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? dates = prefs.getStringList('managementDate');
+    List<String> dates = prefs.getStringList('managementDate') ?? [];
     if (prefs.getString('visitor') != null) {
       visitor = prefs.getString('visitor')!.split(',');
     }
 
-    // List<String> newDate = dates.map((e) {
-    //   if (e == visitor[1]) {
-    //     String dateNow =
-    //         DateFormat('dd/MM/yyy HH:mm:ss').format(DateTime.now());
+    List<String> newDate = dates.map((e) {
+      print(e);
+      return e;
+    }).toList();
 
-    //   }
-    // });
+    // List<String> newDate = dates.map((e) {
+    // if (e == visitor[1]) {
+    //   String dateNow =
+    //       DateFormat('dd/MM/yyy HH:mm:ss').format(DateTime.now());
+
+    //   return dateNow;
+    // }
+    // }).toList();
   }
 
   void clearFields() async {
@@ -218,7 +224,8 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         getDataVisitor().then((e) {
-                                          if (e[6] != '') {
+                                          // if (e[6] != '') {
+                                          if (true) {
                                             db
                                                 .update(ModelVisitors(
                                               name: e[0],
@@ -330,7 +337,10 @@ class _HomePageState extends State<HomePage> {
                             height: 30,
                           ),
                           ElevatedButton(
-                              onPressed: () {}, child: const Text('Autorizar'))
+                              onPressed: () {
+                                authorized();
+                              },
+                              child: const Text('Autorizar'))
                         ],
                       ),
                     ),
