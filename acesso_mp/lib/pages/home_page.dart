@@ -1,12 +1,14 @@
 // import 'dart:convert';
 import 'dart:convert';
 
-import 'package:acesso_mp/helpers/show_dialog.dart';
+import 'package:acesso_mp/helpers/show_dialog_historic.dart';
+import 'package:acesso_mp/helpers/show_dialog_msg.dart';
 import 'package:acesso_mp/main.dart';
 import 'package:acesso_mp/models/model_home_fields.dart';
 import 'package:acesso_mp/models/model_visitors.dart';
 import 'package:acesso_mp/services/convert.dart';
 import 'package:acesso_mp/services/database.dart';
+import 'package:acesso_mp/services/manage_data.dart';
 import 'package:acesso_mp/widgets/camera.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
 import 'package:camera/camera.dart';
@@ -51,6 +53,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final Database db = Database();
   List<String> visitor = [];
+
   bool loadImage = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -95,28 +98,6 @@ class _HomePageState extends State<HomePage> {
     widget.phoneField.loadData(visitor[3]);
     widget.jobField.loadData(visitor[4]);
     widget.whoVisitField.loadData(visitor[5]);
-  }
-
-  void authorized() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> dates = prefs.getStringList('managementDate') ?? [];
-    if (prefs.getString('visitor') != null) {
-      visitor = prefs.getString('visitor')!.split(',');
-    }
-
-    List<String> newDate = dates.map((e) {
-      print(e);
-      return e;
-    }).toList();
-
-    // List<String> newDate = dates.map((e) {
-    // if (e == visitor[1]) {
-    //   String dateNow =
-    //       DateFormat('dd/MM/yyy HH:mm:ss').format(DateTime.now());
-
-    //   return dateNow;
-    // }
-    // }).toList();
   }
 
   void clearFields() async {
@@ -270,7 +251,9 @@ class _HomePageState extends State<HomePage> {
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: const Color.fromARGB(
                                             255, 10, 1, 194)),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showDialogHistoric(context, visitor);
+                                    },
                                     child: const Text(
                                       'Histórico',
                                       style: TextStyle(color: Colors.white),
@@ -338,7 +321,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                authorized();
+                                ManageData.authorized(visitor);
                               },
                               child: const Text('Autorizar'))
                         ],

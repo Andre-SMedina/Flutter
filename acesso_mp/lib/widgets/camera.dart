@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:acesso_mp/helpers/show_dialog.dart';
+import 'package:acesso_mp/helpers/show_dialog_msg.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:shared_preferences/shared_preferences.dart';
