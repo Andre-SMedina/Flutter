@@ -13,7 +13,7 @@ class ModelHomeFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<TextInputFormatter>? onlyNumbers = [];
-    if (validadtor == '') {
+    if (validadtor != '') {
       listValidator.add(Validatorless.required('Campo obrigatório!'));
 
       switch (validadtor) {

@@ -1,14 +1,16 @@
+import 'package:acesso_mp/helpers/show_dialog_msg.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageData {
-  static void authorized(List<String> visitor) async {
-    if (visitor.isNotEmpty) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+  static void authorized(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? checked = prefs.getString('visitor');
+    if (checked != null && checked != '') {
+      List<String> visitor = prefs.getString('visitor')!.split(',');
+
       List<String> dates = prefs.getStringList('managementDate') ?? [];
-      if (prefs.getString('visitor') != null) {
-        visitor = prefs.getString('visitor')!.split(',');
-      }
 
       List<String> newDate = dates.map((e) {
         List<String> listDate = e.split(',');
@@ -23,6 +25,8 @@ class ManageData {
       }).toList();
 
       prefs.setStringList('managementDate', newDate);
+
+      showDialogMsg(context, 'Autorização registrada!');
     }
   }
 }

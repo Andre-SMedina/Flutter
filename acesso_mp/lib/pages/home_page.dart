@@ -13,7 +13,6 @@ import 'package:acesso_mp/widgets/camera.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -103,6 +102,7 @@ class _HomePageState extends State<HomePage> {
   void clearFields() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('capturedImage', '');
+    prefs.setString('visitor', '');
     loadImage = true;
     widget.image = '';
     setState(() {});
@@ -171,8 +171,7 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         getDataVisitor().then((e) {
-                                          // if (e[6] != '') {
-                                          if (true) {
+                                          if (e[6] != '') {
                                             db
                                                 .register(ModelVisitors(
                                               name: e[0],
@@ -205,8 +204,7 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         getDataVisitor().then((e) {
-                                          // if (e[6] != '') {
-                                          if (true) {
+                                          if (e[6] != '') {
                                             db
                                                 .update(ModelVisitors(
                                               name: e[0],
@@ -321,7 +319,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                ManageData.authorized(visitor);
+                                ManageData.authorized(context);
+                                clearFields();
                               },
                               child: const Text('Autorizar'))
                         ],

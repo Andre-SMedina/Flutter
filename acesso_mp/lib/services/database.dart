@@ -19,8 +19,6 @@ class Database {
     if (!found) {
       String visitor = Convert.forString(data);
       String dayOfVisit = '${data.cpf},$dateNow';
-      // String cpfLocated =
-      //     listManagementDate.firstWhere((e) => e.contains(data.cpf));
 
       listManagementDate.add(dayOfVisit);
       list.add(visitor);
