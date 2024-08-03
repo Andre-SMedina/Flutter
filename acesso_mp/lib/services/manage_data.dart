@@ -1,4 +1,4 @@
-import 'package:acesso_mp/helpers/show_dialog_msg.dart';
+import 'package:acesso_mp/helpers/zshow_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +26,7 @@ class ManageData {
 
       prefs.setStringList('managementDate', newDate);
 
-      showDialogMsg(context, 'Autorização registrada!');
+      ZshowDialogs.alert(context, 'Autorização registrada!');
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:acesso_mp/helpers/show_dialog_msg.dart';
+import 'package:acesso_mp/helpers/zshow_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,22 +66,7 @@ class CameraAppState extends State<CameraApp> {
       controller = null;
       // setState(() {});
     } catch (e) {
-      showDialogMsg(context, 'A aplicação apresentou erro');
-    }
-  }
-
-  /// **Função para mostrar a imagem capturada**
-  Future<void> _showCapturedImage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final base64Image = prefs.getString('capturedImage');
-
-    if (base64Image != null) {
-      final bytes = base64Decode(base64Image);
-      setState(() {
-        capturedImage = bytes;
-      });
-    } else {
-      print('Nenhuma imagem capturada encontrada.');
+      ZshowDialogs.alert(context, 'A aplicação apresentou erro');
     }
   }
 

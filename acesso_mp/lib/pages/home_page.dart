@@ -1,8 +1,7 @@
 // import 'dart:convert';
 import 'dart:convert';
 
-import 'package:acesso_mp/helpers/show_dialog_historic.dart';
-import 'package:acesso_mp/helpers/show_dialog_msg.dart';
+import 'package:acesso_mp/helpers/zshow_dialogs.dart';
 import 'package:acesso_mp/main.dart';
 import 'package:acesso_mp/widgets/home_fields.dart';
 import 'package:acesso_mp/models/model_visitors.dart';
@@ -205,16 +204,16 @@ class _HomePageState extends State<HomePage> {
                                             ))
                                                 .then((v) {
                                               if (v) {
-                                                showDialogMsg(context,
+                                                ZshowDialogs.alert(context,
                                                     'Pessoa já cadastrada!');
                                               } else {
-                                                showDialogMsg(context,
+                                                ZshowDialogs.alert(context,
                                                     'Cadastro realizado com sucesso!');
                                                 clearFields();
                                               }
                                             });
                                           } else {
-                                            showDialogMsg(context,
+                                            ZshowDialogs.alert(context,
                                                 'Imagem não capturada!');
                                           }
                                         });
@@ -238,16 +237,16 @@ class _HomePageState extends State<HomePage> {
                                             ))
                                                 .then((v) {
                                               if (v) {
-                                                showDialogMsg(context,
+                                                ZshowDialogs.alert(context,
                                                     'Registro atualizado!');
                                                 clearFields();
                                               } else {
-                                                showDialogMsg(context,
+                                                ZshowDialogs.alert(context,
                                                     'Registro não encontrado!');
                                               }
                                             });
                                           } else {
-                                            showDialogMsg(context,
+                                            ZshowDialogs.alert(context,
                                                 'Imagem não capturada!');
                                           }
                                         });
@@ -271,7 +270,7 @@ class _HomePageState extends State<HomePage> {
                                         backgroundColor: const Color.fromARGB(
                                             255, 10, 1, 194)),
                                     onPressed: () {
-                                      showDialogHistoric(context, visitor);
+                                      ZshowDialogs.historic(context, visitor);
                                     },
                                     child: const Text(
                                       'Histórico',
