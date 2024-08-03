@@ -1,18 +1,20 @@
 // import 'dart:convert';
 import 'dart:convert';
 
-import 'package:acesso_mp/helpers/show_dialog.dart';
+import 'package:acesso_mp/helpers/zshow_dialogs.dart';
 import 'package:acesso_mp/main.dart';
-import 'package:acesso_mp/models/model_home_fields.dart';
+import 'package:acesso_mp/widgets/home_fields.dart';
 import 'package:acesso_mp/models/model_visitors.dart';
 import 'package:acesso_mp/services/convert.dart';
 import 'package:acesso_mp/services/database.dart';
+import 'package:acesso_mp/services/manage_data.dart';
 import 'package:acesso_mp/widgets/camera.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:validatorless/validatorless.dart';
 
 class HomePage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -20,27 +22,46 @@ class HomePage extends StatefulWidget {
 
   ModelHomeFields nameField = ModelHomeFields(
     text: 'Nome',
-    validadtor: 'name',
+    listInputFormat: const [],
+    listValidator: [
+      Validatorless.min(10, 'O nome deve possuir no mínimo 10 letras!'),
+      Validatorless.required('Campo obrigatório!')
+    ],
   );
   ModelHomeFields cpfField = ModelHomeFields(
     text: 'CPF',
-    validadtor: 'cpf',
+    listValidator: [
+      Validatorless.cpf('CPF inválido!'),
+      Validatorless.required('Campo obrigatório!')
+    ],
+    listInputFormat: [
+      FilteringTextInputFormatter.digitsOnly,
+      LengthLimitingTextInputFormatter(11)
+    ],
   );
   ModelHomeFields rgField = ModelHomeFields(
     text: 'RG',
-    validadtor: 'rg',
+    listInputFormat: [
+      FilteringTextInputFormatter.digitsOnly,
+    ],
+    listValidator: [Validatorless.required('Campo obrigatório!')],
   );
   ModelHomeFields phoneField = ModelHomeFields(
     text: 'Telefone',
-    validadtor: 'phone',
+    listInputFormat: [
+      FilteringTextInputFormatter.digitsOnly,
+    ],
+    listValidator: [Validatorless.required('Campo obrigatório!')],
   );
   ModelHomeFields jobField = ModelHomeFields(
     text: 'Profissão',
-    validadtor: 'job',
+    listValidator: [Validatorless.required('Campo obrigatório!')],
+    listInputFormat: const [],
   );
   ModelHomeFields whoVisitField = ModelHomeFields(
     text: 'Quem Visitar',
-    validadtor: 'who',
+    listValidator: [Validatorless.required('Campo obrigatório!')],
+    listInputFormat: const [],
   );
   String image = '';
 
@@ -51,6 +72,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final Database db = Database();
   List<String> visitor = [];
+
   bool loadImage = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -97,25 +119,10 @@ class _HomePageState extends State<HomePage> {
     widget.whoVisitField.loadData(visitor[5]);
   }
 
-  void authorized() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? dates = prefs.getStringList('managementDate');
-    if (prefs.getString('visitor') != null) {
-      visitor = prefs.getString('visitor')!.split(',');
-    }
-
-    // List<String> newDate = dates.map((e) {
-    //   if (e == visitor[1]) {
-    //     String dateNow =
-    //         DateFormat('dd/MM/yyy HH:mm:ss').format(DateTime.now());
-
-    //   }
-    // });
-  }
-
   void clearFields() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('capturedImage', '');
+    prefs.setString('visitor', '');
     loadImage = true;
     widget.image = '';
     setState(() {});
@@ -184,8 +191,7 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         getDataVisitor().then((e) {
-                                          // if (e[6] != '') {
-                                          if (true) {
+                                          if (e[6] != '') {
                                             db
                                                 .register(ModelVisitors(
                                               name: e[0],
@@ -198,16 +204,16 @@ class _HomePageState extends State<HomePage> {
                                             ))
                                                 .then((v) {
                                               if (v) {
-                                                showDialogMsg(context,
+                                                ZshowDialogs.alert(context,
                                                     'Pessoa já cadastrada!');
                                               } else {
-                                                showDialogMsg(context,
+                                                ZshowDialogs.alert(context,
                                                     'Cadastro realizado com sucesso!');
                                                 clearFields();
                                               }
                                             });
                                           } else {
-                                            showDialogMsg(context,
+                                            ZshowDialogs.alert(context,
                                                 'Imagem não capturada!');
                                           }
                                         });
@@ -231,16 +237,16 @@ class _HomePageState extends State<HomePage> {
                                             ))
                                                 .then((v) {
                                               if (v) {
-                                                showDialogMsg(context,
+                                                ZshowDialogs.alert(context,
                                                     'Registro atualizado!');
                                                 clearFields();
                                               } else {
-                                                showDialogMsg(context,
+                                                ZshowDialogs.alert(context,
                                                     'Registro não encontrado!');
                                               }
                                             });
                                           } else {
-                                            showDialogMsg(context,
+                                            ZshowDialogs.alert(context,
                                                 'Imagem não capturada!');
                                           }
                                         });
@@ -263,7 +269,9 @@ class _HomePageState extends State<HomePage> {
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: const Color.fromARGB(
                                             255, 10, 1, 194)),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      ZshowDialogs.historic(context, visitor);
+                                    },
                                     child: const Text(
                                       'Histórico',
                                       style: TextStyle(color: Colors.white),
@@ -330,7 +338,11 @@ class _HomePageState extends State<HomePage> {
                             height: 30,
                           ),
                           ElevatedButton(
-                              onPressed: () {}, child: const Text('Autorizar'))
+                              onPressed: () {
+                                ManageData.authorized(context);
+                                clearFields();
+                              },
+                              child: const Text('Autorizar'))
                         ],
                       ),
                     ),
