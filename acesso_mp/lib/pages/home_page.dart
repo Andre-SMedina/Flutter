@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:acesso_mp/helpers/show_dialog_historic.dart';
 import 'package:acesso_mp/helpers/show_dialog_msg.dart';
 import 'package:acesso_mp/main.dart';
-import 'package:acesso_mp/models/model_home_fields.dart';
+import 'package:acesso_mp/widgets/home_fields.dart';
 import 'package:acesso_mp/models/model_visitors.dart';
 import 'package:acesso_mp/services/convert.dart';
 import 'package:acesso_mp/services/database.dart';
@@ -13,7 +13,9 @@ import 'package:acesso_mp/widgets/camera.dart';
 import 'package:acesso_mp/widgets/my_dropdown.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:validatorless/validatorless.dart';
 
 class HomePage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -21,27 +23,46 @@ class HomePage extends StatefulWidget {
 
   ModelHomeFields nameField = ModelHomeFields(
     text: 'Nome',
-    validadtor: 'name',
+    listInputFormat: const [],
+    listValidator: [
+      Validatorless.min(10, 'O nome deve possuir no mínimo 10 letras!'),
+      Validatorless.required('Campo obrigatório!')
+    ],
   );
   ModelHomeFields cpfField = ModelHomeFields(
     text: 'CPF',
-    validadtor: 'cpf',
+    listValidator: [
+      Validatorless.cpf('CPF inválido!'),
+      Validatorless.required('Campo obrigatório!')
+    ],
+    listInputFormat: [
+      FilteringTextInputFormatter.digitsOnly,
+      LengthLimitingTextInputFormatter(11)
+    ],
   );
   ModelHomeFields rgField = ModelHomeFields(
     text: 'RG',
-    validadtor: 'rg',
+    listInputFormat: [
+      FilteringTextInputFormatter.digitsOnly,
+    ],
+    listValidator: [Validatorless.required('Campo obrigatório!')],
   );
   ModelHomeFields phoneField = ModelHomeFields(
     text: 'Telefone',
-    validadtor: 'phone',
+    listInputFormat: [
+      FilteringTextInputFormatter.digitsOnly,
+    ],
+    listValidator: [Validatorless.required('Campo obrigatório!')],
   );
   ModelHomeFields jobField = ModelHomeFields(
     text: 'Profissão',
-    validadtor: 'job',
+    listValidator: [Validatorless.required('Campo obrigatório!')],
+    listInputFormat: const [],
   );
   ModelHomeFields whoVisitField = ModelHomeFields(
     text: 'Quem Visitar',
-    validadtor: 'who',
+    listValidator: [Validatorless.required('Campo obrigatório!')],
+    listInputFormat: const [],
   );
   String image = '';
 
