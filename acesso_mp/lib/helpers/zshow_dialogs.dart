@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 class ZshowDialogs {
   static Future<void> historic(
       BuildContext context, List<String> visitor) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? checked = prefs.getString('visitor');
+    var box = Hive.box('db');
+    var checked = box.get('visitor');
 
     if (checked != null && checked != '') {
-      List<String> listHistoric = prefs.getStringList('managementDate') ?? [];
-      var visitorHistoric = listHistoric
-          .where((e) {
-            return e.contains(visitor[1]);
-          })
-          .toList()[0]
-          .split(',');
-
-      visitorHistoric.removeAt(0);
+      var visitorHistoric = checked['visit'];
 
       await showDialog(
         context: context,
@@ -24,7 +16,7 @@ class ZshowDialogs {
           return AlertDialog(
             title: const Center(child: Text('Histórico de visitas')),
             content: SizedBox(
-              width: 400,
+              width: 500,
               child: SingleChildScrollView(
                 child: ListView.builder(
                   shrinkWrap:
@@ -33,8 +25,8 @@ class ZshowDialogs {
                       visitorHistoric.length, // Número de elementos na lista
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: const Icon(
-                          Icons.arrow_back), // Ícone opcional para cada item
+                      leading: const Icon(Icons
+                          .check_circle_outline_outlined), // Ícone opcional para cada item
                       title: Text(
                           'Registro de entrada: ${visitorHistoric[index]}'),
                     );
@@ -77,5 +69,41 @@ class ZshowDialogs {
         );
       },
     );
+  }
+
+  static Future<String> visited(BuildContext context) async {
+    late TextEditingController textController = TextEditingController();
+    FocusNode focusNode = FocusNode();
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Quem visitar?'),
+          content: Builder(builder: (BuildContext context) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              FocusScope.of(context).requestFocus(focusNode);
+            });
+
+            return TextField(
+              focusNode: focusNode,
+              controller: textController,
+            );
+          }),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    return textController.text;
   }
 }

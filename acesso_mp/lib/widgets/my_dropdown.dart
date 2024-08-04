@@ -1,8 +1,8 @@
-// import 'package:acesso_mp/models/model_home_fields.dart';
+import 'package:acesso_mp/helpers/search_db.dart';
 import 'package:acesso_mp/services/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 class MyDropdown extends StatefulWidget {
   final VoidCallback loadData;
@@ -20,34 +20,27 @@ class MyDropdownState extends State<MyDropdown> {
   List<String> filterList = [];
   List<String> visitedList = [];
 
-  Future<List<String>> _getSuggestions(String query) async {
+  Future<List<dynamic>> _getSuggestions(String query) async {
     if (query.length < 3) {
       return [];
     }
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> items = prefs.getStringList('visitors') ?? [];
-    filterList = items.where((item) {
-      // remove o nome do visitado para não entrar na pesquisa quando digitar
-      String outVisited = item.split(',').sublist(0, 5).join(',');
-      //remove os acentos das palavras para pesquisa
-      outVisited = Convert.removeAccent(outVisited);
-      return outVisited.contains(Convert.removeAccent(query.toLowerCase()));
-    }).toList();
+    var box = Hive.box('db');
 
-    List<String> listDropdown = filterList.map((item) {
-      return Convert.firstUpper(item.split(',')[0]);
-    }).toList();
+    List<String> listDropdown = [];
+    List<dynamic> items = searchDb(query);
+    for (var name in items) {
+      var dataVisitor = box.get(name);
+      listDropdown.add(Convert.firstUpper(dataVisitor['name']));
+    }
 
     return listDropdown;
   }
 
   void foundVisitor(String suggestion) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String dataVisitor = filterList.firstWhere((item) {
-      return item.contains(suggestion.toLowerCase());
-    });
-    prefs.setString('visitor', dataVisitor);
+    var box = Hive.box('db');
+    var dataVisitor = box.get(Convert.removeAccent(suggestion).toLowerCase());
+    await box.put('visitor', dataVisitor);
     searchController.text = '';
     widget.loadData();
   }
