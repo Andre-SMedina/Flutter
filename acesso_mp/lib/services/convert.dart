@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Convert {
   static String forString(ModelVisitors list) {
-    return '${list.name.toLowerCase()},${list.cpf},${list.rg},${list.phone},${list.job},${list.whoVisit},${list.image}';
+    return '${list.name.toLowerCase()},${list.cpf},${list.rg},${list.phone},${list.job},${list.image}';
   }
 
   static List<ModelVisitors> forModel(List<String> list) {
@@ -18,8 +18,7 @@ class Convert {
           rg: listSplit[2],
           phone: listSplit[3],
           job: listSplit[4],
-          whoVisit: listSplit[5],
-          image: listSplit[6]));
+          image: listSplit[5]));
     }
 
     return listVisitors;

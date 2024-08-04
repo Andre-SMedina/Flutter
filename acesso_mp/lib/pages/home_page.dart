@@ -13,7 +13,7 @@ import 'package:acesso_mp/widgets/my_dropdown.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 import 'package:validatorless/validatorless.dart';
 
 class HomePage extends StatefulWidget {
@@ -58,11 +58,6 @@ class HomePage extends StatefulWidget {
     listValidator: [Validatorless.required('Campo obrigatório!')],
     listInputFormat: const [],
   );
-  ModelHomeFields whoVisitField = ModelHomeFields(
-    text: 'Quem Visitar',
-    listValidator: [Validatorless.required('Campo obrigatório!')],
-    listInputFormat: const [],
-  );
   String image = '';
 
   @override
@@ -77,16 +72,8 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Future<List<String>> getDataVisitor() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    String img = '';
-
-    if (prefs.getString('capturedImage') != null) {
-      widget.image = prefs.getString('capturedImage')!;
-      img = prefs.getString('capturedImage')!;
-    } else {
-      prefs.setString('capturedImage', '');
-    }
+    var box = Hive.box('db');
+    String img = box.get('image');
 
     return [
       widget.nameField.fieldController.text,
@@ -94,35 +81,28 @@ class _HomePageState extends State<HomePage> {
       widget.rgField.fieldController.text,
       widget.phoneField.fieldController.text,
       widget.jobField.fieldController.text,
-      widget.whoVisitField.fieldController.text,
       img,
     ];
   }
 
-  void loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('visitor') != null) {
-      visitor = prefs.getString('visitor')!.split(',');
-    }
-
-    //linha necessária quando for atualizar os dados, pois o getImage pega do capturedImage
-    prefs.setString('capturedImage', visitor[6]);
+  void loadData() {
+    var box = Hive.box('db');
+    var visitor = box.get('visitor');
 
     loadImage = true;
-    widget.image = visitor[6];
+    widget.image = visitor['image'];
+    box.put('image', visitor['image']);
     setState(() {});
-    widget.nameField.loadData(Convert.firstUpper(visitor[0]));
-    widget.cpfField.loadData(visitor[1]);
-    widget.rgField.loadData(visitor[2]);
-    widget.phoneField.loadData(visitor[3]);
-    widget.jobField.loadData(visitor[4]);
-    widget.whoVisitField.loadData(visitor[5]);
+    widget.nameField.loadData(Convert.firstUpper(visitor['name']));
+    widget.cpfField.loadData(visitor['cpf']);
+    widget.rgField.loadData(visitor['rg']);
+    widget.phoneField.loadData(visitor['phone']);
+    widget.jobField.loadData(visitor['job']);
   }
 
-  void clearFields() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('capturedImage', '');
-    prefs.setString('visitor', '');
+  void clearFields() {
+    var box = Hive.box('db');
+    box.putAll({'visitor': '', 'image': ''});
     loadImage = true;
     widget.image = '';
     setState(() {});
@@ -131,7 +111,6 @@ class _HomePageState extends State<HomePage> {
     widget.rgField.clearData();
     widget.phoneField.clearData();
     widget.jobField.clearData();
-    widget.whoVisitField.clearData();
   }
 
   @override
@@ -180,7 +159,6 @@ class _HomePageState extends State<HomePage> {
                             widget.rgField,
                             widget.phoneField,
                             widget.jobField,
-                            widget.whoVisitField,
                             const SizedBox(
                               height: 20,
                             ),
@@ -191,25 +169,26 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         getDataVisitor().then((e) {
-                                          if (e[6] != '') {
+                                          if (e[5] != '') {
                                             db
-                                                .register(ModelVisitors(
-                                              name: e[0],
-                                              cpf: e[1],
-                                              rg: e[2],
-                                              phone: e[3],
-                                              job: e[4],
-                                              whoVisit: e[5],
-                                              image: e[6],
-                                            ))
+                                                .register(
+                                                    ModelVisitors(
+                                                      name: e[0],
+                                                      cpf: e[1],
+                                                      rg: e[2],
+                                                      phone: e[3],
+                                                      job: e[4],
+                                                      image: e[5],
+                                                    ),
+                                                    context,
+                                                    'save')
                                                 .then((v) {
-                                              if (v) {
-                                                ZshowDialogs.alert(context,
-                                                    'Pessoa já cadastrada!');
-                                              } else {
+                                              if (v == 'saved') {
                                                 ZshowDialogs.alert(context,
                                                     'Cadastro realizado com sucesso!');
-                                                clearFields();
+                                              } else {
+                                                ZshowDialogs.alert(context,
+                                                    'Pessoa já cadastrada!');
                                               }
                                             });
                                           } else {
@@ -224,22 +203,23 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         getDataVisitor().then((e) {
-                                          if (e[6] != '') {
+                                          if (e[5] != '') {
                                             db
-                                                .update(ModelVisitors(
-                                              name: e[0],
-                                              cpf: e[1],
-                                              rg: e[2],
-                                              phone: e[3],
-                                              job: e[4],
-                                              whoVisit: e[5],
-                                              image: e[6],
-                                            ))
+                                                .register(
+                                                    ModelVisitors(
+                                                      name: e[0],
+                                                      cpf: e[1],
+                                                      rg: e[2],
+                                                      phone: e[3],
+                                                      job: e[4],
+                                                      image: e[5],
+                                                    ),
+                                                    context,
+                                                    'update')
                                                 .then((v) {
-                                              if (v) {
+                                              if (v == 'updated') {
                                                 ZshowDialogs.alert(context,
                                                     'Registro atualizado!');
-                                                clearFields();
                                               } else {
                                                 ZshowDialogs.alert(context,
                                                     'Registro não encontrado!');

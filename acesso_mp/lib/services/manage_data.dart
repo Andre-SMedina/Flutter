@@ -1,30 +1,23 @@
 import 'package:acesso_mp/helpers/zshow_dialogs.dart';
+import 'package:acesso_mp/services/convert.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageData {
   static void authorized(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? checked = prefs.getString('visitor');
+    var box = Hive.box('db');
+    var checked = box.get('visitor');
+
     if (checked != null && checked != '') {
-      List<String> visitor = prefs.getString('visitor')!.split(',');
+      String visited = '';
+      await ZshowDialogs.visited(context).then((v) => visited = v);
 
-      List<String> dates = prefs.getStringList('managementDate') ?? [];
+      String dateNow = DateFormat('dd/MM/yyy HH:mm:ss').format(DateTime.now());
 
-      List<String> newDate = dates.map((e) {
-        List<String> listDate = e.split(',');
+      checked['visit'].add('$dateNow $visited');
 
-        if (listDate[0] == visitor[1]) {
-          String dateNow =
-              DateFormat('dd/MM/yyy HH:mm:ss').format(DateTime.now());
-          listDate.add(dateNow);
-          return listDate.join(',');
-        }
-        return e;
-      }).toList();
-
-      prefs.setStringList('managementDate', newDate);
+      box.put(Convert.removeAccent(checked['name'].toLowerCase()), checked);
 
       ZshowDialogs.alert(context, 'Autorização registrada!');
     }

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:acesso_mp/helpers/zshow_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CameraApp extends StatefulWidget {
@@ -50,8 +51,11 @@ class CameraAppState extends State<CameraApp> {
       // Essa matriz de bytes é então convertida em uma representação base64
       final base64Image = base64Encode(bytes);
 
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('capturedImage', base64Image);
+      var box = Hive.box('db');
+      box.put('image', base64Image);
+
+      // final prefs = await SharedPreferences.getInstance();
+      // await prefs.setString('capturedImage', base64Image);
 
       setState(() {
         capturedImage = bytes;

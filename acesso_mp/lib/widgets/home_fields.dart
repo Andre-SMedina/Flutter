@@ -17,14 +17,14 @@ class ModelHomeFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(top: 3.0),
       child: TextFormField(
-        // keyboardType: TextInputType.text,
         validator: Validatorless.multiple(listValidator),
         controller: fieldController,
         inputFormatters: listInputFormat,
         decoration: InputDecoration(
           labelText: text,
+          helperText: '',
         ),
       ),
     );
